@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="pt-color" content="#141414">
+<title>Project — Damiano Perrella</title>
+<script src="../site.js"></script>
+<link rel="stylesheet" href="../clean.css">
+<style>
+  /* the header sits over the full-screen photo, so it inverts against whatever is behind it:
+     dark on white, light on a dark image */
+  .id, .id a { color: #fff; }
+  .id { mix-blend-mode: difference; }
+
+  /* ---------------- full-screen image ---------------- */
+  .hero {
+    position: relative;
+    height: 100vh;
+    height: 100svh;
+    min-height: 420px;
+    overflow: hidden;
+    background: #ececec;
+  }
+  .hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* ---------------- the project ---------------- */
+  .proj {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: clamp(56px, 10vw, 140px) var(--pad) clamp(80px, 12vw, 180px);
+  }
+  .proj h1 {
+    max-width: 14ch;
+    font-size: clamp(40px, 7.4vw, 128px);
+    line-height: .98;
+    letter-spacing: -.035em;
+  }
+  .top {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
+    row-gap: 48px;
+    margin-top: clamp(40px, 6vw, 96px);
+  }
+  .facts { grid-column: 1 / span 4; font-size: 14px; line-height: 1.4; }
+  .facts > div {
+    display: grid;
+    grid-template-columns: 7.5em minmax(0, 1fr);
+    gap: 0 var(--gap);
+    padding: 11px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .facts > div:first-child { border-top-color: var(--ink); }
+  .facts dt { color: var(--ink-soft); }
+  .desc { grid-column: 6 / span 7; display: flex; flex-direction: column; gap: 1.1em; }
+  .desc p { max-width: 36em; font-size: clamp(17px, 1.5vw, 22px); line-height: 1.5; }
+  .soon { font-size: 15px; color: var(--ink-soft); }
+
+  /* ---------------- images and text of every size ---------------- */
+  .gal {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
+    row-gap: clamp(36px, 6vw, 96px);
+    align-items: start;
+    margin-top: clamp(80px, 12vw, 200px);
+  }
+  .it { min-width: 0; }
+  .it img { display: block; width: 100%; height: auto; background: #f0f0f0; }
+  .cap { margin-top: 10px; font-size: 12px; line-height: 1.4; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .cap b { margin-right: .9em; font-weight: 400; color: var(--ink); }
+  .txt { font-size: clamp(16px, 1.35vw, 20px); line-height: 1.55; }
+
+  .s-full  { grid-column: 1 / -1; margin-inline: calc(var(--pad) * -1); }
+  .s-full .cap { padding-inline: var(--pad); }
+  .s-wide  { grid-column: 1 / -1; }
+  .s-large { grid-column: span 8; }
+  .s-half  { grid-column: span 6; }
+  .s-small { grid-column: span 4; }
+  .a-center.s-large { grid-column: 3 / span 8; }
+  .a-center.s-half  { grid-column: 4 / span 6; }
+  .a-center.s-small { grid-column: 5 / span 4; }
+  .a-right.s-large  { grid-column: 5 / span 8; }
+  .a-right.s-half   { grid-column: 7 / span 6; }
+  .a-right.s-small  { grid-column: 9 / span 4; }
+
+  @media (max-width: 760px) {
+    .facts, .desc { grid-column: 1 / -1; }
+    .gal .it:not(.s-full) { grid-column: 1 / -1 !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="id">
+  <a class="back" href="/">&larr; The Table</a>
+  <a href="/about">Damiano Perrella</a>
+  <a href="/fate" id="clock" aria-label="Current date and time. Open the planetary chart."></a>
+</header>
+
+<main id="root"></main>
+
+<script src="../projects.js"></script>
+<script>
+  const FIELDS = [["year", "Year"], ["location", "Location"], ["type", "Type"], ["client", "Client"],
+                  ["area", "Area"], ["status", "Status"], ["role", "Role"], ["credits", "Credits"]];
+  const SIZES = ["full", "wide", "large", "half", "small"];
+  const ALIGNS = ["left", "center", "right"];
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  const root = document.getElementById("root");
+  const slug = new URLSearchParams(location.search).get("p");
+  const index = PROJECTS.findIndex(p => p.slug === slug);
+
+  if (index < 0) {
+    document.title = "Not found — Damiano Perrella";
+    root.innerHTML = `<section class="notfound"><h1>404</h1><p>Project not found.</p><p><a href="/">Back to The Table</a></p></section>`;
+  } else {
+    const p = PROJECTS[index];
+    document.title = p.title + " — Damiano Perrella";
+
+    const facts = FIELDS.filter(([k]) => p[k])
+      .map(([k, label]) => `<div><dt>${label}</dt><dd>${esc(p[k])}</dd></div>`).join("");
+    const paras = [].concat(p.description || []).map(t => `<p>${esc(t)}</p>`).join("");
+    const content = p.content || p.images || [];                       // "images" is the old name
+
+    root.innerHTML = `
+      <section class="hero"><img id="hero" alt="${esc(p.title)}" fetchpriority="high"></section>
+      <article class="proj">
+        <h1>${esc(p.title)}</h1>
+        ${facts || paras ? `<div class="top">
+            ${facts ? `<dl class="facts">${facts}</dl>` : ""}
+            ${paras ? `<div class="desc">${paras}</div>` : ""}
+          </div>` : ""}
+        ${facts || paras || content.length ? "" : '<p class="top soon">Coming soon.</p>'}
+        ${content.length ? '<section class="gal" id="gal"></section>' : ""}
+      </article>`;
+
+    /* the full-screen image is the same one as on the card */
+    const hero = document.getElementById("hero");
+    hero.addEventListener("load", () => { const c = PT.sample(hero); if (c) PT.setColor(c); });
+    hero.src = p.cover || placeholderCover(index);
+
+    /* the gallery */
+    const gal = document.getElementById("gal");
+    if (gal) {
+      let n = 0;
+      const total = content.filter(x => x.src !== undefined).length;
+      const pad = String(total).length;
+      content.forEach((item, i) => {
+        const size = SIZES.includes(item.size) ? item.size : "wide";
+        const align = ALIGNS.includes(item.align) ? item.align : "left";
+        const el = document.createElement(item.text !== undefined ? "div" : "figure");
+        el.className = `it s-${size} a-${align}`;
+        if (item.text !== undefined) {
+          el.classList.add("txt");
+          el.textContent = item.text;
+        } else {
+          n++;
+          const img = document.createElement("img");
+          img.loading = i < 2 ? "eager" : "lazy";
+          img.decoding = "async";
+          img.alt = item.caption || (p.title + ", image " + n);
+          if (item.w && item.h) { img.width = item.w; img.height = item.h; }
+          img.src = item.src || placeholderPlate(n - 1, item.w || 1500, item.h || 1000);
+          el.appendChild(img);
+          if (item.caption) {
+            const cap = document.createElement("figcaption");
+            cap.className = "cap";
+            cap.innerHTML = `<b>${String(n).padStart(pad, "0")}</b>${esc(item.caption)}`;
+            el.appendChild(cap);
+          }
+        }
+        gal.appendChild(el);
+      });
+    }
+  }
+</script>
+</body>
+</html>
