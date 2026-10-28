@@ -110,6 +110,17 @@
   }
   .id a:hover, .id a:focus-visible { text-decoration: underline; text-underline-offset: 3px; outline: none; }
 
+  /* ---------------- "All Cards" link (fixed, bottom right) ---------------- */
+  .all {
+    position: fixed; right: 1.75rem; bottom: 1.25rem;
+    z-index: 20;
+    font-size: 15px; line-height: 1.4;
+    color: var(--on-bg);
+    text-decoration: none;
+    text-shadow: 0 0 10px rgba(3, 22, 16, .8);
+  }
+  .all:hover, .all:focus-visible { text-decoration: underline; text-underline-offset: 3px; outline: none; }
+
   /* ---------------- the spread ---------------- */
   .table {
     position: relative;
@@ -241,6 +252,8 @@
   <a href="/about">Damiano Perrella</a>
   <a href="/fate" id="clock" aria-label="Current date and time. Open the planetary chart."></a>
 </header>
+
+<a class="all" href="/cards">All Cards</a>
 
 <main class="table" id="table"></main>
 

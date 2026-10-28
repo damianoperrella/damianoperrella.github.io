@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="pt-color" content="#1b7a52">
+<title>All Cards — Damiano Perrella</title>
+<script src="/site.js"></script>
+<style>
+  /* ============================================================
+     DESIGN TOKENS — everything colour/type lives here.
+     ============================================================ */
+  :root {
+    /* felt table */
+    --felt-light: #1b7a52;               /* centre of the pool of light */
+    --felt:       #0d4a33;               /* the baize itself */
+    --felt-dark:  #031610;               /* edges of the room */
+
+    --card:  #ffffff;
+    --ink:   #141414;                    /* text + hairlines on the cards */
+    --ink-dim: rgba(20, 20, 20, .35);
+    --on-bg: #ffffff;                    /* text sitting on the felt */
+
+    --font: "Helvetica Neue", Helvetica, Arial, sans-serif;   /* the only typeface */
+
+    --card-w: clamp(120px, min(15vw, 24vh), 210px);
+
+    /* Manicule: width of the floating hand. Your SVG should be drawn
+       POINTING DOWN. */
+    --manicule-w: 220px;
+    --manicule-filter: none;             /* e.g. invert(1) if your SVG is black */
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5.5rem 1.5rem 3rem;
+    overflow-x: hidden;
+    color: var(--on-bg);
+    font-family: var(--font);
+    background: var(--felt-dark);
+  }
+
+  /* ---------------- the felt table ---------------- */
+  .felt {
+    position: fixed; inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    isolation: isolate;
+    overflow: hidden;
+    /* one pool of harsh overhead light, falling off to a dark room */
+    background:
+      radial-gradient(ellipse 62% 60% at 50% 52%,
+        var(--felt-light) 0%, var(--felt) 38%, #093626 62%, var(--felt-dark) 100%),
+      var(--felt);
+  }
+  .felt::before, .felt::after, .felt i {
+    content: "";
+    position: absolute; inset: 0;
+    display: block;
+  }
+  /* fine grain: the nap of the cloth */
+  .felt::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='1.9' intercept='-.45'/%3E%3CfeFuncG type='linear' slope='1.9' intercept='-.45'/%3E%3CfeFuncB type='linear' slope='1.9' intercept='-.45'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 220px 220px;
+    mix-blend-mode: overlay;
+    opacity: .6;
+  }
+  /* short fibres lying every which way */
+  .felt::after {
+    inset: -30%;
+    transform: rotate(32deg);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75 .05' numOctaves='2' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='2.4' intercept='-.7'/%3E%3CfeFuncG type='linear' slope='2.4' intercept='-.7'/%3E%3CfeFuncB type='linear' slope='2.4' intercept='-.7'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+    background-size: 360px 360px;
+    mix-blend-mode: soft-light;
+    opacity: .55;
+  }
+  /* uneven wear: broad light and dark patches */
+  .felt i {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900'%3E%3Cfilter id='m' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.011 .016' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='2.2' intercept='-.6'/%3E%3CfeFuncG type='linear' slope='2.2' intercept='-.6'/%3E%3CfeFuncB type='linear' slope='2.2' intercept='-.6'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
+    background-size: 900px 900px;
+    mix-blend-mode: overlay;
+    opacity: .4;
+  }
+
+  /* ---------------- header (fixed, top right) ---------------- */
+  .id {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 20;
+    padding: 1.25rem 1.75rem 2.5rem;
+    text-align: right;
+    font-size: 15px;
+    line-height: 1.4;
+    pointer-events: none;                              /* only the two links are clickable */
+    background: linear-gradient(rgba(3, 22, 16, .8), rgba(3, 22, 16, 0));
+  }
+  .id a {
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    pointer-events: auto;
+    color: var(--on-bg);
+    text-decoration: none;
+    font-variant-numeric: tabular-nums;                /* stops the seconds jittering */
+  }
+  .id a.back { position: absolute; left: 1.75rem; top: 1.25rem; margin: 0; }
+  .id a:hover, .id a:focus-visible { text-decoration: underline; text-underline-offset: 3px; outline: none; }
+
+  /* ---------------- the spread ---------------- */
+  .table {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: clamp(1.2rem, 2.4vw, 2.4rem);
+    max-width: 1100px;
+  }
+
+  /* ---------------- tarot card ---------------- */
+  .card {
+    --tilt: 0deg;
+    display: block;
+    width: var(--card-w);
+    aspect-ratio: 7 / 12;           /* tarot proportions */
+    perspective: 900px;
+    text-decoration: none;
+    color: inherit;
+    will-change: transform;
+    transform: rotate(var(--tilt));
+  }
+  .card:focus-visible { outline: none; }
+
+  .tilt {
+    position: relative;
+    width: 100%; height: 100%;
+    padding: 9px;
+    border-radius: 12px;
+    background: var(--card);
+    /* Hard overhead light: a crisp, dark shadow falling straight down onto the table */
+    box-shadow: 0 12px 4px rgba(0, 0, 0, .55);
+    transform-style: preserve-3d;
+    transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease;
+    will-change: transform;
+  }
+  /* inner hairline frame */
+  .tilt::before {
+    content: "";
+    position: absolute; inset: 5px;
+    border: 1px solid var(--ink-dim);
+    border-radius: 8px;
+    pointer-events: none;
+    z-index: 3;
+  }
+  .inner {
+    position: relative;
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 14px 14px 12px;
+    gap: 10px;
+  }
+  .numeral {
+    text-align: center;
+    font-size: .85rem;
+    letter-spacing: .3em;
+    padding-left: .3em;
+    color: var(--ink);
+  }
+  .art {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+    border: 1px solid var(--ink-dim);
+    background: #000;
+  }
+  .art img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform .8s cubic-bezier(.2,.8,.2,1);
+  }
+  .name {
+    text-align: center;
+    font-size: .85rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    padding-left: .18em;
+    color: var(--ink);
+    min-height: 1.6em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tilt, .art img { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="felt" aria-hidden="true"><i></i></div>
+
+<header class="id">
+  <a class="back" href="/">&larr; The Table</a>
+  <a href="/about">Damiano Perrella</a>
+  <a href="/fate" id="clock" aria-label="Current date and time. Open the planetary chart."></a>
+</header>
+
+<main class="table" id="table"></main>
+
+
+
+<script src="/projects.js"></script>
+<script>
+  /* ============================================================
+     ALL CARDS: every project laid out on the table in a grid.
+     Drag the mouse quickly across it and the cards get knocked
+     about a little: they slide and turn, and stay where they land.
+     ============================================================ */
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const url = s => /^(https?:|data:|\/)/.test(s) ? s : "/" + s;
+  const table = document.getElementById("table");
+
+  const cards = PROJECTS.map((p, i) => {
+    const card = document.createElement("a");
+    card.className = "card";
+    card.href = "/project/?p=" + encodeURIComponent(p.slug);
+    card.innerHTML = `
+      <div class="tilt">
+        <div class="inner">
+          <div class="numeral">${toRoman(i + 1)}</div>
+          <div class="art"><img alt=""></div>
+          <div class="name"></div>
+        </div>
+      </div>`;
+    const img = card.querySelector("img");
+    const src = p.card || p.cover;
+    img.src = src ? url(src) : placeholderCover(i);
+    img.alt = p.title;
+    card.querySelector(".name").textContent = p.title;
+    table.appendChild(card);
+    return { el: card, x: 0, y: 0, r: 0, vx: 0, vy: 0, vr: 0 };
+  });
+
+  if (!reduceMotion && matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    const MIN_SPEED = 1300;    // px/s: slower movements leave the cards alone
+    const PUSH      = 0.07;    // how much of the mouse's speed a card picks up
+    const SPIN      = 0.014;   // how much it turns
+    const FRICTION  = 5;       // how quickly a card slides to a stop
+    const MAX_MOVE  = 48;      // px: furthest a card can be knocked from its place
+    const MAX_TURN  = 14;      // degrees
+
+    let last = null;
+    const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+
+    addEventListener("pointermove", e => {
+      const now = performance.now();
+      if (last && e.pointerType !== "touch") {
+        const dt = Math.max(1, now - last.t) / 1000;
+        const vx = (e.clientX - last.x) / dt, vy = (e.clientY - last.y) / dt;
+        const speed = Math.hypot(vx, vy);
+        if (speed > MIN_SPEED) {
+          for (const c of cards) {
+            const r = c.el.getBoundingClientRect();
+            const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+            const inside = e.clientX > r.left - 14 && e.clientX < r.right + 14 &&
+                           e.clientY > r.top - 14 && e.clientY < r.bottom + 14;
+            if (!inside) continue;
+            const s = Math.min(speed, 4000);
+            c.vx += (vx / speed) * s * PUSH * 0.5;
+            c.vy += (vy / speed) * s * PUSH * 0.5;
+            // turn: the side the mouse hits swings away from it
+            const torque = ((e.clientX - cx) * vy - (e.clientY - cy) * vx) / (r.width * speed);
+            c.vr += torque * s * SPIN;
+          }
+        }
+      }
+      last = { x: e.clientX, y: e.clientY, t: now };
+    });
+    document.documentElement.addEventListener("pointerleave", () => { last = null; });
+
+    let prev = performance.now();
+    (function loop(now) {
+      const dt = Math.min(0.05, (now - prev) / 1000); prev = now;
+      for (const c of cards) {
+        if (!c.vx && !c.vy && !c.vr) continue;
+        c.x = clamp(c.x + c.vx * dt, -MAX_MOVE, MAX_MOVE);
+        c.y = clamp(c.y + c.vy * dt, -MAX_MOVE, MAX_MOVE);
+        c.r = clamp(c.r + c.vr * dt, -MAX_TURN, MAX_TURN);
+        const f = Math.exp(-FRICTION * dt);
+        c.vx *= f; c.vy *= f; c.vr *= f;
+        if (Math.abs(c.vx) < .5) c.vx = 0;
+        if (Math.abs(c.vy) < .5) c.vy = 0;
+        if (Math.abs(c.vr) < .05) c.vr = 0;
+        c.el.style.transform = `translate(${c.x}px, ${c.y}px) rotate(${c.r}deg)`;
+      }
+      requestAnimationFrame(loop);
+    })(performance.now());
+  }
+</script>
+</body>
+</html>

@@ -10,6 +10,7 @@ Every other page is clean: white, Helvetica, dark ink.
 ```
 index.html          Landing page: deals 3 random project cards
 about/index.html    About page          (served at /about)
+cards/index.html    All Cards page      (served at /cards)
 fate/index.html     Current planets     (served at /fate)
 project/index.html  The template every project page uses (/project/?p=<slug>)
 404.html            Page shown for broken links
