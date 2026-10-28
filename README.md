@@ -33,13 +33,15 @@ Keep `index.html`, `site.js`, `clean.css`, `projects.js` and `manicule.svg` toge
 2. Open `projects.js` and add or edit the project's entry. The comment at the top of the file explains every field.
 3. Commit and push. The landing page and the project page both read from `projects.js`, so nothing else needs editing.
 
+Leave `caption: ""` for just the number, or leave `caption` out to show nothing.
+
 Click any gallery image to enlarge it: click again for full size, drag to pan, arrow keys for the next image, Esc to close.
 
 If the full-screen image is dark, add `heroInk: "light"` so the name, clock and back link turn white while it is on screen. Facts such as `published` can be a list of lines.
 
 Text blocks can have a heading (and `text` can be a list of paragraphs): `{ heading: "Circular Construction", text: "…", size: "small" }`.
 
-Projects One to Four ("Gone with the Cloud", "Saltscapes", "Cross-Border Chronotopia", "Sackett St. Townhouse") are filled in as the worked example.
+Projects One to Five ("Gone with the Cloud", "Saltscapes", "Cross-Border Chronotopia", "Sackett St. Townhouse", "Photography") are filled in as the worked example.
 
 ```js
 {

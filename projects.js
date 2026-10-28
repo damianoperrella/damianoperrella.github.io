@@ -192,7 +192,35 @@ const PROJECTS = [
       {"src": "images/sackett-st-townhouse/doorway.jpg", "caption": "Garden doorway", "w": 1311, "h": 1966, "size": "half"}
     ]
   },
-  { slug: "project-five",  title: "Project Five",  cover: null },
+  {
+    slug: "photography",
+    title: "Photography",
+    card: "images/photography/card.jpg",
+    cover: "images/photography/hero.jpg",
+    heroPosition: "50% 50%",
+    year: "2022–present",
+    location: "New York, Montreal, Toronto, Milano, Rome, Marrakech, Niagara, Polignano a Mare",
+    type: "Photography",
+    content: [
+      {"src": "images/photography/01.jpg", "caption": "", "w": 2000, "h": 1335, "size": "wide"},
+      {"src": "images/photography/02.jpg", "caption": "", "w": 2000, "h": 1335, "size": "half"},
+      {"src": "images/photography/03.jpg", "caption": "", "w": 2000, "h": 1335, "size": "half"},
+      {"src": "images/photography/04.jpg", "caption": "", "w": 1335, "h": 2000, "size": "half"},
+      {"src": "images/photography/05.jpg", "caption": "", "w": 1333, "h": 2000, "size": "half"},
+      {"src": "images/photography/06.jpg", "caption": "", "w": 2000, "h": 1335, "size": "wide"},
+      {"src": "images/photography/07.jpg", "caption": "", "w": 2000, "h": 1335, "size": "half"},
+      {"src": "images/photography/08.jpg", "caption": "", "w": 2000, "h": 1335, "size": "half"},
+      {"src": "images/photography/09.jpg", "caption": "", "w": 2000, "h": 1335, "size": "small"},
+      {"src": "images/photography/10.jpg", "caption": "", "w": 2000, "h": 1335, "size": "small"},
+      {"src": "images/photography/11.jpg", "caption": "", "w": 2000, "h": 1335, "size": "small"},
+      {"src": "images/photography/12.jpg", "caption": "", "w": 2000, "h": 1335, "size": "half"},
+      {"src": "images/photography/13.jpg", "caption": "", "w": 2000, "h": 1335, "size": "half"},
+      {"src": "images/photography/14.jpg", "caption": "", "w": 2000, "h": 1335, "size": "half"},
+      {"src": "images/photography/15.jpg", "caption": "", "w": 2000, "h": 1335, "size": "half"},
+      {"src": "images/photography/16.jpg", "caption": "", "w": 2000, "h": 1335, "size": "wide"},
+      {"src": "images/photography/17.jpg", "caption": "", "w": 2000, "h": 1333, "size": "wide"}
+    ]
+  },
   { slug: "project-six",   title: "Project Six",   cover: null },
   { slug: "project-seven", title: "Project Seven", cover: null }
 ];

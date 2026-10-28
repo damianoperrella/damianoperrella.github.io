@@ -203,7 +203,7 @@
           const idx = shots.length - 1;
           img.addEventListener("click", () => openLB(idx));
           img.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLB(idx); } });
-          if (item.caption) {
+          if (item.caption !== undefined) {
             const cap = document.createElement("figcaption");
             cap.className = "cap";
             cap.innerHTML = `<b>${String(n).padStart(pad, "0")}</b>${esc(item.caption)}`;
