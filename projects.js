@@ -262,6 +262,36 @@ const PROJECTS = [
       {"src": "images/madera/book.jpg", "caption": "", "w": 2400, "h": 1601, "size": "wide"},
       {"src": "images/madera/apparel.jpg", "caption": "", "w": 2400, "h": 1601, "size": "wide"}
     ]
+  },
+  {
+    slug: "urban-patches",
+    title: "Urban Pat(c)h(es)",
+    subtitle: "A masterplan for activating land in post-colonial India",
+    card: "images/urban-patches/card.jpg",
+    cover: "images/urban-patches/axo.webp",
+    heroPosition: "50% 45%",
+    location: "Kozhikode, Kerala, India",
+    type: "Academic project",
+    studio: "Global Studio, Building the City",
+    instructors: "Roger Connah, Jesse Rafiero",
+    description: [
+      "Storytelling is a collaborative process, one that requires a storyteller and an audience. Each party performs a specific duty to allow stories to be shared, the former reveals their personal and intimate identity while the latter receives, understands, and interprets. Despite the fundamental structure of storytelling, each individual process is a personal enterprise. Stories are a uniquely interpersonal product. In Kozhikode, many of these stories come from colonialism.",
+      "Colonialism shaped this area of India. The Portuguese rule brought many new ideologies and forms. Notably, the brick was an imported idea. Colonizers tend to ignore cultural differences. This project aims to celebrate the heterogenous culture that was a result of this harsh maltreatment. Consequently, this area of India is rich in cultural and specific differences, bringing unique situations that arise from the convergence of these members.",
+      "Urban Pat(c)h(es) replicates the enterprise of storytelling in its collaboration, cyclical progression, and personal humility. The structure is made of five brick vaults, three of which house a specific type of data to propagate stories, either light data, precipitation data, or wind data. The materials for the bricks are sourced on the site, the site of removal becoming a quarry and later the terminus of the progression through the site. The bricks are then fired in an onsite kiln which is housed in an inaugural vault on the site, which will bear the traces of tile firing. The vaults are organized around a central courtyard, which allows for an exchange of perspective, and on a constant gentle slope upward. The slope is built of stone which is also sourced in the quarry."
+    ],
+    content: [
+      {"src": "images/urban-patches/frontispiece.webp", "caption": "Site sketch", "w": 1629, "h": 1803, "size": "half"},
+      {"src": "images/urban-patches/site-map.webp", "caption": "Site map, Kozhikode", "w": 2400, "h": 2450, "size": "half"},
+      {"src": "images/urban-patches/demographics.webp", "caption": "Kozhikode demographics: age, religion, language, industry", "w": 1450, "h": 1210, "size": "large", "align": "center"},
+      {"src": "images/urban-patches/lunette-1.webp", "caption": "Lunette I", "w": 2600, "h": 1838, "size": "half"},
+      {"src": "images/urban-patches/lunette-2.webp", "caption": "Lunette II", "w": 2600, "h": 1816, "size": "half"},
+      {"src": "images/urban-patches/section.webp", "caption": "Long section", "w": 2800, "h": 1717, "size": "wide"},
+      {"text": "A visitor approaches the site from the North and travels south until reaching the slope and first vault which is the tile kiln; the form here narrates the construction. Then, the visitor begins to climb up and around the courtyard, passing through vaults of varying sizes listening to and telling stories. As the visitor approaches the top, they will pass through the fifth and final vault and descend a curved ramp also built of locally quarried stone. They arrive in the central courtyard at the base of the ramp – and can explore the generously open space – before moving towards the north and down a tunnelled ramp allowing their journey to end, or giving them the option to begin the cycle again.", "size": "large", "align": "right"},
+      {"src": "images/urban-patches/vaults.webp", "caption": "Vault typologies", "w": 1650, "h": 2333, "size": "half"},
+      {"text": "Urban patches aim to repair and create harmony in populous areas. The beauty of the human condition becomes apparent when interacting with other humans. As one interacts with another, their imagination becomes real and is delivered to the recipient in various forms (sound, touch, etc.) Therefore, interaction and communication is the patch between the imaginary and the real. Telling stories bridges imaginations and creates harmony in a world of various minds.", "size": "half"},
+      {"src": "images/urban-patches/axo.webp", "caption": "Hybrid axonometric", "w": 2681, "h": 1857, "size": "wide"},
+      {"text": "Under the brick surface of each vault, an exchange of information occurs. Open spaces created by the funicular structures line a processional ramp which winds its way throughout the site. As one walks along this ramp, one is met with a series of follies and progression through the site yields an exchange of stories. Along the journey, one is met with the elements that construct the stories. Progression concludes on the plane of fundamentality.", "size": "large", "align": "right"}
+    ]
   }
 ];
 
