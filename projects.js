@@ -241,7 +241,28 @@ const PROJECTS = [
       {"src": "images/brooklyn-symphony-orchestra/bookmarks-designs.jpg", "caption": "Bookmarks, 2026/27 season", "w": 3160, "h": 1800, "size": "wide"}
     ]
   },
-  { slug: "project-seven", title: "Project Seven", cover: null }
+  {
+    slug: "madera",
+    title: "MADERA",
+    subtitle: "Brand identity and packaging",
+    card: "images/madera/card.jpg",
+    cover: "images/madera/hero.jpg",
+    heroPosition: "50% 50%",
+    year: "2022–2025",
+    type: "Branding",
+    client: "MADERA",
+    role: "Designer",
+    descriptionTitle: "Seamless Wood Design",
+    description: [
+      "MADERA is a design firm that uses wood as its medium for innovation and creative expression, offering custom flooring, integrated millwork and bespoke furniture.",
+      "The identity draws on the material itself: a quiet, widely spaced wordmark, a teal accent set against kraft board and raw timber, and botanical prints of an oak leaf and a flowering branch. It runs through a wood care kit with its sustainable bottle packaging, a softcover book, a storage box, a tote bag, a t-shirt, a five-panel hat and a woodshop apron."
+    ],
+    content: [
+      {"src": "images/madera/bottle.jpg", "caption": "", "w": 2400, "h": 1600, "size": "wide"},
+      {"src": "images/madera/book.jpg", "caption": "", "w": 2400, "h": 1601, "size": "wide"},
+      {"src": "images/madera/apparel.jpg", "caption": "", "w": 2400, "h": 1601, "size": "wide"}
+    ]
+  }
 ];
 
 /* ----------------------------------------------------------------------
