@@ -221,7 +221,26 @@ const PROJECTS = [
       {"src": "images/photography/17.jpg", "caption": "", "w": 2000, "h": 1333, "size": "wide"}
     ]
   },
-  { slug: "project-six",   title: "Project Six",   cover: null },
+  {
+    slug: "brooklyn-symphony-orchestra",
+    title: "Brooklyn Symphony Orchestra",
+    subtitle: "Brand identity",
+    card: "images/brooklyn-symphony-orchestra/card.jpg",
+    cover: "images/brooklyn-symphony-orchestra/hero.jpg",
+    heroPosition: "50% 55%",
+    year: "2023–present",
+    type: "Branding",
+    client: "Brooklyn Symphony Orchestra",
+    role: "Graphic designer",
+    content: [
+      {"src": "images/brooklyn-symphony-orchestra/program-beethoven.jpg", "caption": "Concert program cover", "w": 1320, "h": 2040, "size": "half"},
+      {"src": "images/brooklyn-symphony-orchestra/program-shostakovich.jpg", "caption": "Concert program cover", "w": 1320, "h": 2040, "size": "half"},
+      {"src": "images/brooklyn-symphony-orchestra/posters.jpg", "caption": "Public posters", "w": 724, "h": 484, "size": "small"},
+      {"src": "images/brooklyn-symphony-orchestra/tickets.jpg", "caption": "Concert ticket stubs", "w": 1109, "h": 741, "size": "half", "align": "right"},
+      {"src": "images/brooklyn-symphony-orchestra/bookmarks-mockup.jpg", "caption": "Bookmarks", "w": 2500, "h": 1409, "size": "wide"},
+      {"src": "images/brooklyn-symphony-orchestra/bookmarks-designs.jpg", "caption": "Bookmarks, 2026/27 season", "w": 3160, "h": 1800, "size": "wide"}
+    ]
+  },
   { slug: "project-seven", title: "Project Seven", cover: null }
 ];
 
