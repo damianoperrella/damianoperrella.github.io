@@ -292,6 +292,30 @@ const PROJECTS = [
       {"src": "images/urban-patches/axo.webp", "caption": "Hybrid axonometric", "w": 2681, "h": 1857, "size": "wide"},
       {"text": "Under the brick surface of each vault, an exchange of information occurs. Open spaces created by the funicular structures line a processional ramp which winds its way throughout the site. As one walks along this ramp, one is met with a series of follies and progression through the site yields an exchange of stories. Along the journey, one is met with the elements that construct the stories. Progression concludes on the plane of fundamentality.", "size": "large", "align": "right"}
     ]
+  },
+  {
+    slug: "grand-st-townhouse",
+    title: "Grand St. Townhouse",
+    subtitle: "Using reclaimed, historic wood to renovate a historic townhouse",
+    card: "images/grand-st-townhouse/card.jpg",
+    cover: "images/grand-st-townhouse/beams.jpg",
+    heroPosition: "50% 30%",
+    year: "2023",
+    location: "Brooklyn, NY",
+    type: "Professional project",
+    category: "Architecture | Residential",
+    description: [
+      "Using heart pine, reclaimed from dilapidated industrial buildings in the North-Eastern United States, this historic Brooklyn brownstone radiates warmth. In discussion with the clients, the unique character of this wood was used to finish almost every plane. The floor, cabinetry, ceiling, and non-functional wood joists are all clad in custom-sawn, engineered heart pine. The availability of this lumber, possessing ample character including nail holes, knots, and uneven edges, dictated many forms in order to achieve a clean finished surface. Natural light plays across the wooden surfaces to reflect the warm glow of the wood into the vast double-height spaces of the house."
+    ],
+    content: [
+      {"src": "images/grand-st-townhouse/window.jpg", "caption": "Double-height living space", "w": 2000, "h": 2500, "size": "half"},
+      {"src": "images/grand-st-townhouse/beams.jpg", "caption": "Heart pine ceiling joists", "w": 1900, "h": 2848, "size": "half"},
+      {"src": "images/grand-st-townhouse/process.jpg", "caption": "Engineered heart pine, custom-sawn", "w": 1440, "h": 960, "size": "large", "align": "center"},
+      {"src": "images/grand-st-townhouse/render.webp", "caption": "Kitchen and double-height space, render", "w": 1000, "h": 1144, "size": "half", "align": "center"},
+      {"src": "images/grand-st-townhouse/plans-upper.webp", "caption": "Proposed third and first floor plans", "w": 2200, "h": 2198, "size": "half"},
+      {"src": "images/grand-st-townhouse/plans-lower.webp", "caption": "Proposed second floor and cellar plans", "w": 2200, "h": 2198, "size": "half"},
+      {"src": "images/grand-st-townhouse/millwork.webp", "caption": "Kitchen millwork elevations", "w": 2243, "h": 3443, "size": "large", "align": "center"}
+    ]
   }
 ];
 
