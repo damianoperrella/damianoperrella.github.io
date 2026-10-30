@@ -42,7 +42,7 @@ If the full-screen image is dark, add `heroInk: "light"` so the name, clock and 
 
 Text blocks can have a heading (and `text` can be a list of paragraphs): `{ heading: "Circular Construction", text: "…", size: "small" }`.
 
-Projects One to Nine ("Gone with the Cloud", "Saltscapes", "Cross-Border Chronotopia", "Sackett St. Townhouse", "Photography", "Brooklyn Symphony Orchestra", "MADERA", "Urban Pat(c)h(es)", "Grand St. Townhouse") are filled in as the worked example.
+Projects One to Ten ("Gone with the Cloud", "Saltscapes", "Cross-Border Chronotopia", "Sackett St. Townhouse", "Photography", "Brooklyn Symphony Orchestra", "MADERA", "Urban Pat(c)h(es)", "Grand St. Townhouse", "The Playground") are filled in as the worked example.
 
 ```js
 {
