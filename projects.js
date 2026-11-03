@@ -321,33 +321,50 @@ const PROJECTS = [
     slug: "the-playground",
     title: "The Playground",
     subtitle: "Revitalizing underused suburban land into multi-unit, dynamic housing",
-    card: "images/the-playground/parti.webp",
-    cover: "images/the-playground/axo-section.webp",
-    heroPosition: "50% 55%",
+    card: "images/the-playground/card.jpg",
+    cover: "images/the-playground/parti.webp",
+    heroPosition: "50% 45%",
     year: "2021",
     location: "Orléans, Ontario",
     type: "Academic project",
     studio: "Housing Studio",
     instructors: "Honorata Pienkowska, Ben Gianni",
     description: [
-      "Located in primarily suburban Orléans, the development consists of nine residential buildings. This includes an eleven-storey single loaded corridor building composed of flats and stacked maisonettes, and a twenty-storey point access tower with a rooftop terrace. The buildings are connected by several raised pathways which increase pedestrian circulation throughout the development. Scattered across the site are floating rectangular structures which house various amenities. The site is divided by a North–South access, Ave de Lamarche, the main corridor for parking and vehicular circulation."
+      "Located in primarily suburban Orléans, the development consists of nine residential buildings. This includes an eleven-storey single-loaded corridor building composed of flats and stacked maisonettes, and a twenty-storey point access tower with a rooftop terrace. The buildings are connected by several raised pathways which increase pedestrian circulation throughout the development. Scattered across the site are floating rectangular structures which house various amenities. The site is divided by a North-South access, Ave de Lamarche, the main corridor for parking and vehicular circulation."
     ],
     content: [
-      {"src": "images/the-playground/axo-section.webp", "caption": "Section axonometric", "w": 2000, "h": 2813, "size": "large", "align": "center"},
-      {"src": "images/the-playground/parti.webp", "caption": "Parti: unit diagrams", "w": 1800, "h": 2438, "size": "half"},
-      {"src": "images/the-playground/form-development.webp", "caption": "Form development: division of units, circulation of courtyards, push and pull dance", "w": 1398, "h": 2547, "size": "half"},
-      {"src": "images/the-playground/site-plan.webp", "caption": "Site plan", "w": 2000, "h": 2837, "size": "half"},
-      {"src": "images/the-playground/floor-plans.webp", "caption": "Unit floor plans", "w": 1921, "h": 2543, "size": "half"},
-      {"src": "images/the-playground/building-axo.webp", "caption": "Building axonometric and wall details", "w": 1697, "h": 2418, "size": "large", "align": "center"},
-      {"text": "The units within the residential modules are pushed and pulled – back and forth, towards and apart – at various points in dance with one another. The horizontal single-loaded corridor building, despite its length, and central point tower, despite its height, have been broken and shifted creating a more musical and playful environment. The horizontal building acts as a shield for the site and protects the shared courtyard from the busy main road, Innes Rd. However, ample opportunity is provided for automobile circulation to enter and navigate the site. The parking level beneath the two structures, provides enough parking space for the residences of both buildings.", "size": "large", "align": "right"},
-      {"src": "images/the-playground/exploded-axo.webp", "caption": "Exploded axonometric", "w": 1521, "h": 2548, "size": "large", "align": "center"},
-      {"src": "images/the-playground/elevation-render.webp", "caption": "Elevation", "w": 2600, "h": 1444, "size": "wide"},
-      {"src": "images/the-playground/vignette-1.webp", "caption": "Vignette", "w": 1183, "h": 1198, "size": "half"},
-      {"src": "images/the-playground/vignette-2.webp", "caption": "Vignette", "w": 1191, "h": 1155, "size": "half"},
-      {"src": "images/the-playground/elevations-low.webp", "caption": "South and east elevations", "w": 2600, "h": 692, "size": "wide"},
-      {"src": "images/the-playground/elevations.webp", "caption": "West, north, east and south elevations of the tower", "w": 1904, "h": 890, "size": "wide"},
-      {"text": "The shared courtyards between the two buildings, as well as the space below the buildings, provide environments to be used by the community for various functions throughout the year. The central courtyard is surrounded on five sides by residential activity – North, South, East, West and above – by residential units, and below by parking.", "size": "large", "align": "right"},
-      {"src": "images/the-playground/section.webp", "caption": "North–south section", "w": 1909, "h": 1179, "size": "wide"}
+      {"src": "images/the-playground/parti.webp", "caption": "Parti: three unit types", "w": 1845, "h": 2503, "size": "half"},
+      {"src": "images/the-playground/render.webp", "caption": "Building render", "w": 2067, "h": 2901, "size": "half"},
+      {"src": "images/the-playground/form-diagram.webp", "caption": "Division of units, circulation of courtyards, push and pull dance", "w": 1386, "h": 2535, "size": "large", "align": "center"},
+      {"src": "images/the-playground/site-plan.webp", "caption": "Site plan", "w": 2031, "h": 2883, "size": "half"},
+      {"src": "images/the-playground/floor-plans.webp", "caption": "Unit floor plans", "w": 1909, "h": 2531, "size": "half"},
+      {"src": "images/the-playground/detail-axo.webp", "caption": "Tower axonometric with wall and floor details", "w": 2023, "h": 2888, "size": "half"},
+      {"text": "The units within the residential modules are pushed and pulled – back and forth, towards and apart – at various points in dance with one another. The horizontal single-loaded corridor building, despite its length, and central point tower, despite its height, have been broken and shifted creating a more musical and playful environment. The horizontal building acts as a shield for the site and protects the shared courtyard from the busy main road, Innes Rd. However, ample opportunity is provided for automobile circulation to enter and navigate the site. The parking level beneath the two structures, provides enough parking space for the residences of both buildings.", "size": "half"},
+      {"src": "images/the-playground/exploded-axo.webp", "caption": "Exploded axonometric", "w": 1509, "h": 2536, "size": "large", "align": "center"},
+      {"src": "images/the-playground/vignettes.webp", "caption": "Elevation, vignettes and building elevation", "w": 1960, "h": 2571, "size": "large", "align": "center"},
+      {"src": "images/the-playground/elevations.webp", "caption": "Elevations and north-south section", "w": 1911, "h": 2729, "size": "half"},
+      {"text": "The shared courtyards between the two buildings, as well as the space below the buildings, provide environments to be used by the community for various functions throughout the year. The central courtyard is surrounded on five sides by residential activity – North, South, East, West and above – by residential units, and below by parking.", "size": "half"}
+    ]
+  },
+  {
+    slug: "the-spiral",
+    title: "The Spiral",
+    subtitle: "A collaboration with BIG to furnish a skyscraper in Hudson Yards",
+    card: "images/the-spiral/table.jpg",
+    cover: "images/the-spiral/tower.jpg",
+    heroPosition: "50% 40%",
+    heroInk: "light",
+    location: "New York, NY",
+    type: "Professional project",
+    category: "Architecture | Office",
+    description: [
+      "In collaboration with BIG, a series of tables and bins were designed to match the aesthetic qualities of the project. Although constructed of engineered wood, the tables were designed and fabricated to evoke traditional solid wood construction techniques."
+    ],
+    content: [
+      {"src": "images/the-spiral/table.jpg", "caption": "Console table", "w": 1795, "h": 1684, "size": "half"},
+      {"src": "images/the-spiral/closeup.jpg", "caption": "Corner joint, rift-sawn grain", "w": 2200, "h": 2683, "size": "half"},
+      {"src": "images/the-spiral/details.webp", "caption": "Table details", "w": 1935, "h": 2506, "size": "half"},
+      {"src": "images/the-spiral/drawings.webp", "caption": "Table drawings", "w": 1846, "h": 2701, "size": "half"}
     ]
   }
 ];
