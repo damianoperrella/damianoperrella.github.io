@@ -40,6 +40,8 @@ Click any gallery image to enlarge it: click again for full size, drag to pan, a
 
 If the full-screen image is dark, add `heroInk: "light"` so the name, clock and back link turn white while it is on screen. Facts such as `published` can be a list of lines.
 
+To make a project's gallery smaller, add `scale: 0.75` (any number below 1). The gallery is narrowed to that share of the page width and centred; the title, facts and full-screen image are unchanged. Leave it out for full size.
+
 Text blocks can have a heading (and `text` can be a list of paragraphs): `{ heading: "Circular Construction", text: "…", size: "small" }`.
 
 Projects One to Eleven ("Gone with the Cloud", "Saltscapes", "Cross-Border Chronotopia", "Sackett St. Townhouse", "Photography", "Brooklyn Symphony Orchestra", "MADERA", "Urban Pat(c)h(es)", "Grand St. Townhouse", "The Playground", "The Spiral") are filled in as the worked example.

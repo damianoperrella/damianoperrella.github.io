@@ -14,7 +14,7 @@
      heroInk      (optional) "light" if the full-screen image is dark: the name, clock and
                   back link turn white while it is on screen
      subtitle     (optional) a line under the title
-     year, location, type, category, studio, instructor(s), team, published, client, area, status, role, credits
+     year, location, type, category, studio, instructor(s), team, published, client, area, status, role, credits, scale
                   any you leave out simply don't appear on the page
      descriptionTitle  (optional) a heading above the description
      description  a list of paragraphs
@@ -322,8 +322,9 @@ const PROJECTS = [
     title: "The Playground",
     subtitle: "Revitalizing underused suburban land into multi-unit, dynamic housing",
     card: "images/the-playground/card.jpg",
-    cover: "images/the-playground/parti.webp",
-    heroPosition: "50% 45%",
+    cover: "images/the-playground/render-hero.webp",
+    heroPosition: "50% 35%",
+    scale: 0.75,
     year: "2021",
     location: "Orléans, Ontario",
     type: "Academic project",

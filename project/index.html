@@ -67,6 +67,7 @@
     align-items: start;
     margin-top: clamp(80px, 12vw, 200px);
   }
+  .gal.scaled { width: calc(var(--gal-scale) * 100%); margin-inline: auto; }
   .it { min-width: 0; }
   .it img { display: block; width: 100%; height: auto; background: #f0f0f0; }
   .cap { margin-top: 10px; font-size: 12px; line-height: 1.4; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
@@ -109,6 +110,7 @@
   @media (max-width: 760px) {
     .facts, .desc { grid-column: 1 / -1; }
     .gal .it:not(.s-full) { grid-column: 1 / -1 !important; }
+    .gal.scaled { width: 100%; }
   }
 </style>
 </head>
@@ -175,6 +177,8 @@
 
     /* the gallery */
     const gal = document.getElementById("gal");
+    /* optional per-project scale (e.g. 0.75): the gallery is narrowed and centred */
+    if (gal && p.scale && p.scale > 0 && p.scale < 1) { gal.style.setProperty("--gal-scale", p.scale); gal.classList.add("scaled"); }
     const shots = [];
     if (gal) {
       let n = 0;
