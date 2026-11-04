@@ -98,10 +98,12 @@
   .s-half  { grid-column: span 6; }
   .s-small { grid-column: span 4; }
   .s-quarter { grid-column: span 3; }
+  .s-eighth { grid-column: span 2; }
   .a-center.s-large { grid-column: 3 / span 8; }
   .a-center.s-half  { grid-column: 4 / span 6; }
   .a-center.s-small { grid-column: 5 / span 4; }
   .a-center.s-quarter { grid-column: 5 / span 3; }
+  .a-center.s-eighth { grid-column: 3 / span 2; }   /* first of a row of four, which centres the row */
   .a-right.s-quarter { grid-column: 10 / span 3; }
   .a-right.s-large  { grid-column: 5 / span 8; }
   .a-right.s-half   { grid-column: 7 / span 6; }
@@ -129,7 +131,7 @@
   const FIELDS = [["year", "Year"], ["location", "Location"], ["type", "Type"], ["category", "Category"], ["studio", "Studio"],
                   ["instructor", "Instructor"], ["instructors", "Instructors"], ["team", "Team"], ["client", "Client"],
                   ["area", "Area"], ["status", "Status"], ["role", "Role"], ["credits", "Credits"], ["published", "Published"]];
-  const SIZES = ["full", "wide", "large", "half", "small", "quarter"];
+  const SIZES = ["full", "wide", "large", "half", "small", "quarter", "eighth"];
   const ALIGNS = ["left", "center", "right"];
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 

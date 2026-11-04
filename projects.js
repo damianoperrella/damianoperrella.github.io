@@ -61,9 +61,12 @@ const PROJECTS = [
       "In response to these issues, Gone with the Cloud is imagined as a tensile metal structure balanced on two massive steel piers that must reckon with its effect on the natural world. Located in one of the deepest sections of the Buttermilk Channel, it is threatened by sea level rise. The building is designed vertically with a data center below a library. Therefore, once the data habits across the world have sufficiently melted the icebergs, the data center will itself be “gone with the clouds.”"
     ],
     content: [
-      {"src": "images/gone-with-the-cloud/cranes.jpg", "caption": "Industrial infrastructure adjacent to Governors Island including shipping cranes and warehouses", "w": 1600, "h": 1068, "size": "wide"},
-      {"src": "images/gone-with-the-cloud/crane-diagram.webp", "caption": "Crane diagram", "w": 2400, "h": 1892, "size": "half"},
-      {"src": "images/gone-with-the-cloud/program-axo.webp", "caption": "Spatial organization and formal logic", "w": 2400, "h": 1635, "size": "half"},
+      {"src": "images/gone-with-the-cloud/cranes.jpg", "caption": "Industrial infrastructure adjacent to Governors Island including shipping cranes and warehouses", "w": 1600, "h": 1068, "size": "half"},
+      {"src": "images/gone-with-the-cloud/crane-1-precedent.webp", "caption": "", "w": 1150, "h": 930, "size": "eighth", "align": "center"},
+      {"src": "images/gone-with-the-cloud/crane-2-circulation.webp", "caption": "", "w": 1150, "h": 930, "size": "eighth"},
+      {"src": "images/gone-with-the-cloud/crane-3-expansion.webp", "caption": "", "w": 1150, "h": 930, "size": "eighth"},
+      {"src": "images/gone-with-the-cloud/crane-4-balance.webp", "caption": "", "w": 1150, "h": 930, "size": "eighth"},
+      {"src": "images/gone-with-the-cloud/program-axo.webp", "caption": "Spatial organization and formal logic", "w": 2400, "h": 1635, "size": "small"},
       {"heading": "A Precarious | Balanced | Tensile Structure", "text": "The building is constructed with a steel frame that is organized around the 2 piers. Each mass (the data center and the library) has a separate frame grid, which is supported by primary columns. These columns carry the load to the roof and are connected to steel cables and eventually to the massive central piers. The two piers carry the load to the sea floor, which is fortified with a concrete pad and piles that sit on New York’s bedrock.", "size": "small"},
       {"src": "images/gone-with-the-cloud/structure-axo.webp", "caption": "Structure", "w": 2600, "h": 1919, "size": "large"},
       {"src": "images/gone-with-the-cloud/model-1.jpg", "caption": "Model", "w": 1600, "h": 1063, "size": "half"},
