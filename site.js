@@ -13,13 +13,13 @@
    - The next page opens already covered in that solid colour, waits for its
      images, then the same fields retreat the way they came, uncovering the page.
 
-   Timings are the constants just below (about 1.6 s end to end).
+   Timings are the constants just below (about 2.4 s end to end).
    ====================================================================== */
 (function () {
   "use strict";
 
-  var EXIT_MS = 650;          // covering the old page
-  var ENTER_MS = 850;         // uncovering the new page
+  var EXIT_MS = 1000;         // covering the old page
+  var ENTER_MS = 1400;        // uncovering the new page
   var HOLD_MS = 100;          // minimum time the new page stays covered
   var LOAD_WAIT_MS = 1600;    // longest we wait for images before uncovering anyway
   var WATCHDOG_MS = 5000;     // if navigation never happens, uncover the page again
