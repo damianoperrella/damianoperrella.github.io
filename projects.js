@@ -68,7 +68,7 @@ const PROJECTS = [
       {"src": "images/gone-with-the-cloud/crane-4-balance.webp", "caption": "", "w": 1150, "h": 930, "size": "eighth"},
       {"src": "images/gone-with-the-cloud/program-axo.webp", "caption": "Spatial organization and formal logic", "w": 2400, "h": 1635, "size": "small"},
       {"heading": "A Precarious | Balanced | Tensile Structure", "text": "The building is constructed with a steel frame that is organized around the 2 piers. Each mass (the data center and the library) has a separate frame grid, which is supported by primary columns. These columns carry the load to the roof and are connected to steel cables and eventually to the massive central piers. The two piers carry the load to the sea floor, which is fortified with a concrete pad and piles that sit on New York’s bedrock.", "size": "small"},
-      {"src": "images/gone-with-the-cloud/structure-axo.webp", "caption": "Structure", "w": 2600, "h": 1919, "size": "large"},
+      {"src": "images/gone-with-the-cloud/structure-axo.webp", "caption": "Structure", "w": 2532, "h": 2356, "size": "large"},
       {"src": "images/gone-with-the-cloud/model-1.jpg", "caption": "Model", "w": 1600, "h": 1063, "size": "half"},
       {"src": "images/gone-with-the-cloud/model-2.jpg", "caption": "Model, detail", "w": 2400, "h": 1596, "size": "half"},
       {"src": "images/gone-with-the-cloud/structural-axo.webp", "caption": "Structural Axonometric", "w": 2702, "h": 2461, "size": "large", "align": "center"},
