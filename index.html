@@ -284,7 +284,22 @@
      2. DEAL THE HAND
      ============================================================ */
   const table = document.getElementById("table");
-  const hand = shuffle(PROJECTS.map((p, i) => ({ ...p, index: i }))).slice(0, HAND_SIZE);
+  /* Weighted draw without replacement: a project's `weight` in projects.js sets how
+     often it is dealt (higher = more often; no weight = DEFAULT_WEIGHT). Each visit
+     still deals three different cards, in a random order on the table. */
+  const DEFAULT_WEIGHT = 3;
+  function drawHand(list, n) {
+    const pool = list.map((p, i) => ({ ...p, index: i, w: p.weight > 0 ? p.weight : (p.weight === 0 ? 0 : DEFAULT_WEIGHT) }));
+    const picked = [];
+    while (picked.length < n && pool.some(p => p.w > 0)) {
+      let r = Math.random() * pool.reduce((s, p) => s + p.w, 0);
+      let k = pool.findIndex(p => (r -= p.w) < 0);
+      if (k < 0) k = pool.length - 1;
+      picked.push(pool.splice(k, 1)[0]);
+    }
+    return shuffle(picked);
+  }
+  const hand = drawHand(PROJECTS, HAND_SIZE);
 
   hand.forEach((p, slot) => {
     const card = document.createElement("a");

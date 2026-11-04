@@ -14,7 +14,7 @@
      heroInk      (optional) "light" if the full-screen image is dark: the name, clock and
                   back link turn white while it is on screen
      subtitle     (optional) a line under the title
-     year, location, type, category, studio, instructor(s), team, published, client, area, status, role, credits, scale
+     year, location, type, category, studio, instructor(s), team, published, client, area, status, role, credits, scale, weight
                   any you leave out simply don't appear on the page
      descriptionTitle  (optional) a heading above the description
      description  a list of paragraphs
@@ -43,6 +43,7 @@
 const PROJECTS = [
   {
     slug: "gone-with-the-cloud",
+    weight: 4,
     title: "Gone with the Cloud",
     subtitle: "A Climate Institute for Governors Island Data Centre and Public Library",
     card: "images/gone-with-the-cloud/card.jpg",          // the pink model: the tarot card
@@ -85,6 +86,7 @@ const PROJECTS = [
   },
   {
     slug: "saltscapes",
+    weight: 3,
     title: "Saltscapes",
     subtitle: "A Proposal to Remediate the Great Lakes Region and Prevent Salinification",
     card: "images/saltscapes/card.jpg",
@@ -123,6 +125,7 @@ const PROJECTS = [
   },
   {
     slug: "cross-border-chronotopia",
+    weight: 4,
     title: "Cross-Border Chronotopia",
     subtitle: "Rethinking Everyday Urban Ecosystems in Nicosia, Cyprus",
     card: "images/cross-border-chronotopia/card.jpg",
@@ -168,6 +171,7 @@ const PROJECTS = [
   },
   {
     slug: "sackett-st-townhouse",
+    weight: 4,
     title: "Sackett St. Townhouse",
     subtitle: "Adaptive Reuse of a Historic Brooklyn Brownstone",
     card: "images/sackett-st-townhouse/card.jpg",
@@ -194,6 +198,7 @@ const PROJECTS = [
   },
   {
     slug: "photography",
+    weight: 4,
     title: "Photography",
     card: "images/photography/card.jpg",
     cover: "images/photography/hero.jpg",
@@ -223,6 +228,7 @@ const PROJECTS = [
   },
   {
     slug: "brooklyn-symphony-orchestra",
+    weight: 3,
     title: "Brooklyn Symphony Orchestra",
     subtitle: "Brand identity",
     card: "images/brooklyn-symphony-orchestra/card.jpg",
@@ -243,6 +249,7 @@ const PROJECTS = [
   },
   {
     slug: "madera",
+    weight: 2,
     title: "MADERA",
     subtitle: "Brand identity and packaging",
     card: "images/madera/card.jpg",
@@ -265,6 +272,7 @@ const PROJECTS = [
   },
   {
     slug: "urban-patches",
+    weight: 2,
     title: "Urban Pat(c)h(es)",
     subtitle: "A masterplan for activating land in post-colonial India",
     card: "images/urban-patches/card.jpg",
@@ -295,6 +303,7 @@ const PROJECTS = [
   },
   {
     slug: "grand-st-townhouse",
+    weight: 2,
     title: "Grand St. Townhouse",
     subtitle: "Using reclaimed, historic wood to renovate a historic townhouse",
     card: "images/grand-st-townhouse/card.jpg",
@@ -319,6 +328,7 @@ const PROJECTS = [
   },
   {
     slug: "the-playground",
+    weight: 2,
     title: "The Playground",
     subtitle: "Revitalizing underused suburban land into multi-unit, dynamic housing",
     card: "images/the-playground/card.jpg",
@@ -349,6 +359,7 @@ const PROJECTS = [
   },
   {
     slug: "the-spiral",
+    weight: 0.5,
     title: "The Spiral",
     subtitle: "A collaboration with BIG to furnish a skyscraper in Hudson Yards",
     card: "images/the-spiral/table.jpg",
