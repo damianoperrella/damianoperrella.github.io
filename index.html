@@ -242,10 +242,7 @@
     width: 0; height: 0;
     z-index: 10;       /* under the name and clock */
     pointer-events: none;
-    opacity: 0;
-    transition: opacity 1.2s ease;
   }
-  #manicule.on { opacity: 1; }
   #manicule .pivot {
     position: absolute; top: 0;
     width: var(--manicule-w);
@@ -417,9 +414,14 @@
     let rot = 0, vel = 0;
     let last = performance.now();
 
+    // the descent: the hand starts above the window and drops to its place (1 = fully above, 0 = settled)
+    const DROP_STIFF = 38, DROP_DAMP = 8.5;   // soft settle: a small overshoot, then rest
+    let drop = 1, dropVel = 0, descending = reduceMotion;
+    if (reduceMotion) drop = 0;
+
     addEventListener("pointermove", e => { cursor = { x: e.clientX, y: e.clientY }; });
     document.documentElement.addEventListener("pointerleave", () => { cursor = null; });
-    (window.PT ? PT.ready : Promise.resolve()).then(() => setTimeout(() => el.classList.add("on"), 900));
+    (window.PT ? PT.ready : Promise.resolve()).then(() => setTimeout(() => { descending = true; }, 900));   // after the cards are dealt
 
     const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
@@ -441,7 +443,17 @@
         rot += vel * dt;
       }
 
-      el.style.transform = `translate(${hg.x}px, ${hg.y}px)`;
+      if (descending && drop !== 0) {
+        if (reduceMotion) drop = 0;
+        else {
+          dropVel += ((0 - drop) * DROP_STIFF - dropVel * DROP_DAMP) * dt;
+          drop += dropVel * dt;
+          if (Math.abs(drop) < 0.0005 && Math.abs(dropVel) < 0.005) { drop = 0; dropVel = 0; }
+        }
+      }
+      const lift = -drop * (pivot.offsetHeight * SHOWN + 90);   // px above its place (hidden above the top edge at drop = 1)
+
+      el.style.transform = `translate(${hg.x}px, ${hg.y + lift}px)`;
       pivot.style.transform = `rotate(${rot}deg)`;
       requestAnimationFrame(loop);
     })(performance.now());
