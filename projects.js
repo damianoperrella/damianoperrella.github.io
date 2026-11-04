@@ -362,7 +362,7 @@ const PROJECTS = [
     weight: 0.5,
     title: "The Spiral",
     subtitle: "A collaboration with BIG to furnish a skyscraper in Hudson Yards",
-    card: "images/the-spiral/table.jpg",
+    card: "images/the-spiral/card.jpg",
     cover: "images/the-spiral/tower.jpg",
     heroPosition: "50% 40%",
     heroInk: "light",
