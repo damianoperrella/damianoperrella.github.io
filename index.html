@@ -112,7 +112,7 @@
 
   /* ---------------- "All Cards" link (fixed, bottom right) ---------------- */
   .all {
-    position: fixed; right: 1.75rem; bottom: 1.25rem;
+    position: fixed; right: 1.75rem; bottom: calc(1.25rem + var(--banner-h, 0px));
     z-index: 20;
     font-size: 15px; line-height: 1.4;
     color: var(--on-bg);
@@ -120,6 +120,28 @@
     text-shadow: 0 0 10px rgba(3, 22, 16, .8);
   }
   .all:hover, .all:focus-visible { text-decoration: underline; text-underline-offset: 3px; outline: none; }
+
+  /* ---------------- "site under construction" banner (bottom strip) ---------------- */
+  .banner {
+    position: fixed; left: 0; right: 0; bottom: 0;
+    z-index: 30;
+    display: flex; align-items: center; justify-content: center; gap: 1.2rem;
+    padding: 11px 3.2rem 12px 1.75rem;
+    background: var(--card);
+    color: var(--ink);
+    font-size: 14px; line-height: 1.4; text-align: center;
+    box-shadow: 0 -1px 0 var(--ink-dim);
+    opacity: 0; transform: translateY(100%);
+    transition: opacity .5s ease, transform .5s cubic-bezier(.2,.8,.2,1);
+  }
+  .banner.show { opacity: 1; transform: none; }
+  .banner button {
+    position: absolute; right: 1.25rem; top: 50%; transform: translateY(-50%);
+    font: inherit; font-size: 20px; line-height: 1; color: var(--ink);
+    background: none; border: 0; cursor: pointer; padding: 4px 8px;
+  }
+  .banner button:hover, .banner button:focus-visible { text-decoration: underline; outline: none; }
+  @media (prefers-reduced-motion: reduce) { .banner { transition: none; } }
 
   /* ---------------- the spread ---------------- */
   .table {
@@ -424,6 +446,31 @@
       requestAnimationFrame(loop);
     })(performance.now());
   }
+</script>
+<script>
+/* "Site under construction" banner: shown on this page until closed; once closed it
+   stays away for the rest of the browser session (and returns on a later visit). */
+(function () {
+  const KEY = "bannerClosed";
+  try { if (sessionStorage.getItem(KEY)) return; } catch (e) {}
+  const bar = document.createElement("div");
+  bar.className = "banner";
+  bar.setAttribute("role", "region");
+  bar.setAttribute("aria-label", "Notice");
+  bar.innerHTML = '<span>Site under construction. Feel free to click around and explore. Some pages may still have errors.</span>' +
+                  '<button type="button" aria-label="Close notice">&times;</button>';
+  document.body.appendChild(bar);
+  const setH = () => document.documentElement.style.setProperty("--banner-h", bar.offsetHeight + "px");
+  setH(); addEventListener("resize", setH);
+  setTimeout(() => bar.classList.add("show"), 900);
+  bar.querySelector("button").addEventListener("click", () => {
+    try { sessionStorage.setItem(KEY, "1"); } catch (e) {}
+    removeEventListener("resize", setH);
+    document.documentElement.style.removeProperty("--banner-h");
+    bar.classList.remove("show");
+    setTimeout(() => bar.remove(), 600);
+  });
+})();
 </script>
 </body>
 </html>
