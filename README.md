@@ -40,7 +40,7 @@ Click any gallery image to enlarge it: click again for full size, drag to pan, a
 
 If the full-screen image is dark, add `heroInk: "light"` so the name, clock and back link turn white while it is on screen. Facts such as `published` can be a list of lines.
 
-To make a project's gallery smaller, add `scale: 0.75` (any number below 1). The gallery is narrowed to that share of the page width and centred; the title, facts and full-screen image are unchanged. Leave it out for full size.
+To make a project's gallery smaller, add `scale: 0.75` (any number below 1). The gallery is narrowed to that share of the page width and centred; the title, facts and full-screen image are unchanged. Leave it out for full size. Add `space: 1.6` (any number above 1) to open up the space between rows in the same project.
 
 To change how often a project is dealt on the landing page, set its `weight`. Higher numbers appear more often (for example 4 is common, 3 is middle, 2 is less common, 0.5 is rare). A project without a weight gets 3. The All Cards page always shows every card.
 

@@ -14,7 +14,7 @@
      heroInk      (optional) "light" if the full-screen image is dark: the name, clock and
                   back link turn white while it is on screen
      subtitle     (optional) a line under the title
-     year, location, type, category, studio, instructor(s), team, published, client, area, status, role, credits, scale, weight
+     year, location, type, category, studio, instructor(s), team, published, client, area, status, role, credits, scale, space, weight
                   any you leave out simply don't appear on the page
      descriptionTitle  (optional) a heading above the description
      description  a list of paragraphs
@@ -203,16 +203,18 @@ const PROJECTS = [
     card: "images/photography/card.jpg",
     cover: "images/photography/hero.jpg",
     heroPosition: "50% 50%",
+    scale: 0.7,
+    space: 1.6,
     year: "2022–present",
     location: "New York, Montreal, Toronto, Milano, Rome, Marrakech, Niagara, Polignano a Mare",
     type: "Photography",
     content: [
-      {"src": "images/photography/01.jpg", "caption": "", "w": 2000, "h": 1335, "size": "wide"},
+      {"src": "images/photography/01.jpg", "caption": "", "w": 2000, "h": 1335, "size": "half"},
+      {"src": "images/photography/06.jpg", "caption": "", "w": 2000, "h": 1335, "size": "half"},
       {"src": "images/photography/02.jpg", "caption": "", "w": 2000, "h": 1335, "size": "half"},
       {"src": "images/photography/03.jpg", "caption": "", "w": 2000, "h": 1335, "size": "half"},
-      {"src": "images/photography/04.jpg", "caption": "", "w": 1335, "h": 2000, "size": "half"},
+      {"src": "images/photography/04.jpg", "caption": "", "w": 1333, "h": 2000, "size": "half"},
       {"src": "images/photography/05.jpg", "caption": "", "w": 1333, "h": 2000, "size": "half"},
-      {"src": "images/photography/06.jpg", "caption": "", "w": 2000, "h": 1335, "size": "wide"},
       {"src": "images/photography/07.jpg", "caption": "", "w": 2000, "h": 1335, "size": "half"},
       {"src": "images/photography/08.jpg", "caption": "", "w": 2000, "h": 1335, "size": "half"},
       {"src": "images/photography/09.jpg", "caption": "", "w": 2000, "h": 1335, "size": "small"},
@@ -222,8 +224,8 @@ const PROJECTS = [
       {"src": "images/photography/13.jpg", "caption": "", "w": 2000, "h": 1335, "size": "half"},
       {"src": "images/photography/14.jpg", "caption": "", "w": 2000, "h": 1335, "size": "half"},
       {"src": "images/photography/15.jpg", "caption": "", "w": 2000, "h": 1335, "size": "half"},
-      {"src": "images/photography/16.jpg", "caption": "", "w": 2000, "h": 1335, "size": "wide"},
-      {"src": "images/photography/17.jpg", "caption": "", "w": 2000, "h": 1333, "size": "wide"}
+      {"src": "images/photography/16.jpg", "caption": "", "w": 2000, "h": 1333, "size": "half"},
+      {"src": "images/photography/17.jpg", "caption": "", "w": 2000, "h": 1333, "size": "half"}
     ]
   },
   {
