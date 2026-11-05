@@ -81,7 +81,7 @@ const PROJECTS = [
       {"src": "images/gone-with-the-cloud/plan-l2.webp", "caption": "Level 2, Data Center", "w": 1676, "h": 1558, "size": "half", "scale": 0.75, "fit": "start"},
       {"src": "images/gone-with-the-cloud/plan-l4.webp", "caption": "Level 4, Library", "w": 1705, "h": 1558, "size": "half", "scale": 0.75, "fit": "end"},
       {"src": "images/gone-with-the-cloud/plan-l5.webp", "caption": "Level 5, Library", "w": 1706, "h": 1559, "size": "half", "scale": 0.75, "fit": "start"},
-      {"src": "images/gone-with-the-cloud/sections.webp", "caption": "Sections, 1:200", "w": 3400, "h": 1950, "size": "large", "align": "center"},
+      {"src": "images/gone-with-the-cloud/sections.webp", "caption": "Sections, 1:200, with details", "w": 3600, "h": 1795, "size": "wide", "scale": 0.9, "fit": "center"},
       {"src": "images/gone-with-the-cloud/details.webp", "caption": "Details, 1:20", "w": 3400, "h": 2778, "size": "wide"},
       {"src": "images/gone-with-the-cloud/interior-1.webp", "caption": "Interior perspective", "w": 2404, "h": 2358, "size": "half", "align": "center"},
       {"src": "images/gone-with-the-cloud/perspective.webp", "caption": "Perspective", "w": 2400, "h": 3401, "size": "half", "scale": 0.7, "fit": "end"},
