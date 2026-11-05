@@ -109,7 +109,13 @@
   .a-right.s-half   { grid-column: 7 / span 6; }
   .a-right.s-small  { grid-column: 9 / span 4; }
 
+  /* optional per-item scale (0-1): the item is shrunk inside its column; fit says where it sits there */
+  .it.sc { width: calc(var(--it-scale) * 100%); }
+  .it.sc.f-end { justify-self: end; }
+  .it.sc.f-center { justify-self: center; }
+
   @media (max-width: 760px) {
+    .it.sc { width: 100%; }
     .facts, .desc { grid-column: 1 / -1; }
     .gal .it:not(.s-full) { grid-column: 1 / -1 !important; }
     .gal.scaled { width: 100%; }
@@ -193,6 +199,10 @@
         const align = ALIGNS.includes(item.align) ? item.align : "left";
         const el = document.createElement(item.text !== undefined ? "div" : "figure");
         el.className = `it s-${size} a-${align}`;
+        if (item.scale > 0 && item.scale < 1) {
+          el.classList.add("sc", "f-" + (item.fit === "end" || item.fit === "center" ? item.fit : "start"));
+          el.style.setProperty("--it-scale", item.scale);
+        }
         if (item.text !== undefined) {
           el.classList.add("txt");
           if (item.heading) { const h = document.createElement("h3"); h.textContent = item.heading; el.appendChild(h); }

@@ -31,6 +31,8 @@
                 "half"   half. Two halves in a row sit side by side
                 "quarter" one quarter. Four in a row
                 "small"  one third. A small and a large fit in one row
+       scale  (optional, images) 0-1: shrinks the image inside its column, e.g. 0.75
+       fit    (optional, with scale) "start" (default), "center" or "end": where it sits in that column
        align  "left" (default), "center" or "right": where it sits when it is
               narrower than the page
        w, h   the image's pixel size. They stop the page jumping while images load.
@@ -74,11 +76,11 @@ const PROJECTS = [
       {"src": "images/gone-with-the-cloud/structural-axo.webp", "caption": "Structural Axonometric with corner detail", "w": 3400, "h": 2369, "size": "large", "align": "center"},
       {"src": "images/gone-with-the-cloud/exploded-axo.webp", "caption": "Exploded Axonometric", "w": 2000, "h": 2738, "size": "small", "align": "right"},
       {"heading": "Circular Construction", "text": "The building is conceived as a circular structure which is built with recycled materials, can be completely remodelled and repurposed, and then eventually decommissioned. The steel is recycled from decommissioned shipping cranes, the insulation is made from recycled denim, and concrete rubble created from the demolition of buildings on the island will be used to support the 1 Billion Oyster Project. Eventually, the building can be remodeled for different uses. For example, when the data center inevitably becomes obsolete due to newer technology, the floors can be retrofitted. All the steel can be disconnected and recycled for new projects.", "size": "small"},
-      {"src": "images/gone-with-the-cloud/circularity.webp", "caption": "Circularity diagram", "w": 2000, "h": 2335, "size": "large"},
-      {"src": "images/gone-with-the-cloud/plan-l1-l3.webp", "caption": "Level 1 & 3, Data Center", "w": 1682, "h": 1564, "size": "half"},
-      {"src": "images/gone-with-the-cloud/plan-l2.webp", "caption": "Level 2, Data Center", "w": 1676, "h": 1558, "size": "half"},
-      {"src": "images/gone-with-the-cloud/plan-l4.webp", "caption": "Level 4, Library", "w": 1705, "h": 1558, "size": "half"},
-      {"src": "images/gone-with-the-cloud/plan-l5.webp", "caption": "Level 5, Library", "w": 1706, "h": 1559, "size": "half"},
+      {"src": "images/gone-with-the-cloud/circularity.webp", "caption": "Circularity diagram", "w": 2000, "h": 2335, "size": "small"},
+      {"src": "images/gone-with-the-cloud/plan-l1-l3.webp", "caption": "Level 1 & 3, Data Center", "w": 1682, "h": 1564, "size": "half", "scale": 0.75, "fit": "end"},
+      {"src": "images/gone-with-the-cloud/plan-l2.webp", "caption": "Level 2, Data Center", "w": 1676, "h": 1558, "size": "half", "scale": 0.75, "fit": "start"},
+      {"src": "images/gone-with-the-cloud/plan-l4.webp", "caption": "Level 4, Library", "w": 1705, "h": 1558, "size": "half", "scale": 0.75, "fit": "end"},
+      {"src": "images/gone-with-the-cloud/plan-l5.webp", "caption": "Level 5, Library", "w": 1706, "h": 1559, "size": "half", "scale": 0.75, "fit": "start"},
       {"src": "images/gone-with-the-cloud/sections.webp", "caption": "Sections, 1:200", "w": 3400, "h": 2089, "size": "wide"},
       {"src": "images/gone-with-the-cloud/details.webp", "caption": "Details, 1:20", "w": 3400, "h": 2778, "size": "wide"},
       {"src": "images/gone-with-the-cloud/perspective.webp", "caption": "Perspective", "w": 2400, "h": 3395, "size": "large", "align": "center"},
