@@ -83,9 +83,9 @@ const PROJECTS = [
       {"src": "images/gone-with-the-cloud/plan-l5.webp", "caption": "Level 5, Library", "w": 1706, "h": 1559, "size": "half", "scale": 0.75, "fit": "start"},
       {"src": "images/gone-with-the-cloud/sections.webp", "caption": "Sections, 1:200", "w": 3400, "h": 1950, "size": "large", "align": "center"},
       {"src": "images/gone-with-the-cloud/details.webp", "caption": "Details, 1:20", "w": 3400, "h": 2778, "size": "wide"},
-      {"src": "images/gone-with-the-cloud/perspective.webp", "caption": "Perspective", "w": 2400, "h": 3395, "size": "large", "align": "center"},
-      {"src": "images/gone-with-the-cloud/interior-1.webp", "caption": "Interior perspective", "w": 2481, "h": 3023, "size": "half"},
-      {"src": "images/gone-with-the-cloud/interior-2.webp", "caption": "Interior perspective", "w": 2000, "h": 2829, "size": "half"}
+      {"src": "images/gone-with-the-cloud/interior-1.webp", "caption": "Interior perspective", "w": 2404, "h": 2358, "size": "half", "align": "center"},
+      {"src": "images/gone-with-the-cloud/perspective.webp", "caption": "Perspective", "w": 2400, "h": 3401, "size": "half", "scale": 0.7, "fit": "end"},
+      {"src": "images/gone-with-the-cloud/interior-2.webp", "caption": "Interior perspective", "w": 2400, "h": 3401, "size": "half", "scale": 0.7, "fit": "start"}
     ]
   },
   {
