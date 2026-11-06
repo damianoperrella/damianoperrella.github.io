@@ -69,6 +69,13 @@ h1, h2 { font-weight: 400; }
   margin: 0 auto;
   padding: clamp(120px, 18vh, 200px) var(--pad) clamp(80px, 12vh, 140px);
 }
+.intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 24vw);
+  gap: 40px var(--gap);
+  align-items: start;
+}
+.headshot { display: block; width: 100%; height: auto; }
 .lede {
   max-width: 34em;
   font-size: clamp(19px, 2.1vw, 30px);
@@ -93,6 +100,11 @@ h1, h2 { font-weight: 400; }
 }
 .cols h2 { margin-bottom: 10px; }
 .cols p { max-width: 28em; }
+
+@media (max-width: 760px) {
+  .intro { grid-template-columns: 1fr; }
+  .headshot { order: -1; width: min(60%, 260px); }
+}
 
 /* ---------------- 404 ---------------- */
 .notfound {
