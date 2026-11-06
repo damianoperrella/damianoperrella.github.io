@@ -135,6 +135,7 @@ const PROJECTS = [
     card: "images/cross-border-chronotopia/card.jpg",
     cover: "images/cross-border-chronotopia/perspective-south.webp",
     heroPosition: "50% 55%",
+    scale: 0.75,                                           // gallery at three quarters of the page width, centred
     year: "2026",
     location: "Nicosia, Cyprus",
     type: "Academic project",
@@ -145,9 +146,11 @@ const PROJECTS = [
       "The project is situated in the city of Nicosia, the divided capital of the island of Cyprus. The historic centre of the city has been physically partitioned since 1963, following the first ethnic clashes between Greek Cypriots and Turkish Cypriots. The division led to a further decline in urban life and building stock, exacerbated by the Turkish invasion of 1974. The Buffer Zone – currently inaccessible and managed by the United Nations – creates peripheral conditions in the heart of the historical centre, acting as a harsh divide and an undeclared European border."
     ],
     content: [
+      {"heading": "Context", "text": "Nicosia, the divided capital of Cyprus, is split by a Buffer Zone managed by the United Nations, an undeclared European border in the heart of the historic centre. These drawings place the city within its heritage, its military territory and its patterns of migration.", "size": "half", "align": "center"},
       {"src": "images/cross-border-chronotopia/manifesto.jpg", "caption": "Chronotopic urban planning in the shadow of military spolia around the UN Buffer Zone", "w": 2400, "h": 2244, "size": "large", "align": "center"},
       {"src": "images/cross-border-chronotopia/cyprus-map.webp", "caption": "Heritage and Geopolitical Military Territorial Map of Cyprus", "w": 2758, "h": 1866, "size": "wide"},
       {"src": "images/cross-border-chronotopia/immigration.webp", "caption": "Migration to and from Cyprus", "w": 2000, "h": 1375, "size": "large", "align": "center"},
+      {"heading": "Urban Interventions", "text": "Along and across the Buffer Zone, underused sites are reclaimed as shared ground. Eight interventions link co-production, culture, ecology and green mobility across the North and South.", "size": "half", "align": "center"},
       {"src": "images/cross-border-chronotopia/strategy-map.webp", "caption": "Nicosia Urban Redevelopment Plan", "w": 2879, "h": 3208, "size": "large", "align": "center"},
       {"heading": "Co-Production Hub", "text": "Softening the border by amplifying a collaborative approach where service providers and users work together as equals to design, create, and deliver services or products, shifting from passive consumption to active participation.", "size": "quarter"},
       {"heading": "Socio-Cultural Space", "text": "Creating a dynamic and intangible environment where social interactions, shared values, cultural norms, and physical places merge. Implementing temporary, participatory, and flexible interventions to bridge the city’s deep socio-political divide and revitalize underused areas. Key strategies include using pop-up structures, and community events to transform underused sites into a shared co-living space.", "size": "quarter"},
@@ -160,6 +163,7 @@ const PROJECTS = [
       {"heading": "Strategy", "text": "Acting pragmatically with a twin-city strategy, the interventions are mirrored across the North and South. If the border condition continues, each space can operate independently as a finalized and operational site. However, if the buffer-zone reopens, the two spaces can join together with an adaptable park that goes around the historic walls. Furthermore, the upper and lower streets will also link together.", "size": "small"},
       {"src": "images/cross-border-chronotopia/actors.webp", "caption": "Actors", "w": 1971, "h": 2055, "size": "small"},
       {"src": "images/cross-border-chronotopia/icons.webp", "caption": "Community building", "w": 1691, "h": 2219, "size": "small"},
+      {"heading": "The Site", "text": "Five spaces on either side of the border are identified and integrated, each carrying the same set of interventions.", "size": "half", "align": "center"},
       {"src": "images/cross-border-chronotopia/site-plan.webp", "caption": "Site plan", "w": 2542, "h": 3707, "size": "half"},
       {"text": ["In this specific context, five spaces are identified and integrated.", "1. The Upper City (South)", "2. The Lower City (South)", "3. The Upper City (North)", "4. The Lower City (North)", "5. The Scarp", "The interventions on each site include:", "1. Offices for social organizations", "2. Program spaces for workshops", "3. Mobility improvements to and from the site", "4. Restrooms and change-rooms", "5. Adaptable seating", "6. Cafe", "7. Lookout points"], "size": "half"},
       {"heading": "North Nicosia", "text": "The creation of space in the North focuses on openness along the ground floor to draw visitors towards the site. A key consideration was the importance of observation. Voids were not filled but reprogrammed to be used as spaces that facilitate observation and participation. A green mobility corridor, which provides protected bike lanes and pedestrian access, also increases safety around the site.", "size": "small"},
@@ -169,8 +173,9 @@ const PROJECTS = [
       {"src": "images/cross-border-chronotopia/south-phasing.webp", "caption": "South Nicosia, phasing", "w": 3200, "h": 1713, "size": "large"},
       {"src": "images/cross-border-chronotopia/axo-south.webp", "caption": "South Nicosia, aerial axonometric", "w": 3200, "h": 2066, "size": "wide"},
       {"src": "images/cross-border-chronotopia/perspective-north.webp", "caption": "North Nicosia, perspective", "w": 3200, "h": 2263, "size": "wide"},
+      {"heading": "Models", "text": "Physical models of the North and South sites.", "size": "half", "align": "center"},
       {"src": "images/cross-border-chronotopia/model-1.jpg", "caption": "Model", "w": 1600, "h": 1071, "size": "half"},
-      {"src": "images/cross-border-chronotopia/model-2.jpg", "caption": "Model", "w": 1600, "h": 1200, "size": "half"}
+      {"src": "images/cross-border-chronotopia/model-2.jpg", "caption": "Model", "w": 1600, "h": 1071, "size": "half"}
     ]
   },
   {
