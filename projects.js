@@ -180,6 +180,7 @@ const PROJECTS = [
   },
   {
     slug: "sackett-st-townhouse",
+    viewer: "slides",                                      // one image or text at a time, with coloured boxes on the right
     weight: 4,
     title: "Sackett St. Townhouse",
     subtitle: "Adaptive Reuse of a Historic Brooklyn Brownstone",
