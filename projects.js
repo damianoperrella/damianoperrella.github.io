@@ -89,6 +89,7 @@ const PROJECTS = [
   },
   {
     slug: "saltscapes",
+    viewer: "slides",                                      // one image or text at a time, with coloured boxes on the right
     weight: 3,
     title: "Saltscapes",
     subtitle: "A Proposal to Remediate the Great Lakes Region and Prevent Salinification",
