@@ -283,6 +283,7 @@ const PROJECTS = [
   },
   {
     slug: "urban-patches",
+    viewer: "slides",                                      // one image or text at a time, with coloured boxes on the right
     weight: 2,
     title: "Urban Pat(c)h(es)",
     subtitle: "A masterplan for activating land in post-colonial India",

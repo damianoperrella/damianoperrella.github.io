@@ -124,7 +124,7 @@
   .sl { position: fixed; inset: 0; z-index: 10; background: #fff; }
   .sl-slide {
     position: absolute; inset: 0;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    display: flex; flex-direction: column; align-items: center;      /* children centre themselves with margin:auto, so a tall slide scrolls from its top */
     padding: 76px 72px 88px;
     opacity: 0; visibility: hidden; transition: opacity .22s ease, visibility 0s linear .22s;
     overflow: auto;
@@ -143,7 +143,9 @@
   .sl-text p { font-size: clamp(18px, 1.9vw, 28px); line-height: 1.32; letter-spacing: -.012em; }
   .sl-text p + p { margin-top: .9em; }
   .sl-info { width: min(100%, 1100px); margin: auto; }
-  .sl-info h1 { max-width: 14ch; font-size: clamp(36px, 6vw, 96px); line-height: .98; letter-spacing: -.035em; }
+  .sl-info h1 { max-width: 14ch; font-size: clamp(34px, 5vw, 80px); line-height: .98; letter-spacing: -.035em; }
+  .sl-info .desc p { font-size: clamp(14px, 1.2vw, 18px); line-height: 1.45; }
+  .sl-info .sub { font-size: clamp(16px, 1.4vw, 21px); }
   .sl-info .top { margin-top: clamp(28px, 4vw, 56px); row-gap: 32px; }
   .sl-foot {
     position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
@@ -210,7 +212,8 @@
     document.body.classList.add("slides");
     const facts = FIELDS.filter(([k]) => p[k])
       .map(([k, label]) => `<div><dt>${label}</dt><dd>${[].concat(p[k]).map(esc).join('<br>')}</dd></div>`).join("");
-    const paras = [].concat(p.description || []).map(t => `<p>${esc(t)}</p>`).join("");
+    const descAll = [].concat(p.description || []);
+    const paras = descAll.slice(0, 1).map(t => `<p>${esc(t)}</p>`).join("");     // the facts slide carries the first paragraph; any others get slides of their own
     const slides = [];                                             // {el, img, caption, n}
     const wrap = document.createElement("div");
     wrap.className = "sl";
@@ -231,6 +234,11 @@
     pic(p.cover ? url(p.cover) : placeholderCover(index), p.title, "", 0);
     add("", `<div class="sl-info"><h1>${esc(p.title)}</h1>${p.subtitle ? `<p class="sub">${esc(p.subtitle)}</p>` : ""}
       ${facts || paras ? `<div class="top">${facts ? `<dl class="facts">${facts}</dl>` : ""}${paras ? `<div class="desc">${p.descriptionTitle ? `<h2>${esc(p.descriptionTitle)}</h2>` : ""}${paras}</div>` : ""}</div>` : ""}</div>`);
+    descAll.slice(1).forEach(t => {
+      const el = document.createElement("div"); el.className = "sl-text";
+      const tp = document.createElement("p"); tp.textContent = t; el.appendChild(tp);
+      add("").el.appendChild(el);
+    });
     const total = content.filter(x => x.src !== undefined).length, padn = String(total).length;
     let n = 0;
     content.forEach(item => {
