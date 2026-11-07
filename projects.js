@@ -207,6 +207,7 @@ const PROJECTS = [
   },
   {
     slug: "photography",
+    viewer: "slides",                                      // one image or text at a time, with coloured boxes on the right
     weight: 4,
     title: "Photography",
     card: "images/photography/card.jpg",

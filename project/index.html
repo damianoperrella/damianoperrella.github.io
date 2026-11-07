@@ -268,7 +268,7 @@
       const r = rgb[0] / 255, g = rgb[1] / 255, bl = rgb[2] / 255, mx = Math.max(r, g, bl), mn = Math.min(r, g, bl);
       let l = (mx + mn) / 2, sat = mx === mn ? 0 : (mx - mn) / (1 - Math.abs(2 * l - 1)), h = 0;
       if (mx !== mn) { const d = mx - mn; h = mx === r ? ((g - bl) / d + (g < bl ? 6 : 0)) : mx === g ? (bl - r) / d + 2 : (r - g) / d + 4; h /= 6; }
-      if (sat < .07) return [215, 215, 215];                        // no real colour in the image
+      if (sat < .03) return [215, 215, 215];                        // no real colour in the image
       sat = Math.min(1, sat * 1.9 + .22);
       l = Math.max(.42, Math.min(.64, l));
       const q = l < .5 ? l * (1 + sat) : l + sat - l * sat, p = 2 * l - q;
