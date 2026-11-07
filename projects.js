@@ -314,6 +314,7 @@ const PROJECTS = [
   },
   {
     slug: "grand-st-townhouse",
+    viewer: "slides",                                      // one image or text at a time, with coloured boxes on the right
     weight: 2,
     title: "Grand St. Townhouse",
     subtitle: "Using reclaimed, historic wood to renovate a historic townhouse",
