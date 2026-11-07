@@ -118,6 +118,59 @@
   .it.sc.f-end { justify-self: end; }
   .it.sc.f-center { justify-self: center; }
 
+
+  /* ---------------- slides: one image or text at a time, coloured boxes on the right ---------------- */
+  body.slides { overflow: hidden; height: 100svh; }
+  .sl { position: fixed; inset: 0; z-index: 10; background: #fff; }
+  .sl-slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 76px 72px 88px;
+    opacity: 0; visibility: hidden; transition: opacity .22s ease, visibility 0s linear .22s;
+    overflow: auto;
+  }
+  .sl-slide.on { opacity: 1; visibility: visible; transition: opacity .22s ease; }
+  .sl-slide img {
+    display: block; max-width: min(100%, 1400px); max-height: 100%;
+    width: auto; height: auto; margin: auto; object-fit: contain; cursor: pointer;
+    user-select: none; -webkit-user-drag: none;
+  }
+  .sl-slide.pic { overflow: hidden; }
+  .sl-slide.pic img { max-height: calc(100svh - 76px - 88px); }
+  .sl-text { width: min(100%, 34em); margin: auto; }
+  .sl-text h3 { font-size: clamp(22px, 2.6vw, 40px); font-weight: 400; line-height: 1.1; letter-spacing: -.025em; margin-bottom: .6em; }
+  .sl-text p { font-size: clamp(18px, 1.9vw, 28px); line-height: 1.32; letter-spacing: -.012em; }
+  .sl-text p + p { margin-top: .9em; }
+  .sl-info { width: min(100%, 1100px); margin: auto; }
+  .sl-info h1 { max-width: 14ch; font-size: clamp(36px, 6vw, 96px); line-height: .98; letter-spacing: -.035em; }
+  .sl-info .top { margin-top: clamp(28px, 4vw, 56px); row-gap: 32px; }
+  .sl-foot {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
+    padding: 0 72px 22px; text-align: center; font-size: 13px; line-height: 1.4; color: var(--ink-soft);
+    pointer-events: none; font-variant-numeric: tabular-nums;
+  }
+  .sl-foot b { font-weight: 400; color: var(--ink); margin-right: .9em; }
+  .sl-foot .t { display: block; margin-top: 2px; color: var(--ink); }
+  .sl-nav { position: absolute; top: 0; right: 0; bottom: 0; z-index: 4; display: flex; flex-direction: column; align-items: flex-end; width: 56px; }
+  .sl-nav button {
+    flex: 1 1 0; min-height: 0; width: 22px; padding: 0; border: 0; cursor: pointer;
+    background: var(--c, #e4e4e4); box-shadow: inset 0 0 0 .5px rgba(0,0,0,.12);
+    transition: width .22s ease;
+  }
+  .sl-nav button:hover { width: 32px; }
+  .sl-nav button.on { width: 40px; }
+  .sl-nav button:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+  @media (max-width: 760px) {
+    .sl-slide { padding: 64px 36px 84px 14px; }
+    .sl-slide.pic img { max-height: calc(100svh - 64px - 84px); }
+    .sl-foot { padding: 0 36px 18px 14px; }
+    .sl-nav { width: 40px; }
+    .sl-nav button { width: 14px; }
+    .sl-nav button.on { width: 26px; }
+    .sl-nav button:hover { width: 14px; }
+    .sl-nav button.on:hover { width: 26px; }
+  }
+
   @media (max-width: 760px) {
     .it.sc { width: 100%; }
     .facts, .desc { grid-column: 1 / -1; }
@@ -150,6 +203,104 @@
   const slug = new URLSearchParams(location.search).get("p");
   const index = PROJECTS.findIndex(p => p.slug === slug);
 
+
+  /* ---------------- slides ---------------- */
+  function runSlides(p, index, content) {
+    document.body.classList.add("slides");
+    const facts = FIELDS.filter(([k]) => p[k])
+      .map(([k, label]) => `<div><dt>${label}</dt><dd>${[].concat(p[k]).map(esc).join('<br>')}</dd></div>`).join("");
+    const paras = [].concat(p.description || []).map(t => `<p>${esc(t)}</p>`).join("");
+    const slides = [];                                             // {el, img, caption, n}
+    const wrap = document.createElement("div");
+    wrap.className = "sl";
+    root.appendChild(wrap);
+
+    const add = (cls, html, extra) => {
+      const el = document.createElement("section");
+      el.className = "sl-slide " + cls; el.innerHTML = html || "";
+      wrap.appendChild(el); const s = Object.assign({ el, img: null, caption: "", n: 0 }, extra || {}); slides.push(s); return s;
+    };
+    const pic = (src, alt, caption, n) => {
+      const s = add("pic", "", { caption, n });
+      const img = document.createElement("img"); img.alt = alt; img.decoding = "async"; img.loading = "eager";
+      img.src = src; s.el.appendChild(img); s.img = img; return s;
+    };
+
+    /* 1 the cover, 2 the facts, then every image and text in order */
+    pic(p.cover ? url(p.cover) : placeholderCover(index), p.title, "", 0);
+    add("", `<div class="sl-info"><h1>${esc(p.title)}</h1>${p.subtitle ? `<p class="sub">${esc(p.subtitle)}</p>` : ""}
+      ${facts || paras ? `<div class="top">${facts ? `<dl class="facts">${facts}</dl>` : ""}${paras ? `<div class="desc">${p.descriptionTitle ? `<h2>${esc(p.descriptionTitle)}</h2>` : ""}${paras}</div>` : ""}</div>` : ""}</div>`);
+    const total = content.filter(x => x.src !== undefined).length, padn = String(total).length;
+    let n = 0;
+    content.forEach(item => {
+      if (item.text !== undefined) {
+        const el = document.createElement("div"); el.className = "sl-text";
+        if (item.heading) { const h = document.createElement("h3"); h.textContent = item.heading; el.appendChild(h); }
+        [].concat(item.text).forEach(t => { const tp = document.createElement("p"); tp.textContent = t; el.appendChild(tp); });
+        const s = add(""); s.el.appendChild(el);
+      } else {
+        n++;
+        pic(item.src ? url(item.src) : placeholderPlate(n - 1, item.w || 1500, item.h || 1000), item.caption || (p.title + ", image " + n), item.caption || "", n);
+      }
+    });
+
+    const foot = document.createElement("div"); foot.className = "sl-foot"; wrap.appendChild(foot);
+    const nav = document.createElement("nav"); nav.className = "sl-nav"; nav.setAttribute("aria-label", "Slides"); wrap.appendChild(nav);
+    const btns = slides.map((s, i) => {
+      const b = document.createElement("button"); b.type = "button";
+      b.setAttribute("aria-label", "Show " + (i + 1) + " of " + slides.length);
+      b.addEventListener("click", () => go(i)); nav.appendChild(b); return b;
+    });
+
+    /* each box takes its colour from its image: the average of the top half fading into the average of the bottom half */
+    const hex = c => "#" + c.map(v => ("0" + Math.round(v).toString(16)).slice(-2)).join("");
+    const soften = c => { const L = (c[0] * .3 + c[1] * .59 + c[2] * .11) / 255; return L > .93 ? c.map(v => v * .94) : c; };
+    function colour(s, b) {
+      try {
+        const w = 8, h = 8, cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+        const x = cv.getContext("2d", { willReadFrequently: true }); x.drawImage(s.img, 0, 0, w, h);
+        const d = x.getImageData(0, 0, w, h).data, top = [0, 0, 0], bot = [0, 0, 0];
+        for (let i = 0; i < w * h; i++) { const t = i < w * h / 2 ? top : bot; for (let k = 0; k < 3; k++) t[k] += d[i * 4 + k] / (w * h / 2); }
+        b.style.setProperty("--c", `linear-gradient(${hex(soften(top))}, ${hex(soften(bot))})`);
+        if (s === slides[0]) { const c = PT.sample(s.img); if (c) PT.setColor(c); }
+      } catch (e) {}
+    }
+    slides.forEach((s, i) => { if (!s.img) return; const run = () => colour(s, btns[i]); s.img.complete && s.img.naturalWidth ? run() : s.img.addEventListener("load", run, { once: true }); });
+
+    let cur = -1;
+    function go(i) {
+      i = (i + slides.length) % slides.length;
+      if (i === cur) return;
+      cur = i;
+      slides.forEach((s, k) => { s.el.classList.toggle("on", k === i); btns[k].classList.toggle("on", k === i); btns[k].toggleAttribute("aria-current", k === i); });
+      const s = slides[i];
+      foot.innerHTML = (s.caption ? `<b>${String(s.n).padStart(padn, "0")}</b>${esc(s.caption)}` : "") + `<span class="t">${esc(p.title)}</span>`;
+      s.el.scrollTop = 0;
+      try { history.replaceState(null, "", "#" + (i + 1)); } catch (e) {}
+      const nx = slides[(i + 1) % slides.length]; if (nx.img) nx.img.loading = "eager";
+    }
+    slides.forEach(s => { if (s.img) s.img.addEventListener("click", () => go(cur + 1)); });
+
+    document.addEventListener("keydown", e => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      const k = e.key;
+      if (k === "ArrowRight" || k === "ArrowDown" || k === "PageDown" || (k === " " && !e.shiftKey)) { e.preventDefault(); go(cur + 1); }
+      else if (k === "ArrowLeft" || k === "ArrowUp" || k === "PageUp" || (k === " " && e.shiftKey)) { e.preventDefault(); go(cur - 1); }
+      else if (k === "Home") { e.preventDefault(); go(0); }
+      else if (k === "End") { e.preventDefault(); go(slides.length - 1); }
+    });
+    let t0 = null;
+    wrap.addEventListener("touchstart", e => { t0 = e.touches.length === 1 ? { x: e.touches[0].clientX, y: e.touches[0].clientY } : null; }, { passive: true });
+    wrap.addEventListener("touchend", e => {
+      if (!t0) return; const t = e.changedTouches[0], dx = t.clientX - t0.x, dy = t.clientY - t0.y; t0 = null;
+      if (Math.max(Math.abs(dx), Math.abs(dy)) < 45) return;
+      const next = Math.abs(dx) > Math.abs(dy) ? dx < 0 : dy < 0; go(cur + (next ? 1 : -1));
+    }, { passive: true });
+
+    const start = parseInt(location.hash.slice(1), 10);
+    go(start >= 1 && start <= slides.length ? start - 1 : 0);
+  }
+
   if (index < 0) {
     document.title = "Not found — Damiano Perrella";
     root.innerHTML = `<section class="notfound"><h1>404</h1><p>Project not found.</p><p><a href="/">Back to The Table</a></p></section>`;
@@ -161,6 +312,9 @@
       .map(([k, label]) => `<div><dt>${label}</dt><dd>${[].concat(p[k]).map(esc).join('<br>')}</dd></div>`).join("");
     const paras = [].concat(p.description || []).map(t => `<p>${esc(t)}</p>`).join("");
     const content = p.content || p.images || [];                       // "images" is the old name
+
+    render: {
+    if (p.viewer === "slides") { runSlides(p, index, content); break render; }
 
     root.innerHTML = `
       <section class="hero"><img id="hero" alt="${esc(p.title)}" fetchpriority="high"></section>
@@ -298,6 +452,7 @@
     });
     window.addEventListener("resize", () => { if (lb.classList.contains("on")) fit(); });
     if (!shots.length) lb.remove();
+    }
   }
 </script>
 </body>

@@ -371,6 +371,7 @@ const PROJECTS = [
   {
     slug: "the-spiral",
     weight: 0.5,
+    viewer: "slides",                                      // one image or text at a time, with coloured boxes on the right
     title: "The Spiral",
     subtitle: "A collaboration with BIG to furnish a skyscraper in Hudson Yards",
     card: "images/the-spiral/card.jpg",
