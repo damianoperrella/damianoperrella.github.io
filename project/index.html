@@ -253,16 +253,31 @@
       b.addEventListener("click", () => go(i)); nav.appendChild(b); return b;
     });
 
-    /* each box is one flat colour: the average colour of its image (never a gradient) */
-    const hex = c => "#" + c.map(v => ("0" + Math.round(v).toString(16)).slice(-2)).join("");
-    const soften = c => { const L = (c[0] * .3 + c[1] * .59 + c[2] * .11) / 255; return L > .93 ? c.map(v => v * .94) : c; };
+    /* each box is one flat, vivid colour: the most colourful part of its image, pushed further in saturation.
+       (Images with no colour at all, like line drawings, stay a soft neutral grey.) */
+    const hex = c => "#" + c.map(v => ("0" + Math.round(Math.max(0, Math.min(255, v))).toString(16)).slice(-2)).join("");
+    function vivid(rgb) {
+      const r = rgb[0] / 255, g = rgb[1] / 255, bl = rgb[2] / 255, mx = Math.max(r, g, bl), mn = Math.min(r, g, bl);
+      let l = (mx + mn) / 2, sat = mx === mn ? 0 : (mx - mn) / (1 - Math.abs(2 * l - 1)), h = 0;
+      if (mx !== mn) { const d = mx - mn; h = mx === r ? ((g - bl) / d + (g < bl ? 6 : 0)) : mx === g ? (bl - r) / d + 2 : (r - g) / d + 4; h /= 6; }
+      if (sat < .07) return [215, 215, 215];                        // no real colour in the image
+      sat = Math.min(1, sat * 1.9 + .22);
+      l = Math.max(.42, Math.min(.64, l));
+      const q = l < .5 ? l * (1 + sat) : l + sat - l * sat, p = 2 * l - q;
+      const f = t => { if (t < 0) t += 1; if (t > 1) t -= 1; return (t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p) * 255; };
+      return [f(h + 1 / 3), f(h), f(h - 1 / 3)];
+    }
     function colour(s, b) {
       try {
-        const w = 8, h = 8, cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+        const w = 24, h = 24, cv = document.createElement("canvas"); cv.width = w; cv.height = h;
         const x = cv.getContext("2d", { willReadFrequently: true }); x.drawImage(s.img, 0, 0, w, h);
-        const d = x.getImageData(0, 0, w, h).data, m = [0, 0, 0];
-        for (let i = 0; i < w * h; i++) for (let k = 0; k < 3; k++) m[k] += d[i * 4 + k] / (w * h);
-        b.style.setProperty("--c", hex(soften(m)));
+        const d = x.getImageData(0, 0, w, h).data, m = [0, 0, 0]; let tw = 0;
+        for (let i = 0; i < w * h; i++) {
+          const r = d[i * 4], g = d[i * 4 + 1], bl = d[i * 4 + 2], mx = Math.max(r, g, bl), mn = Math.min(r, g, bl);
+          const sat = mx === 0 ? 0 : (mx - mn) / mx, wt = .02 + sat * sat * sat;      // colourful pixels count the most
+          m[0] += r * wt; m[1] += g * wt; m[2] += bl * wt; tw += wt;
+        }
+        b.style.setProperty("--c", hex(vivid(m.map(v => v / tw))));
         if (s === slides[0]) { const c = PT.sample(s.img); if (c) PT.setColor(c); }
       } catch (e) {}
     }
