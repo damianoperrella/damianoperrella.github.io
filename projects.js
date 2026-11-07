@@ -45,6 +45,7 @@
 const PROJECTS = [
   {
     slug: "gone-with-the-cloud",
+    viewer: "slides",                                      // one image or text at a time, with coloured boxes on the right
     weight: 4,
     title: "Gone with the Cloud",
     subtitle: "A Climate Institute for Governors Island Data Centre and Public Library",
