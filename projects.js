@@ -260,6 +260,7 @@ const PROJECTS = [
   },
   {
     slug: "madera",
+    viewer: "slides",                                      // one image or text at a time, with coloured boxes on the right
     weight: 2,
     title: "MADERA",
     subtitle: "Brand identity and packaging",
