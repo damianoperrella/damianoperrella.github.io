@@ -129,6 +129,7 @@ const PROJECTS = [
   },
   {
     slug: "cross-border-chronotopia",
+    viewer: "slides",                                      // one image or text at a time, with coloured boxes on the right
     weight: 4,
     title: "Cross-Border Chronotopia",
     subtitle: "Rethinking Everyday Urban Ecosystems in Nicosia, Cyprus",
