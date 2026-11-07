@@ -137,6 +137,7 @@
   }
   .sl-slide.pic { overflow: hidden; }
   .sl-slide.pic img { max-height: calc(100svh - 76px - 88px); }
+  .sl-slide:not(.pic) { cursor: pointer; }
   .sl-text { width: min(100%, 34em); margin: auto; }
   .sl-text h3 { font-size: clamp(22px, 2.6vw, 40px); font-weight: 400; line-height: 1.1; letter-spacing: -.025em; margin-bottom: .6em; }
   .sl-text p { font-size: clamp(18px, 1.9vw, 28px); line-height: 1.32; letter-spacing: -.012em; }
@@ -252,16 +253,16 @@
       b.addEventListener("click", () => go(i)); nav.appendChild(b); return b;
     });
 
-    /* each box takes its colour from its image: the average of the top half fading into the average of the bottom half */
+    /* each box is one flat colour: the average colour of its image (never a gradient) */
     const hex = c => "#" + c.map(v => ("0" + Math.round(v).toString(16)).slice(-2)).join("");
     const soften = c => { const L = (c[0] * .3 + c[1] * .59 + c[2] * .11) / 255; return L > .93 ? c.map(v => v * .94) : c; };
     function colour(s, b) {
       try {
         const w = 8, h = 8, cv = document.createElement("canvas"); cv.width = w; cv.height = h;
         const x = cv.getContext("2d", { willReadFrequently: true }); x.drawImage(s.img, 0, 0, w, h);
-        const d = x.getImageData(0, 0, w, h).data, top = [0, 0, 0], bot = [0, 0, 0];
-        for (let i = 0; i < w * h; i++) { const t = i < w * h / 2 ? top : bot; for (let k = 0; k < 3; k++) t[k] += d[i * 4 + k] / (w * h / 2); }
-        b.style.setProperty("--c", `linear-gradient(${hex(soften(top))}, ${hex(soften(bot))})`);
+        const d = x.getImageData(0, 0, w, h).data, m = [0, 0, 0];
+        for (let i = 0; i < w * h; i++) for (let k = 0; k < 3; k++) m[k] += d[i * 4 + k] / (w * h);
+        b.style.setProperty("--c", hex(soften(m)));
         if (s === slides[0]) { const c = PT.sample(s.img); if (c) PT.setColor(c); }
       } catch (e) {}
     }
@@ -279,7 +280,14 @@
       try { history.replaceState(null, "", "#" + (i + 1)); } catch (e) {}
       const nx = slides[(i + 1) % slides.length]; if (nx.img) nx.img.loading = "eager";
     }
-    slides.forEach(s => { if (s.img) s.img.addEventListener("click", () => go(cur + 1)); });
+    slides.forEach(s => {
+      if (s.img) s.img.addEventListener("click", () => go(cur + 1));
+      else s.el.addEventListener("click", e => {                      // text and facts slides: a click anywhere moves on
+        if (e.target.closest("a")) return;
+        const sel = window.getSelection && window.getSelection(); if (sel && String(sel).length) return;   // dragging to select text
+        go(cur + 1);
+      });
+    });
 
     document.addEventListener("keydown", e => {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
