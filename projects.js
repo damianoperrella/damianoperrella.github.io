@@ -339,6 +339,7 @@ const PROJECTS = [
   },
   {
     slug: "the-playground",
+    viewer: "slides",                                      // one image or text at a time, with coloured boxes on the right
     weight: 2,
     title: "The Playground",
     subtitle: "Revitalizing underused suburban land into multi-unit, dynamic housing",
