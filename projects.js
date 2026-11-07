@@ -239,6 +239,7 @@ const PROJECTS = [
   },
   {
     slug: "brooklyn-symphony-orchestra",
+    viewer: "slides",                                      // one image or text at a time, with coloured boxes on the right
     weight: 3,
     title: "Brooklyn Symphony Orchestra",
     subtitle: "Brand identity",
