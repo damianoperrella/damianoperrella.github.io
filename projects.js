@@ -49,7 +49,7 @@ const PROJECTS = [
     weight: 4,
     title: "Gone with the Cloud",
     subtitle: "A Climate Institute for Governors Island Data Centre and Public Library",
-    card: "images/gone-with-the-cloud/card.jpg",          // the pink model: the tarot card
+    card: "images/gone-with-the-cloud/card-dither.png",       // the pink model, dithered to 24 colours
     cover: "images/gone-with-the-cloud/site-plan.webp",   // the full-screen image at the top of the page
     heroPosition: "50% 45%",                              // which part of the full-screen image stays in view
     year: "2026",
