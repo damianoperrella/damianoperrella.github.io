@@ -290,13 +290,14 @@
   body.fortune .all, body.fortune .redeal { opacity: .15; }
 
   #machine {
-    position: fixed; left: 50%; top: max(3vh, 18px); z-index: 41;
-    transform: translate(-50%, 24px);
+    position: fixed; left: 50%; top: 0; z-index: 41;
+    --my: 0px;                                   /* set in JS so the machine sits in the middle of the screen */
+    transform: translate(-50%, calc(var(--my) + 24px));
     opacity: 0; pointer-events: none;
     transition: opacity .8s ease, transform .9s cubic-bezier(.2,.8,.2,1);
   }
-  body.fortune #machine { opacity: 1; transform: translate(-50%, 0); }
-  .mach { --m: min(320px, 70vw, 33vh); width: var(--m); font-size: calc(var(--m) / 29); position: relative; }
+  body.fortune #machine { opacity: 1; transform: translate(-50%, var(--my)); }
+  .mach { --m: min(420px, 80vw, 36vh); width: var(--m); font-size: calc(var(--m) / 32); position: relative; }
   .mach-body {
     position: relative; height: calc(var(--m) * 1.12);
     background: #ece7dc; border-radius: calc(var(--m) * .05);
@@ -337,9 +338,9 @@
   .mach-slot { position: absolute; left: 50%; bottom: 0; width: 66%; height: 4px; transform: translateX(-50%); background: #3b3f40; }
   .mach-paper {
     position: absolute; left: 50%; top: calc(100% - 2px); transform: translateX(-50%);
-    width: 17.5em; height: 36em; overflow: hidden; z-index: 0;
+    width: 21em; height: 60em; overflow: hidden; z-index: 0;
   }
-  .mach-paper .rwrap { position: absolute; left: 0; top: 0; }
+  .mach-paper .rwrap { position: absolute; left: 0; top: 0; width: 100%; }
   .mach-base { z-index: 1; }
 
   /* thermal paper receipt, in the machine and on the table */
@@ -360,11 +361,18 @@
 
   #receipts { position: fixed; inset: 0; z-index: 8; pointer-events: none; }
   #receipts .rwrap {
-    position: absolute; font-size: 11px; pointer-events: auto; cursor: grab; touch-action: none;
+    position: absolute; font-size: 11px; width: 17.5em; pointer-events: auto; cursor: grab; touch-action: none;
     user-select: none; -webkit-user-select: none;
     transition: filter .2s ease;
   }
-  #receipts .rwrap.drag { cursor: grabbing; filter: drop-shadow(0 12px 5px rgba(0, 0, 0, .4)); }
+  #receipts .kwrap { position: absolute; width: 128px; pointer-events: auto; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
+  #receipts .kwrap img { display: block; width: 100%; height: auto; pointer-events: none; -webkit-user-drag: none; }
+  #receipts .kwrap.rev img { transform: rotate(180deg); }
+  #receipts .kwrap { filter: drop-shadow(0 4px 3px rgba(0, 0, 0, .5)); }
+  .receipt .sec { margin: 0 0 .55em; }
+  .receipt .sec b { display: block; font-size: .94em; letter-spacing: .04em; text-transform: uppercase; }
+  .receipt .sum b { display: block; font-size: .94em; letter-spacing: .04em; text-transform: uppercase; margin-bottom: .1em; }
+  #receipts .rwrap.drag, #receipts .kwrap.drag { cursor: grabbing; filter: drop-shadow(0 12px 5px rgba(0, 0, 0, .4)); }
   @media (prefers-reduced-motion: reduce) { #dim, #machine, .table, .all, .redeal { transition: none; } }
 </style>
 </head>
@@ -523,14 +531,15 @@
 
   const redealBtn = document.getElementById("redeal");
   let busy = true;                                   // locked until the first deal has landed
-  let redeals = 0;                                   // clicks on Redeal this visit
-  const FORTUNE_AT = 5;                              // the fifth one calls the fortune machine
+  const FORTUNE_EVERY = 5;                           // every fifth redeal, ever (per day), calls the machine
   redealBtn.addEventListener("click", async () => {
     if (busy) return;
     busy = true; redealBtn.disabled = true;
-    redeals++;
-    if (redeals === 1) preloadTarot();
-    if (redeals === FORTUNE_AT) {
+    fortunes = loadFortunes();                       // also clears yesterday's, if the page was left open
+    fortunes.redeals = (fortunes.redeals || 0) + 1;
+    saveFortunes();
+    preloadTarot();
+    if (fortunes.redeals % FORTUNE_EVERY === 0) {
       await runFortune();
       busy = false; redealBtn.disabled = false;
       return;
@@ -544,11 +553,13 @@
 
   /* ============================================================
      FORTUNE MACHINE
-     The fifth redeal of a visit dims the table and brings up the machine:
-     the cards flick past in its window, one lands, and a receipt prints.
-     The receipt then settles on the table, where it can be dragged around.
-     Receipts are kept in localStorage under today's date and are cleared
-     at midnight.
+     Every fifth redeal (5, 10, 15 ... counted per day) dims the table and
+     brings up the machine: the cards flick past in its window, one lands,
+     and a receipt prints. The new card is read together with the cards
+     drawn earlier today (a rolling spread of up to three: past, present,
+     future). The receipt and the card then settle on the table, where both
+     can be dragged around. Everything is kept in localStorage under today's
+     date and cleared at midnight.
      ============================================================ */
   const wait = ms => new Promise(r => setTimeout(r, ms));
   const tarotSrc = i => "images/tarot/" + String(i).padStart(2, "0") + ".png";
@@ -565,48 +576,94 @@
     document.documentElement.style.setProperty("--zig", "polygon(" + pts.join(",") + ")");
   })();
 
+  /* ---------- reading a spread ---------- */
   const esc = t => String(t).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-  function receiptEl(card, rev) {
-    const [name, element, sign, up, down] = TAROT[card];
-    const signLabel = TAROT_PLANETS.has(sign) ? "Planet" : "Astrological Sign";
+  const firstSentence = t => { const m = t.match(/^.*?[.!?](\s|$)/); return (m ? m[0] : t).trim(); };
+  const suitOf = i => i < 22 ? "Major" : ["Wands", "Cups", "Swords", "Pentacles"][Math.floor((i - 22) / 14)];
+  const SUIT_THEME = { Wands: "action and ambition", Cups: "feelings and relationships",
+                       Swords: "thought and conflict", Pentacles: "work and money" };
+  const FRIENDS = { Fire: "Air", Air: "Fire", Water: "Earth", Earth: "Water" };
+  const FOES = { Fire: "Water", Water: "Fire", Air: "Earth", Earth: "Air" };
+  const POS = { 1: [""], 2: ["Past", "Present"], 3: ["Past", "Present", "Future"] };
+  const NEXT = { 0: "what came before", 1: "where you are now" };
+
+  function link(a, b, i) {                           // how card a leads into card b (elemental dignities)
+    const [from, to] = i === 0 ? ["What came before", "where you are now"] : ["Where you are now", "what comes next"];
+    if (a === b) return `The same ${a} energy runs from ${from.toLowerCase()} into ${to}.`;
+    if (FRIENDS[a] === b) return `${from} supports ${to}.`;
+    if (FOES[a] === b) return `${from} works against ${to}.`;
+    return `${from} has little pull on ${to}.`;
+  }
+  function synthesis(spread) {
+    const cards = spread.map(([c, r]) => ({ c, r, el: TAROT[c][1], suit: suitOf(c) }));
+    const out = [];
+    for (let i = 0; i < cards.length - 1; i++) out.push(link(cards[i].el, cards[i + 1].el, i));
+    const majors = cards.filter(k => k.suit === "Major").length;
+    if (majors >= 2) out.push("Several major arcana appear, so larger forces than daily events are involved.");
+    else if (majors === 0 && cards.length >= 3) out.push("No major arcana appear, so this is about everyday matters.");
+    const rev = cards.filter(k => k.r).length;
+    if (cards.length >= 2) {
+      if (rev === cards.length) out.push("Every card is reversed: the obstacles are mostly inward.");
+      else if (rev === 0) out.push("No card is reversed, so energy moves freely.");
+    }
+    const counts = {}; cards.forEach(k => { if (k.suit !== "Major") counts[k.suit] = (counts[k.suit] || 0) + 1; });
+    const rep = Object.keys(counts).find(k => counts[k] >= 2);
+    if (rep) out.push(`${rep} repeats, which points to ${SUIT_THEME[rep]}.`);
+    return out.join(" ");
+  }
+
+  function receiptEl(spread) {
     const wrap = document.createElement("div");
     wrap.className = "rwrap";
-    wrap.innerHTML = `<div class="receipt">
-      <h4>${esc(name)}</h4>
-      <hr>
-      <p class="meta">Card Orientation: ${rev ? "Reversed" : "Upright"}<br>Element: ${esc(element)}<br>${signLabel}: ${esc(sign)}</p>
-      <hr>
-      <p class="txt">${esc(rev ? down : up)}</p>
-    </div>`;
+    const [c, r] = spread[spread.length - 1];
+    let inner;
+    if (spread.length === 1) {
+      const [name, element, sign, up, down] = TAROT[c];
+      const signLabel = TAROT_PLANETS.has(sign) ? "Planet" : "Astrological Sign";
+      inner = `<h4>${esc(name)}</h4><hr>
+        <p class="meta">Card Orientation: ${r ? "Reversed" : "Upright"}<br>Element: ${esc(element)}<br>${signLabel}: ${esc(sign)}</p><hr>
+        <p class="txt">${esc(r ? down : up)}</p>`;
+    } else {
+      const title = spread.length === 2 ? "Two card reading" : "Three card reading";
+      const secs = spread.map(([ci, ri], i) => {
+        const [name, element, sign, up, down] = TAROT[ci];
+        return `<p class="sec"><b>${POS[spread.length][i]}: ${esc(name)}, ${ri ? "Reversed" : "Upright"}</b>${esc(element)} / ${esc(sign)}<br>${esc(firstSentence(ri ? down : up))}</p>`;
+      }).join("");
+      inner = `<h4>${title}</h4><hr>${secs}<hr><p class="sum"><b>Together</b>${esc(synthesis(spread))}</p>`;
+    }
+    wrap.innerHTML = `<div class="receipt">${inner}</div>`;
+    return wrap;
+  }
+  function cardEl(card, rev) {
+    const wrap = document.createElement("div");
+    wrap.className = "kwrap" + (rev ? " rev" : "");
+    wrap.innerHTML = `<img alt="${esc(TAROT[card][0])}${rev ? ", reversed" : ""}" src="${tarotSrc(card)}">`;
     return wrap;
   }
 
-  /* ---------- today's receipts (kept until midnight) ---------- */
-  const FKEY = "fortunes-v1";
+  /* ---------- today's receipts and cards (kept until midnight) ---------- */
+  const FKEY = "fortunes-v2";
   const dayKey = () => { const d = new Date(); return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); };
   function loadFortunes() {
     try {
       const o = JSON.parse(localStorage.getItem(FKEY) || "null");
       if (o && o.day === dayKey() && Array.isArray(o.items)) return o;
     } catch (e) {}
-    return { day: dayKey(), items: [] };
+    return { day: dayKey(), redeals: 0, items: [] };
   }
   let fortunes = loadFortunes();
   const saveFortunes = () => { try { localStorage.setItem(FKEY, JSON.stringify(fortunes)); } catch (e) {} };
   const layer = document.getElementById("receipts");
   let zTop = 1;
 
-  function placeReceipt(el, it) {
+  function placeEl(el, x, y, r) {
     const w = el.offsetWidth, h = el.offsetHeight;
-    el.style.left = Math.max(0, Math.min(innerWidth - w, it.x * innerWidth)) + "px";
-    el.style.top  = Math.max(0, Math.min(innerHeight - h, it.y * innerHeight)) + "px";
-    el.style.transform = `rotate(${it.r}deg)`;
+    el.style.left = Math.max(0, Math.min(innerWidth - w, x * innerWidth)) + "px";
+    el.style.top  = Math.max(0, Math.min(innerHeight - h, y * innerHeight)) + "px";
+    el.style.transform = `rotate(${r}deg)`;
   }
-  function addReceipt(it) {
-    const el = receiptEl(it.card, it.rev);
-    el.dataset.id = it.id;
-    layer.appendChild(el);
-    placeReceipt(el, it);
+  /* a piece of paper or a card that can be dragged; keys name where its position is saved */
+  function draggable(el, it, kx, ky) {
     let dx = 0, dy = 0;
     el.addEventListener("pointerdown", e => {
       e.preventDefault();
@@ -614,7 +671,6 @@
       const r = el.getBoundingClientRect();
       dx = e.clientX - r.left; dy = e.clientY - r.top;
       el.classList.add("drag"); el.style.zIndex = ++zTop;
-      // work in un-rotated left/top: remember the offset between box and rotated bounds
       el._off = { x: r.left - el.offsetLeft, y: r.top - el.offsetTop };
     });
     el.addEventListener("pointermove", e => {
@@ -627,28 +683,40 @@
     const drop = () => {
       if (!el.classList.contains("drag")) return;
       el.classList.remove("drag");
-      it.x = el.offsetLeft / innerWidth; it.y = el.offsetTop / innerHeight;
+      it[kx] = el.offsetLeft / innerWidth; it[ky] = el.offsetTop / innerHeight;
       saveFortunes();
     };
     el.addEventListener("pointerup", drop);
     el.addEventListener("pointercancel", drop);
-    return el;
   }
-  const receiptEls = () => [...layer.children];
-  fortunes.items.forEach(it => addReceipt(it));
-  addEventListener("resize", () => receiptEls().forEach(el => {
-    const it = fortunes.items.find(i => String(i.id) === el.dataset.id); if (it) placeReceipt(el, it);
+  function addPieces(it) {
+    const rc = receiptEl(it.spread);
+    rc.dataset.id = it.id; rc.dataset.kind = "r";
+    layer.appendChild(rc); placeEl(rc, it.x, it.y, it.r); draggable(rc, it, "x", "y");
+    const cd = cardEl(it.card, it.rev);
+    cd.dataset.id = it.id; cd.dataset.kind = "k";
+    layer.appendChild(cd);
+    const img = cd.querySelector("img");
+    const settle = () => placeEl(cd, it.kx, it.ky, it.kr);
+    placeEl(cd, it.kx, it.ky, it.kr);               // positioned once the image has a size
+    if (!img.complete) img.addEventListener("load", settle, { once: true });
+    draggable(cd, it, "kx", "ky");
+    return { rc, cd };
+  }
+  fortunes.items.forEach(it => addPieces(it));
+  addEventListener("resize", () => [...layer.children].forEach(el => {
+    const it = fortunes.items.find(i => String(i.id) === el.dataset.id); if (!it) return;
+    if (el.dataset.kind === "r") placeEl(el, it.x, it.y, it.r); else placeEl(el, it.kx, it.ky, it.kr);
   }));
 
-  /* the receipts go at midnight */
+  /* the receipts and cards go at midnight, and so does the count */
   function clearAtMidnight() {
     const now = new Date();
-    const next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1) - now + 50;
-    setTimeout(expire, next);
+    setTimeout(expire, new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1) - now + 50);
   }
   function expire() {
-    fortunes = { day: dayKey(), items: [] }; saveFortunes();
-    receiptEls().forEach(el => {
+    fortunes = { day: dayKey(), redeals: 0, items: [] }; saveFortunes();
+    [...layer.children].forEach(el => {
       el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 800, fill: "forwards" }).finished.then(() => el.remove());
     });
     clearAtMidnight();
@@ -658,12 +726,22 @@
 
   /* ---------- the machine itself ---------- */
   async function runFortune() {
+    const machine = document.getElementById("machine");
     const mimg = document.getElementById("mw-img");
     const paper = document.getElementById("mpaper");
     const card = Math.floor(Math.random() * TAROT.length);
     const rev = Math.random() < .5;
+    /* the new card is read with the (up to) two cards drawn before it today */
+    const earlier = fortunes.items.slice(-2).map(i => [i.card, i.rev]);
+    const spread = [...earlier, [card, rev]];
+
     mimg.className = ""; mimg.src = tarotSrc(Math.floor(Math.random() * TAROT.length));
     paper.replaceChildren();
+    const mach = machine.querySelector(".mach");
+    const unit = mach.offsetWidth;                           // the machine's width, --m
+    const bodyH = unit * 1.4;                                // body plus base
+    const centre = () => (innerHeight - bodyH) / 2;
+    machine.style.setProperty("--my", Math.max(8, centre()) + "px");
 
     document.body.classList.add("fortune");
     await wait(reduceMotion ? 300 : 1100);
@@ -685,42 +763,52 @@
     mimg.classList.remove("thunk"); void mimg.offsetWidth; mimg.classList.add("thunk");
     await wait(reduceMotion ? 200 : 900);
 
-    /* the receipt prints, line by line */
-    const mr = receiptEl(card, rev);
+    /* the receipt prints, line by line; the machine moves up a little to make room for it */
+    const mr = receiptEl(spread);
+    mr.style.visibility = "hidden";
     paper.appendChild(mr);
-    mr.style.transform = "none";
     const h = mr.offsetHeight;
+    mr.style.visibility = "";
+    machine.style.setProperty("--my", Math.max(8, (innerHeight - bodyH - h) / 2) + "px");
+    await wait(reduceMotion ? 0 : 600);
     if (!reduceMotion) {
       mr.style.overflow = "hidden";
       await mr.animate([{ height: "0px" }, { height: h + "px" }],
-        { duration: 2800, easing: "steps(46, end)", fill: "forwards" }).finished;
+        { duration: 1800 + h * 7, easing: `steps(${Math.max(30, Math.round(h / 4))}, end)`, fill: "forwards" }).finished;
     }
     mr.getAnimations().forEach(a => a.cancel());
     mr.style.overflow = ""; mr.style.height = "";
 
     /* let it be read for a moment, or until the page is clicked */
-    await Promise.race([wait(reduceMotion ? 800 : 4200),
+    await Promise.race([wait(reduceMotion ? 800 : 3000 + spread.length * 1800),
       new Promise(r => document.getElementById("dim").addEventListener("click", r, { once: true }))]);
 
-    /* the receipt moves to the table */
-    const w = 192;
-    const it = { id: Date.now(), card, rev,
-                 x: Math.min(.86, Math.max(.04, (innerWidth > 900 ? .70 + Math.random() * .1 : .1 + Math.random() * .4))),
-                 y: .36 + Math.random() * .12,
-                 r: Math.round((Math.random() * 10 - 5) * 10) / 10 };
+    /* the receipt and its card move to the table */
+    const wide = innerWidth > 900;
+    const n = fortunes.items.length, k = n % 4;               // stagger them so they do not land on top of each other
+    const it = { id: Date.now(), card, rev, spread,
+      x: wide ? .56 + k * .05 + Math.random() * .02 : .06 + k * .06 + Math.random() * .04,
+      y: wide ? .12 + k * .06 + Math.random() * .03 : .46 + k * .05 + Math.random() * .03,
+      r: Math.round((Math.random() * 8 - 4) * 10) / 10,
+      kx: wide ? .80 + (n % 3) * .045 + Math.random() * .015 : .58 + (n % 3) * .12 + Math.random() * .03,
+      ky: wide ? .20 + (n % 3) * .05 + Math.random() * .03 : .07 + (n % 3) * .04 + Math.random() * .02,
+      kr: Math.round((Math.random() * 12 - 6) * 10) / 10 };
     fortunes.items.push(it); saveFortunes();
-    const from = mr.getBoundingClientRect();
-    const tr = addReceipt(it);
-    tr.style.zIndex = ++zTop;
-    const to = tr.getBoundingClientRect();
+    const fromR = mr.getBoundingClientRect(), fromK = mimg.getBoundingClientRect();
+    const { rc, cd } = addPieces(it);
+    rc.style.zIndex = ++zTop; cd.style.zIndex = ++zTop;
+    const toR = rc.getBoundingClientRect();
+    await new Promise(r => { const im = cd.querySelector("img"); im.complete ? r() : im.addEventListener("load", r, { once: true }); });
+    placeEl(cd, it.kx, it.ky, it.kr);
+    const toK = cd.getBoundingClientRect();
     document.body.classList.remove("fortune");
     mr.style.visibility = "hidden";
     if (!reduceMotion) {
-      const sc = from.width / to.width;
-      await tr.animate([
-        { transform: `translate(${from.left - to.left}px, ${from.top - to.top}px) scale(${sc}) rotate(0deg)`, offset: 0 },
-        { transform: `rotate(${it.r}deg)`, offset: 1 }
+      const fly = (el, from, to, r) => el.animate([
+        { transform: `translate(${from.left - to.left}px, ${from.top - to.top}px) scale(${from.width / to.width}) rotate(0deg)`, offset: 0 },
+        { transform: `rotate(${r}deg)`, offset: 1 }
       ], { duration: 1000, easing: "cubic-bezier(.2,.8,.2,1)" }).finished;
+      await Promise.all([fly(rc, fromR, toR, it.r), fly(cd, fromK, toK, it.kr)]);
     }
     await wait(reduceMotion ? 0 : 400);
   }
