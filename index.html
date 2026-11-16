@@ -125,6 +125,19 @@
   }
   .all:hover, .all:focus-visible { text-decoration: underline; text-underline-offset: 3px; outline: none; }
 
+  /* ---------------- "Redeal" button (fixed, bottom centre) ---------------- */
+  .redeal {
+    position: fixed; left: 50%; bottom: calc(1.25rem + var(--banner-h, 0px));
+    transform: translateX(-50%);
+    z-index: 20;
+    font: inherit; font-size: 15px; line-height: 1.4;
+    color: var(--on-bg);
+    background: none; border: 0; padding: 4px 8px; cursor: pointer;
+    text-shadow: 0 0 10px rgba(3, 22, 16, .8);
+  }
+  .redeal:hover, .redeal:focus-visible { text-decoration: underline; text-underline-offset: 3px; outline: none; }
+  .redeal:disabled { cursor: default; text-decoration: none; opacity: .55; }
+
   /* ---------------- "site under construction" banner (bottom strip) ---------------- */
   .banner {
     position: fixed; left: 0; right: 0; bottom: 0;
@@ -275,6 +288,7 @@
 </header>
 
 <a class="all" href="/cards">All Cards</a>
+<button class="redeal" id="redeal" type="button" disabled>Redeal</button>
 
 <main class="table" id="table"></main>
 
@@ -320,38 +334,55 @@
     }
     return shuffle(picked);
   }
-  const hand = drawHand(PROJECTS, HAND_SIZE);
+  let cards = [];
 
-  hand.forEach((p, slot) => {
-    const card = document.createElement("a");
-    card.className = "card";
-    card.href = "/project/?p=" + encodeURIComponent(p.slug);
-    card.style.setProperty("--tilt", TILTS[slot] + "deg");
+  /* build a fresh hand of cards in the (empty) table; they stay invisible until dealt */
+  function buildHand() {
+    const hand = drawHand(PROJECTS, HAND_SIZE);
+    table.replaceChildren();
+    hand.forEach((p, slot) => {
+      const card = document.createElement("a");
+      card.className = "card";
+      card.href = "/project/?p=" + encodeURIComponent(p.slug);
+      card.style.setProperty("--tilt", TILTS[slot] + "deg");
+      card.innerHTML = `
+        <div class="tilt">
+          <div class="inner">
+            <div class="numeral">${toRoman(p.index + 1)}</div>
+            <div class="art"><img alt=""></div>
+            <div class="name"></div>
+          </div>
+        </div>`;
+      const img = card.querySelector("img");
+      img.src = p.card || p.cover || placeholderCover(p.index);
+      img.alt = p.title;
+      card.querySelector(".name").textContent = p.title;
+      table.appendChild(card);
 
-    card.innerHTML = `
-      <div class="tilt">
-        <div class="inner">
-          <div class="numeral">${toRoman(p.index + 1)}</div>
-          <div class="art"><img alt=""></div>
-          <div class="name"></div>
-        </div>
-      </div>`;
-    const img = card.querySelector("img");
-    img.src = p.card || p.cover || placeholderCover(p.index);
-    img.alt = p.title;
-    card.querySelector(".name").textContent = p.title;
-    table.appendChild(card);
-  });
+      /* pointer tilt */
+      const tilt = card.querySelector(".tilt");
+      card.addEventListener("pointermove", e => {
+        if (e.pointerType === "touch") return;
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width;
+        const py = (e.clientY - r.top) / r.height;
+        tilt.style.transform =
+          `translateY(-14px) rotateY(${(px - .5) * 16}deg) rotateX(${(.5 - py) * 16}deg)`;
+      });
+      card.addEventListener("pointerleave", () => { tilt.style.transform = ""; });
+    });
+    cards = [...table.children];
+  }
 
   /* Physical deal: cards fly in from a deck below the screen, overshoot,
-     lift slightly, then settle onto the table. */
-  const cards = [...table.children];
+     lift slightly, then settle onto the table. Resolves when the last card lands. */
   function deal() {
-  if (reduceMotion) {
-    cards.forEach(c => c.classList.add("dealt"));
-  } else {
+    if (reduceMotion) {
+      cards.forEach(c => c.classList.add("dealt"));
+      return Promise.resolve();
+    }
     const deckX = innerWidth / 2, deckY = innerHeight + 260;
-    cards.forEach((card, i) => {
+    const done = cards.map((card, i) => {
       const r = card.getBoundingClientRect();
       const dx = deckX - (r.left + r.width / 2);
       const dy = deckY - (r.top + r.height / 2);
@@ -365,26 +396,37 @@
         { transform: `translate(0, 0) rotate(${tilt}deg) scale(1)`, opacity: 1, offset: 1 }
       ], { duration: 1300, delay: 200 + i * 320, easing: "cubic-bezier(.2,.75,.25,1)", fill: "both" });
 
-      anim.finished.then(() => { card.classList.add("dealt"); anim.cancel(); });
+      return anim.finished.then(() => { card.classList.add("dealt"); anim.cancel(); });
     });
+    return Promise.all(done);
   }
-  }
-  /* wait for the page transition to uncover the table (immediate on a first visit) */
-  (window.PT ? PT.ready : Promise.resolve()).then(deal);
 
-  /* ---------- pointer tilt on each card ---------- */
-  cards.forEach(card => {
-    const tilt = card.querySelector(".tilt");
-    card.addEventListener("pointermove", e => {
-      if (e.pointerType === "touch") return;
-      const r = card.getBoundingClientRect();
-      const px = (e.clientX - r.left) / r.width;
-      const py = (e.clientY - r.top) / r.height;
-      tilt.style.transform =
-        `translateY(-14px) rotateY(${(px - .5) * 16}deg) rotateX(${(.5 - py) * 16}deg)`;
-    });
-    card.addEventListener("pointerleave", () => { tilt.style.transform = ""; });
+  /* sweep the current cards off the table, down towards the deck */
+  function sweep() {
+    if (reduceMotion || !cards.length) return Promise.resolve();
+    return Promise.all(cards.map((card, i) => {
+      const tilt = TILTS[i];
+      return card.animate([
+        { transform: `translate(0, 0) rotate(${tilt}deg) scale(1)`, opacity: 1 },
+        { transform: `translate(0, ${innerHeight * .6 + 300}px) rotate(${tilt * 3 + (i - 1) * 14}deg) scale(.8)`, opacity: 1 }
+      ], { duration: 650, delay: i * 90, easing: "cubic-bezier(.5,0,.8,.4)", fill: "forwards" }).finished;
+    }));
+  }
+
+  const redealBtn = document.getElementById("redeal");
+  let busy = true;                                   // locked until the first deal has landed
+  redealBtn.addEventListener("click", async () => {
+    if (busy) return;
+    busy = true; redealBtn.disabled = true;
+    await sweep();
+    buildHand();
+    await deal();
+    busy = false; redealBtn.disabled = false;
   });
+
+  buildHand();
+  /* wait for the page transition to uncover the table (immediate on a first visit) */
+  (window.PT ? PT.ready : Promise.resolve()).then(deal).then(() => { busy = false; redealBtn.disabled = false; });
 
   /* ============================================================
      3. THE HAND ON A HINGE
