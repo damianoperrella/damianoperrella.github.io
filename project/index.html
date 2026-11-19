@@ -358,6 +358,26 @@
       else if (k === "Home") { e.preventDefault(); go(0); }
       else if (k === "End") { e.preventDefault(); go(slides.length - 1); }
     });
+    /* scrolling (wheel or trackpad): one slide per gesture, down or right for next, up or left for previous.
+       A long text slide that has more to scroll is left alone until it reaches its end. */
+    let wLast = 0, wAbs = 0, wLock = 0;
+    wrap.addEventListener("wheel", e => {
+      if (e.ctrlKey) return;                                          // pinch-zoom, not a scroll
+      const dy = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX, a = Math.abs(dy);
+      const el = slides[cur].el;
+      if (el.scrollHeight > el.clientHeight + 1) {
+        if (dy > 0 && el.scrollTop + el.clientHeight < el.scrollHeight - 1) return;
+        if (dy < 0 && el.scrollTop > 0) return;
+      }
+      e.preventDefault();
+      const now = performance.now(), fresh = now - wLast > 100 || a > wAbs * 1.8;   // a new gesture, not a trackpad's trailing momentum
+      wLast = now; wAbs = a;
+      if (!fresh || now < wLock || a < 4) return;
+      const to = cur + (dy > 0 ? 1 : -1);
+      if (to < 0 || to >= slides.length) return;
+      wLock = now + 420;
+      go(to);
+    }, { passive: false });
     let t0 = null;
     wrap.addEventListener("touchstart", e => { t0 = e.touches.length === 1 ? { x: e.touches[0].clientX, y: e.touches[0].clientY } : null; }, { passive: true });
     wrap.addEventListener("touchend", e => {
