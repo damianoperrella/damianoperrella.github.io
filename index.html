@@ -84,20 +84,21 @@
   /* the light each flame throws on the cloth (additive) */
   .room .glow {
     inset: auto; width: 62vmax; height: 62vmax; margin: -31vmax 0 0 -31vmax;
-    background: radial-gradient(circle, rgba(255, 186, 96, .7) 0%, rgba(255, 150, 58, .32) 9%, rgba(240, 120, 40, .13) 26%, rgba(200, 90, 30, .045) 44%, transparent 62%);
+    background: radial-gradient(circle, rgba(255, 232, 170, .7) 0%, rgba(255, 210, 128, .32) 9%, rgba(246, 176, 84, .13) 26%, rgba(210, 130, 50, .045) 44%, transparent 62%);
     mix-blend-mode: screen; opacity: calc(.7 + var(--f, 1) * .3); transform: scale(calc(.9 + var(--f, 1) * .1));
   }
   .room .spark {
     inset: auto; width: 9px; height: 9px; margin: -4.5px; opacity: 0;
-    background: #ffe6b0;
+    background: #fff1c8;
     clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
     animation: spark var(--d, 3.5s) ease-in-out var(--w, 0s) infinite;
   }
   @keyframes spark { 0%, 62%, 100% { opacity: 0; transform: scale(.3) rotate(0deg); } 80% { opacity: .95; transform: scale(1) rotate(45deg); } }
   /* the candles, seen from above: a round brass holder with a ring handle, wax, and a flame */
   .candle {
-    position: absolute; inset: auto; width: clamp(104px, 11.5vw, 168px); aspect-ratio: 200 / 160;
-    pointer-events: auto; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none;
+    visibility: hidden; pointer-events: none;
+    position: absolute; inset: auto; width: clamp(104px, 11vw, 160px);
+    cursor: default; touch-action: none; user-select: none; -webkit-user-select: none;
     filter: drop-shadow(5px 9px 7px rgba(0, 0, 0, .65));
     transition: filter .2s ease;
   }
@@ -111,7 +112,7 @@
   #relight { position: fixed; inset: 0; z-index: 5; pointer-events: none; overflow: hidden; }
   #relight i {
     position: absolute; width: 50vmax; height: 50vmax; margin: -25vmax 0 0 -25vmax; display: block;
-    background: radial-gradient(circle, rgba(255, 196, 112, .5) 0%, rgba(255, 150, 60, .2) 26%, transparent 60%);
+    background: radial-gradient(circle, rgba(255, 228, 160, .5) 0%, rgba(255, 196, 108, .2) 26%, transparent 60%);
     mix-blend-mode: soft-light; opacity: calc(.7 + var(--f, 1) * .3);
   }
   .candle .flame { z-index: 2; }
@@ -298,7 +299,7 @@
     filter: var(--manicule-filter) drop-shadow(0 8px 10px rgba(0, 0, 0, .35));
   }
 
-  #manicule #manicule-lit { position: absolute; left: 0; top: 0; filter: sepia(1) saturate(5) hue-rotate(-14deg) brightness(1.25); mix-blend-mode: normal; -webkit-mask-image: var(--hm, none); mask-image: var(--hm, none); }
+  #manicule #manicule-lit { position: absolute; left: 0; top: 0; filter: sepia(1) saturate(3.2) hue-rotate(-8deg) brightness(1.3); mix-blend-mode: normal; -webkit-mask-image: var(--hm, none); mask-image: var(--hm, none); }
   @media (prefers-reduced-motion: reduce) {
     .tilt { transition: none; }
   }
@@ -406,16 +407,14 @@
 
 <div class="room" id="room" aria-hidden="true">
   <i class="haze"></i><i class="nap"></i><i class="thread"></i><i class="lit"></i><i class="vignette"></i><i class="grain"></i>
-  <div class="candle" data-i="0" style="rotate: -18deg" title="Drag me">
-    <img src="images/candle.png" alt="" draggable="false">
-    <svg viewBox="0 0 200 160" aria-hidden="true">
-      <g class="flame"><circle cx="80" cy="80" r="17" fill="rgba(255,170,60,.6)"/><circle cx="80" cy="80" r="8.500" fill="#ffc964"/><circle cx="80" cy="80" r="4.200" fill="#fff7d4"/></g>
+  <div class="candle" data-i="0" data-fx="34" data-fy="25" data-gy="52" data-top="32" data-w="80" data-hh="78" style="aspect-ratio: 80 / 78" title="Drag me">
+    <svg viewBox="0 0 80 78" aria-hidden="true">
+      <g class="flame"><circle cx="34" cy="24" r="6.500" fill="rgba(255,216,134,.5)"/><ellipse cx="34" cy="24" rx="3" ry="5" fill="#ffe39a"/><ellipse cx="34" cy="25.500" rx="1.400" ry="2.800" fill="#fffbe8"/></g>
     </svg>
   </div>
-  <div class="candle" data-i="1" style="rotate: 24deg" title="Drag me">
-    <img src="images/candle.png" alt="" draggable="false">
-    <svg viewBox="0 0 200 160" aria-hidden="true">
-      <g class="flame"><circle cx="80" cy="80" r="17" fill="rgba(255,170,60,.6)"/><circle cx="80" cy="80" r="8.500" fill="#ffc964"/><circle cx="80" cy="80" r="4.200" fill="#fff7d4"/></g>
+  <div class="candle" data-i="1" data-fx="34" data-fy="25" data-gy="84" data-top="32" data-w="80" data-hh="110" style="aspect-ratio: 80 / 110" title="Drag me">
+    <svg viewBox="0 0 80 110" aria-hidden="true">
+      <g class="flame"><circle cx="34" cy="24" r="6.500" fill="rgba(255,216,134,.5)"/><ellipse cx="34" cy="24" rx="3" ry="5" fill="#ffe39a"/><ellipse cx="34" cy="25.500" rx="1.400" ry="2.800" fill="#fffbe8"/></g>
     </svg>
   </div>
 </div>
@@ -509,24 +508,24 @@
   }
 
   /* ---- the candles ---- */
-  const START = [{ x: .07, y: .13 }, { x: .17, y: .13 }];           // where each tray's centre starts, as a fraction of the window
+  const START = [{ x: -.05, y: .2 }, { x: 1.06, y: .66 }];   // two candles just off the edge of the table, never seen           // where each tray's centre starts, as a fraction of the window
   let saved = null;
-  try { saved = JSON.parse(localStorage.getItem("candles-v2") || "null"); } catch (e) {}
   const pos = START.map((d, i) => saved && saved[i] && isFinite(saved[i].x) && isFinite(saved[i].y) ? { x: +saved[i].x, y: +saved[i].y } : { ...d });
   const candleLayer = document.getElementById("candles");        // candles sit above the cards so they can never get buried
   room.querySelectorAll(".candle").forEach(c => candleLayer.appendChild(c));
   const flames = [...candleLayer.querySelectorAll(".candle")].map((el, i) => {
     const glow = document.createElement("i"); glow.className = "glow"; room.appendChild(glow);
     const rl = document.createElement("i"); relight.appendChild(rl);
-    return { el, glow, rl, i, x: 0, y: 0, f: 1, target: 1, next: 0 };
+    const d = el.dataset, W80 = +d.w, HH = +d.hh;
+    return { el, glow, rl, i, x: 0, y: 0, f: 1, target: 1, next: 0, fx: d.fx / W80, fy: d.fy / HH, gy: +d.gy - +d.fy, ctop: +d.gy - +d.top };
   });
-  const clampPos = p => { p.x = Math.max(.02, Math.min(.98, p.x)); p.y = Math.max(.03, Math.min(.97, p.y)); };
+  const clampPos = p => { /* the lights are fixed, off to the sides */ };
 
   function layout() {                                            // put each candle where its fraction says, then light from it
     flames.forEach(o => {
       const p = pos[o.i]; clampPos(p);
       const w = o.el.offsetWidth, h = o.el.offsetHeight;
-      o.el.style.left = (p.x * innerWidth - w * .4) + "px"; o.el.style.top = (p.y * innerHeight - h * .5) + "px";
+      o.el.style.left = (p.x * innerWidth - w * o.fx) + "px"; o.el.style.top = (p.y * innerHeight - h * o.fy) + "px";
       o.x = p.x * innerWidth; o.y = p.y * innerHeight;
     });
     light(); if (typeof shadows === "function") shadows();
@@ -544,32 +543,29 @@
     return lo.slice(0, -1).concat(up.slice(0, -1));
   }
   function shadows() {
+    /* a point light at each flame's real height. A point at height z lands on the table at
+       light + (point - light) * H / (H - z): flat cards only throw a short edge, the tall candles throw long ones */
     cx.clearRect(0, 0, innerWidth, innerHeight);
-    const solids = [];
+    const cards = [];
     document.querySelectorAll(".card").forEach(c => {
       const r = c.getBoundingClientRect(); if (r.width < 20) return;
-      const m = r.width * .06;                                    // the card's rotated box is a little loose; pull it in
-      solids.push({ pts: [[r.left + m, r.top + m], [r.right - m, r.top + m], [r.right - m, r.bottom - m], [r.left + m, r.bottom - m]], k: 1.5, card: true });
+      const m = r.width * .06;
+      cards.push([[r.left + m, r.top + m], [r.right - m, r.top + m], [r.right - m, r.bottom - m], [r.left + m, r.bottom - m]]);
     });
+    const ring = (x, y, rx, n = 16) => Array.from({ length: n }, (_, i) => [x + Math.cos(i / n * 6.2832) * rx, y + Math.sin(i / n * 6.2832) * rx * .8]);
+    const fill = (poly, a, hole) => {
+      cx.save(); cx.beginPath();
+      if (hole) { cx.rect(-50, -50, innerWidth + 100, innerHeight + 100); hole.forEach((p, i) => i ? cx.lineTo(p[0], p[1]) : cx.moveTo(p[0], p[1])); cx.closePath(); cx.clip("evenodd"); cx.beginPath(); }
+      poly.forEach((p, i) => i ? cx.lineTo(p[0], p[1]) : cx.moveTo(p[0], p[1])); cx.closePath();
+      cx.fillStyle = `rgba(0,0,0,${a})`; cx.fill(); cx.restore();
+    };
     flames.forEach(o => {
-      const r = o.el.getBoundingClientRect(), rad = r.width * .3, pts = [];
-      for (let i = 0; i < 14; i++) pts.push([o.x + Math.cos(i / 14 * 6.2832) * rad, o.y + Math.sin(i / 14 * 6.2832) * rad]);
-      solids.push({ pts, k: .7, own: o });
-    });
-    flames.forEach(o => {
-      const wob = (o.f - 1) * 26, lx = o.x + wob, ly = o.y - wob * .6;     // the shadows sway as the flame dances
-      solids.forEach(sd => {
-        if (sd.own === o) return;
-        const L = (sd.own ? 110 : 230) * (1 + (o.f - 1) * 1.2), out = sd.pts.map(p => { const dx = p[0] - lx, dy = p[1] - ly, d = Math.hypot(dx, dy) || 1; return [p[0] + dx / d * L, p[1] + dy / d * L]; });
-        const poly = hull(sd.pts.concat(out));
-        cx.save();
-        if (sd.card || sd.own) {                                   // an object never shadows itself
-          cx.beginPath(); cx.rect(-50, -50, innerWidth + 100, innerHeight + 100);
-          if (sd.card) sd.pts.forEach((p, i) => i ? cx.lineTo(p[0], p[1]) : cx.moveTo(p[0], p[1]));
-          cx.closePath(); cx.clip("evenodd");
-        }
-        cx.beginPath(); poly.forEach((p, i) => i ? cx.lineTo(p[0], p[1]) : cx.moveTo(p[0], p[1])); cx.closePath();
-        cx.fillStyle = "rgba(0,0,0,.17)"; cx.fill(); cx.restore();
+      const sc = o.el.offsetWidth / 80, Lh = o.gy * sc * (1 + (o.f - 1) * .5);     // flame height above the table, bobbing with the flicker
+      const lx = o.x, ly = o.y + o.gy * sc;                                         // the light's spot on the table
+      const proj = (x, y, z) => { const k = Lh / Math.max(Lh - z, Lh * .22); return [lx + (x - lx) * k, ly + (y - ly) * k]; };
+      cards.forEach(q => {                                                          // cards: 3px thick, a short edge
+        const top = q.map(p => proj(p[0], p[1], 3));
+        fill(hull(q.concat(top)), .3, q);
       });
     });
   }
@@ -585,25 +581,6 @@
     shade.style.setProperty("--m", hole);
     placeSparks();
   }
-
-  /* dragging: the candle goes where the pointer goes and the light moves with it */
-  flames.forEach(o => {
-    let dx = 0, dy = 0;
-    o.el.addEventListener("pointerdown", e => {
-      e.preventDefault(); o.el.setPointerCapture(e.pointerId); o.el.classList.add("drag");
-      const r = o.el.getBoundingClientRect(); dx = e.clientX - r.left - r.width * .4; dy = e.clientY - r.top - r.height * .5;
-      const q = pos[o.i]; dx = e.clientX - q.x * innerWidth; dy = e.clientY - q.y * innerHeight;
-    });
-    o.el.addEventListener("pointermove", e => {
-      if (!o.el.classList.contains("drag")) return;
-      const p = pos[o.i]; p.x = (e.clientX - dx) / innerWidth; p.y = (e.clientY - dy) / innerHeight; layout();
-    });
-    const drop = () => {
-      if (!o.el.classList.contains("drag")) return; o.el.classList.remove("drag");
-      try { localStorage.setItem("candles-v2", JSON.stringify(pos)); } catch (e) {}
-    };
-    o.el.addEventListener("pointerup", drop); o.el.addEventListener("pointercancel", drop);
-  });
 
   /* a few threads catch the light and glint, now and then */
   const sparks = [];
