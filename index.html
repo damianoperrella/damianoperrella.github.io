@@ -19,7 +19,7 @@
     --room:       #03080b;
     --room-haze:  #123038;               /* the cold light hanging in the air */
     --gold:       #6c7762;               /* old tarnished thread, unlit */
-    --gold-lit:   #c8d3ae;               /* the same thread where a flame catches it */
+    --gold-lit:   #e6cf98;               /* the same thread where a flame catches it */
 
     --card:  #ffffff;
     --ink:   #141414;                    /* text + hairlines on the cards */
@@ -84,12 +84,12 @@
   /* the light each flame throws on the cloth (additive) */
   .room .glow {
     inset: auto; width: 62vmax; height: 62vmax; margin: -31vmax 0 0 -31vmax;
-    background: radial-gradient(circle, rgba(236, 238, 150, .55) 0%, rgba(208, 220, 120, .22) 7%, rgba(150, 172, 92, .085) 22%, rgba(90, 120, 80, .03) 40%, transparent 56%);
+    background: radial-gradient(circle, rgba(255, 186, 96, .7) 0%, rgba(255, 150, 58, .32) 9%, rgba(240, 120, 40, .13) 26%, rgba(200, 90, 30, .045) 44%, transparent 62%);
     mix-blend-mode: screen; opacity: calc(.7 + var(--f, 1) * .3); transform: scale(calc(.9 + var(--f, 1) * .1));
   }
   .room .spark {
     inset: auto; width: 9px; height: 9px; margin: -4.5px; opacity: 0;
-    background: #f2f6dc;
+    background: #ffe6b0;
     clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
     animation: spark var(--d, 3.5s) ease-in-out var(--w, 0s) infinite;
   }
@@ -105,11 +105,12 @@
   .candle svg { display: block; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
   .candle .flame { transform-box: fill-box; transform-origin: 50% 50%; transform: scale(calc(.86 + var(--f, 1) * .16)); }
   .candle .flame circle:first-child { filter: blur(2px); }
-  #shade { position: fixed; inset: 0; z-index: 5; pointer-events: none; background: rgba(2, 7, 10, .68); -webkit-mask-image: var(--m); mask-image: var(--m); -webkit-mask-composite: source-in; mask-composite: intersect; }
+  #shade { position: fixed; inset: 0; z-index: 5; pointer-events: none; background: rgba(4, 5, 9, .5); -webkit-mask-image: var(--m); mask-image: var(--m); -webkit-mask-composite: source-in; mask-composite: intersect; }
+  #candles { position: fixed; inset: 0; z-index: 9; pointer-events: none; }
   #relight { position: fixed; inset: 0; z-index: 5; pointer-events: none; overflow: hidden; }
   #relight i {
     position: absolute; width: 50vmax; height: 50vmax; margin: -25vmax 0 0 -25vmax; display: block;
-    background: radial-gradient(circle, rgba(226, 232, 150, .5) 0%, rgba(190, 205, 120, .18) 22%, transparent 56%);
+    background: radial-gradient(circle, rgba(255, 196, 112, .5) 0%, rgba(255, 150, 60, .2) 26%, transparent 60%);
     mix-blend-mode: soft-light; opacity: calc(.7 + var(--f, 1) * .3);
   }
   .candle .flame { z-index: 2; }
@@ -296,6 +297,7 @@
     filter: var(--manicule-filter) drop-shadow(0 8px 10px rgba(0, 0, 0, .35));
   }
 
+  #manicule #manicule-lit { position: absolute; left: 0; top: 0; filter: sepia(1) saturate(5) hue-rotate(-14deg) brightness(1.25); mix-blend-mode: normal; -webkit-mask-image: var(--hm, none); mask-image: var(--hm, none); }
   @media (prefers-reduced-motion: reduce) {
     .tilt { transition: none; }
   }
@@ -405,35 +407,36 @@
   <i class="haze"></i><i class="nap"></i><i class="thread"></i><i class="lit"></i><i class="vignette"></i><i class="grain"></i>
   <div class="candle" data-i="0" style="rotate: -18deg" title="Drag me">
     <svg viewBox="0 0 200 160" aria-hidden="true">
-      <path fill-rule="evenodd" fill="#8d8446" d="M168 56a24 24 0 1 0 .01 0ZM168 68a12 12 0 1 1-.01 0Z"/>
-      <path fill="#766d37" d="M120 70h34v20h-34Z"/><path fill="#b9ae74" d="M120 72h34v4h-34Z" opacity=".7"/>
-      <circle cx="80" cy="80" r="64" fill="#3d3a1b"/><circle cx="80" cy="80" r="61" fill="#a79a58"/>
-      <circle cx="80" cy="80" r="54" fill="#6a622f"/><circle cx="80" cy="80" r="50" fill="#867b3d"/>
-      <path d="M28 66a54 54 0 0 1 36-28" fill="none" stroke="#eee9bd" stroke-width="2" stroke-linecap="round" opacity=".55"/>
-      <path d="M36 112a54 54 0 0 0 44 20" fill="none" stroke="#2c2a14" stroke-width="3" stroke-linecap="round" opacity=".5"/>
-      <circle cx="80" cy="80" r="27" fill="#b3a661"/><circle cx="80" cy="80" r="22" fill="#6f6733"/>
-      <circle cx="80" cy="80" r="19" fill="#cfcaa6"/><circle cx="80" cy="80" r="15" fill="#e5e1c2"/>
-      <circle cx="80" cy="80" r="3.200" fill="#241f12"/>
-      <g class="flame"><circle cx="80" cy="80" r="14" fill="rgba(214,224,120,.5)"/><circle cx="80" cy="80" r="7" fill="#e6ea8c"/><circle cx="80" cy="80" r="3.500" fill="#fbfce6"/></g>
+      <path fill-rule="evenodd" fill="#b08a3c" d="M168 56a24 24 0 1 0 .01 0ZM168 68a12 12 0 1 1-.01 0Z"/>
+      <path fill="#9c7a35" d="M120 70h34v20h-34Z"/><path fill="#d8b868" d="M120 72h34v4h-34Z" opacity=".7"/>
+      <circle cx="80" cy="80" r="64" fill="#5b4219"/><circle cx="80" cy="80" r="61" fill="#cfae5c"/>
+      <circle cx="80" cy="80" r="54" fill="#8a6a2d"/><circle cx="80" cy="80" r="50" fill="#a98536"/>
+      <path d="M28 66a54 54 0 0 1 36-28" fill="none" stroke="#fff3c9" stroke-width="2" stroke-linecap="round" opacity=".55"/>
+      <path d="M36 112a54 54 0 0 0 44 20" fill="none" stroke="#5b4219" stroke-width="3" stroke-linecap="round" opacity=".5"/>
+      <circle cx="80" cy="80" r="27" fill="#d9b963"/><circle cx="80" cy="80" r="22" fill="#8d6c2c"/>
+      <circle cx="80" cy="80" r="19" fill="#e6d6ae"/><circle cx="80" cy="80" r="15" fill="#f4e9c8"/>
+      <circle cx="80" cy="80" r="3.200" fill="#3a2d1d"/>
+      <g class="flame"><circle cx="80" cy="80" r="17" fill="rgba(255,170,60,.6)"/><circle cx="80" cy="80" r="8.500" fill="#ffc964"/><circle cx="80" cy="80" r="4.200" fill="#fff7d4"/></g>
     </svg>
   </div>
   <div class="candle" data-i="1" style="rotate: 24deg" title="Drag me">
     <svg viewBox="0 0 200 160" aria-hidden="true">
-      <path fill-rule="evenodd" fill="#8d8446" d="M168 56a24 24 0 1 0 .01 0ZM168 68a12 12 0 1 1-.01 0Z"/>
-      <path fill="#766d37" d="M120 70h34v20h-34Z"/><path fill="#b9ae74" d="M120 72h34v4h-34Z" opacity=".7"/>
-      <circle cx="80" cy="80" r="64" fill="#3d3a1b"/><circle cx="80" cy="80" r="61" fill="#a79a58"/>
-      <circle cx="80" cy="80" r="54" fill="#6a622f"/><circle cx="80" cy="80" r="50" fill="#867b3d"/>
-      <path d="M28 66a54 54 0 0 1 36-28" fill="none" stroke="#eee9bd" stroke-width="2" stroke-linecap="round" opacity=".55"/>
-      <path d="M36 112a54 54 0 0 0 44 20" fill="none" stroke="#2c2a14" stroke-width="3" stroke-linecap="round" opacity=".5"/>
-      <circle cx="80" cy="80" r="27" fill="#b3a661"/><circle cx="80" cy="80" r="22" fill="#6f6733"/>
-      <circle cx="80" cy="80" r="19" fill="#cfcaa6"/><circle cx="80" cy="80" r="15" fill="#e5e1c2"/>
-      <circle cx="80" cy="80" r="3.200" fill="#241f12"/>
-      <g class="flame"><circle cx="80" cy="80" r="14" fill="rgba(214,224,120,.5)"/><circle cx="80" cy="80" r="7" fill="#e6ea8c"/><circle cx="80" cy="80" r="3.500" fill="#fbfce6"/></g>
+      <path fill-rule="evenodd" fill="#b08a3c" d="M168 56a24 24 0 1 0 .01 0ZM168 68a12 12 0 1 1-.01 0Z"/>
+      <path fill="#9c7a35" d="M120 70h34v20h-34Z"/><path fill="#d8b868" d="M120 72h34v4h-34Z" opacity=".7"/>
+      <circle cx="80" cy="80" r="64" fill="#5b4219"/><circle cx="80" cy="80" r="61" fill="#cfae5c"/>
+      <circle cx="80" cy="80" r="54" fill="#8a6a2d"/><circle cx="80" cy="80" r="50" fill="#a98536"/>
+      <path d="M28 66a54 54 0 0 1 36-28" fill="none" stroke="#fff3c9" stroke-width="2" stroke-linecap="round" opacity=".55"/>
+      <path d="M36 112a54 54 0 0 0 44 20" fill="none" stroke="#5b4219" stroke-width="3" stroke-linecap="round" opacity=".5"/>
+      <circle cx="80" cy="80" r="27" fill="#d9b963"/><circle cx="80" cy="80" r="22" fill="#8d6c2c"/>
+      <circle cx="80" cy="80" r="19" fill="#e6d6ae"/><circle cx="80" cy="80" r="15" fill="#f4e9c8"/>
+      <circle cx="80" cy="80" r="3.200" fill="#3a2d1d"/>
+      <g class="flame"><circle cx="80" cy="80" r="17" fill="rgba(255,170,60,.6)"/><circle cx="80" cy="80" r="8.500" fill="#ffc964"/><circle cx="80" cy="80" r="4.200" fill="#fff7d4"/></g>
     </svg>
   </div>
 </div>
 <div id="shade" aria-hidden="true"></div>
 <div id="relight" aria-hidden="true"></div>
+<div id="candles"></div>
 
 <header class="id">
   <a href="/about">Damiano Perrella</a>
@@ -463,7 +466,7 @@
 <div id="receipts"></div>
 
 <div id="manicule" aria-hidden="true">
-  <div class="pivot"><img id="manicule-img" alt=""></div>
+  <div class="pivot"><img id="manicule-img" alt=""><img id="manicule-lit" alt=""></div>
 </div>
 
 
@@ -525,8 +528,10 @@
   let saved = null;
   try { saved = JSON.parse(localStorage.getItem("candles-v1") || "null"); } catch (e) {}
   const pos = START.map((d, i) => saved && saved[i] && isFinite(saved[i].x) && isFinite(saved[i].y) ? { x: +saved[i].x, y: +saved[i].y } : { ...d });
-  const flames = [...room.querySelectorAll(".candle")].map((el, i) => {
-    const glow = document.createElement("i"); glow.className = "glow"; room.insertBefore(glow, el);
+  const candleLayer = document.getElementById("candles");        // candles sit above the cards so they can never get buried
+  room.querySelectorAll(".candle").forEach(c => candleLayer.appendChild(c));
+  const flames = [...candleLayer.querySelectorAll(".candle")].map((el, i) => {
+    const glow = document.createElement("i"); glow.className = "glow"; room.appendChild(glow);
     const rl = document.createElement("i"); relight.appendChild(rl);
     return { el, glow, rl, i, x: 0, y: 0, f: 1, target: 1, next: 0 };
   });
@@ -543,7 +548,7 @@
   }
   /* long shadows: every card and candle holder throws a shadow away from each flame */
   const cv = document.createElement("canvas"), cx = cv.getContext("2d");
-  cv.setAttribute("aria-hidden", "true"); cv.style.cssText = "position:fixed;inset:0;width:100%;height:100%;z-index:6;pointer-events:none;filter:blur(3px)"; document.body.appendChild(cv);
+  cv.setAttribute("aria-hidden", "true"); cv.style.cssText = "position:fixed;inset:0;width:100%;height:100%;z-index:6;pointer-events:none;filter:blur(7px)"; document.body.appendChild(cv);
   const dpr = Math.min(devicePixelRatio || 1, 1.5);
   function sizeCanvas() { cv.width = Math.round(innerWidth * dpr / 2); cv.height = Math.round(innerHeight * dpr / 2); cx.setTransform(cv.width / innerWidth, 0, 0, cv.height / innerHeight, 0, 0); }
   function hull(pts) {                                            // convex hull (monotone chain)
@@ -570,7 +575,7 @@
       const wob = (o.f - 1) * 26, lx = o.x + wob, ly = o.y - wob * .6;     // the shadows sway as the flame dances
       solids.forEach(sd => {
         if (sd.own === o) return;
-        const L = (sd.own ? 150 : 340) * (1 + (o.f - 1) * 1.6), out = sd.pts.map(p => { const dx = p[0] - lx, dy = p[1] - ly, d = Math.hypot(dx, dy) || 1; return [p[0] + dx / d * L, p[1] + dy / d * L]; });
+        const L = (sd.own ? 110 : 230) * (1 + (o.f - 1) * 1.2), out = sd.pts.map(p => { const dx = p[0] - lx, dy = p[1] - ly, d = Math.hypot(dx, dy) || 1; return [p[0] + dx / d * L, p[1] + dy / d * L]; });
         const poly = hull(sd.pts.concat(out));
         cx.save();
         if (sd.card || sd.own) {                                   // an object never shadows itself
@@ -579,7 +584,7 @@
           cx.closePath(); cx.clip("evenodd");
         }
         cx.beginPath(); poly.forEach((p, i) => i ? cx.lineTo(p[0], p[1]) : cx.moveTo(p[0], p[1])); cx.closePath();
-        cx.fillStyle = "rgba(0,0,0,.42)"; cx.fill(); cx.restore();
+        cx.fillStyle = "rgba(0,0,0,.17)"; cx.fill(); cx.restore();
       });
     });
   }
@@ -589,9 +594,9 @@
       o.glow.style.left = o.x + "px"; o.glow.style.top = o.y + "px";
       o.rl.style.left = o.x + "px"; o.rl.style.top = o.y + "px";
     });
-    const stops = flames.map(o => `radial-gradient(circle at ${o.x.toFixed(0)}px ${o.y.toFixed(0)}px, rgba(0,0,0,calc(.6 + var(--f${o.i}) * .4)) 0, rgba(0,0,0,.6) calc(${rad * .12}px * var(--f${o.i})), rgba(0,0,0,.3) calc(${rad * .26}px * var(--f${o.i})), transparent calc(${rad * .46}px * var(--f${o.i})))`);
+    const stops = flames.map(o => `radial-gradient(circle at ${o.x.toFixed(0)}px ${o.y.toFixed(0)}px, rgba(0,0,0,calc(.6 + var(--f${o.i}) * .4)) 0, rgba(0,0,0,.7) calc(${rad * .13}px * var(--f${o.i})), rgba(0,0,0,.3) calc(${rad * .26}px * var(--f${o.i})), transparent calc(${rad * .46}px * var(--f${o.i})))`);
     room.style.setProperty("--mask", stops.join(","));
-    const hole = flames.map(o => `radial-gradient(circle at ${o.x.toFixed(0)}px ${o.y.toFixed(0)}px, transparent 0, transparent calc(${rad * .06}px * var(--f${o.i})), rgba(0,0,0,.55) calc(${rad * .2}px * var(--f${o.i})), #000 calc(${rad * .42}px * var(--f${o.i})))`).join(",");
+    const hole = flames.map(o => `radial-gradient(circle at ${o.x.toFixed(0)}px ${o.y.toFixed(0)}px, transparent 0, transparent calc(${rad * .1}px * var(--f${o.i})), rgba(0,0,0,.5) calc(${rad * .26}px * var(--f${o.i})), #000 calc(${rad * .5}px * var(--f${o.i})))`).join(",");
     shade.style.setProperty("--m", hole);
     placeSparks();
   }
@@ -629,6 +634,7 @@
     sparks.forEach(e => { const o = flames[+e.dataset.i]; e.style.left = (o.x + +e.dataset.ox * rad) + "px"; e.style.top = (o.y + +e.dataset.oy * rad) + "px"; });
   }
 
+  window.CANDLES = flames;
   sizeCanvas(); drawFrame(); layout(); shadows();
   addEventListener("resize", () => { sizeCanvas(); drawFrame(); layout(); shadows(); });
   addEventListener("load", layout);
@@ -1078,7 +1084,7 @@
     const STIFFNESS  = 70;    // spring strength toward the aim
     const DAMPING    = 9;     // lower = more overshoot
 
-    img.src = "manicule.svg";
+    img.src = "manicule.svg"; const litImg = document.getElementById("manicule-lit"); litImg.src = "manicule.svg";
 
     // hinge: centred over the spread, above the top of the window
     const hinge = () => {
@@ -1131,6 +1137,22 @@
 
       el.style.transform = `translate(${hg.x}px, ${hg.y + lift}px)`;
       pivot.style.transform = `rotate(${rot}deg)`;
+      /* the candles light the hand from their side, and it throws a soft shadow away from them */
+      const C = window.CANDLES;
+      if (C && C.length) {
+        const w = pivot.offsetWidth, h = pivot.offsetHeight, a = -rot * Math.PI / 180, ca = Math.cos(a), sa = Math.sin(a);
+        const hx = hg.x, hy = hg.y + lift, tx = hx + Math.sin(rot * Math.PI / 180) * h * .62, ty = hy + Math.cos(rot * Math.PI / 180) * h * .62;   // roughly the hand
+        let near = 1e9, nx = 0, ny = 0; const stops = [];
+        C.forEach(o => {
+          const d = Math.hypot(o.x - tx, o.y - ty); if (d < near) { near = d; nx = tx - o.x; ny = ty - o.y; }
+          const vx = o.x - hx, vy = o.y - hy, lx = vx * ca - vy * sa + w * .511, ly = vx * sa + vy * ca;
+          stops.push(`radial-gradient(circle at ${lx.toFixed(0)}px ${ly.toFixed(0)}px, rgba(0,0,0,${(.75 * (.7 + .3 * o.f)).toFixed(2)}) 0, rgba(0,0,0,.5) ${(w * 1.5 * o.f).toFixed(0)}px, transparent ${(w * 3.4 * o.f).toFixed(0)}px)`);
+        });
+        pivot.style.setProperty("--hm", stops.join(","));
+        const rad = Math.max(innerWidth, innerHeight), k = Math.max(0, 1 - near / (rad * .7));
+        const L = Math.hypot(nx, ny) || 1, sx = (nx / L) * 16, sy = (ny / L) * 16, lx2 = sx * ca - sy * sa, ly2 = sx * sa + sy * ca;
+        img.style.filter = `var(--manicule-filter) brightness(${(.7 + .3 * k).toFixed(2)}) drop-shadow(${lx2.toFixed(1)}px ${ly2.toFixed(1)}px 9px rgba(0,0,0,.5))`;
+      }
       requestAnimationFrame(loop);
     })(performance.now());
   }
