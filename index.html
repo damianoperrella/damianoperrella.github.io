@@ -16,9 +16,9 @@
      ============================================================ */
   :root {
     /* the dark room: a cold teal-black, lit by candles */
-    --room:       #03080b;
-    --room-haze:  #123038;               /* the cold light hanging in the air */
-    --gold:       #6c7762;               /* old tarnished thread, unlit */
+    --room:       #143632;
+    --room-haze:  #2a6a62;               /* the cold light hanging in the air */
+    --gold:       #8f9a80;               /* old tarnished thread, unlit */
     --gold-lit:   #e6cf98;               /* the same thread where a flame catches it */
 
     --card:  #ffffff;
@@ -62,15 +62,15 @@
   /* the cold light hanging in the air, and the nap of the velvet */
   .room .haze {
     background:
-      radial-gradient(ellipse 75% 60% at 50% 18%, rgba(34, 82, 96, .16), transparent 70%),
-      radial-gradient(ellipse 95% 75% at 50% 58%, rgba(10, 30, 38, .5), transparent 82%);
+      radial-gradient(ellipse 80% 65% at 50% 30%, rgba(70, 150, 135, .26), transparent 72%),
+      radial-gradient(ellipse 95% 75% at 50% 58%, rgba(30, 90, 80, .3), transparent 82%);
   }
   .room .nap {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .02' numOctaves='3' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='2' intercept='-.5'/%3E%3CfeFuncG type='linear' slope='2' intercept='-.5'/%3E%3CfeFuncB type='linear' slope='2' intercept='-.5'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
-    background-size: 600px 600px; mix-blend-mode: soft-light; opacity: .55;
+    background-size: 600px 600px; mix-blend-mode: soft-light; opacity: .7;
   }
   /* the embroidered border, dim; and the same border bright, only where a flame reaches it */
-  .room .thread { background-repeat: no-repeat; opacity: .85; }
+  .room .thread { background-repeat: no-repeat; opacity: 1; }
   .room .lit {
     background-repeat: no-repeat; opacity: 1; mix-blend-mode: screen;
     -webkit-mask-image: var(--mask); mask-image: var(--mask);
@@ -79,7 +79,7 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='2.2' intercept='-.55'/%3E%3CfeFuncG type='linear' slope='2.2' intercept='-.55'/%3E%3CfeFuncB type='linear' slope='2.2' intercept='-.55'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     background-size: 260px 260px; mix-blend-mode: overlay; opacity: .45;
   }
-  .room .vignette { background: radial-gradient(ellipse 85% 80% at 50% 50%, transparent 30%, rgba(0, 0, 0, .82) 100%); }
+  .room .vignette { background: radial-gradient(ellipse 85% 80% at 50% 50%, transparent 42%, rgba(0, 0, 0, .5) 100%); }
   .room canvas { width: 100%; height: 100%; filter: blur(5px); }
   /* the light each flame throws on the cloth (additive) */
   .room .glow {
@@ -102,10 +102,11 @@
     transition: filter .2s ease;
   }
   .candle.drag { cursor: grabbing; filter: drop-shadow(10px 18px 12px rgba(0, 0, 0, .6)); }
-  .candle svg { display: block; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .candle img { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; pointer-events: none; }
+  .candle svg { position: absolute; inset: 0; display: block; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
   .candle .flame { transform-box: fill-box; transform-origin: 50% 50%; transform: scale(calc(.86 + var(--f, 1) * .16)); }
   .candle .flame circle:first-child { filter: blur(2px); }
-  #shade { position: fixed; inset: 0; z-index: 5; pointer-events: none; background: rgba(4, 5, 9, .5); -webkit-mask-image: var(--m); mask-image: var(--m); -webkit-mask-composite: source-in; mask-composite: intersect; }
+  #shade { position: fixed; inset: 0; z-index: 5; pointer-events: none; background: rgba(4, 8, 8, .16); -webkit-mask-image: var(--m); mask-image: var(--m); -webkit-mask-composite: source-in; mask-composite: intersect; }
   #candles { position: fixed; inset: 0; z-index: 9; pointer-events: none; }
   #relight { position: fixed; inset: 0; z-index: 5; pointer-events: none; overflow: hidden; }
   #relight i {
@@ -406,30 +407,14 @@
 <div class="room" id="room" aria-hidden="true">
   <i class="haze"></i><i class="nap"></i><i class="thread"></i><i class="lit"></i><i class="vignette"></i><i class="grain"></i>
   <div class="candle" data-i="0" style="rotate: -18deg" title="Drag me">
+    <img src="images/candle.png" alt="" draggable="false">
     <svg viewBox="0 0 200 160" aria-hidden="true">
-      <path fill-rule="evenodd" fill="#b08a3c" d="M168 56a24 24 0 1 0 .01 0ZM168 68a12 12 0 1 1-.01 0Z"/>
-      <path fill="#9c7a35" d="M120 70h34v20h-34Z"/><path fill="#d8b868" d="M120 72h34v4h-34Z" opacity=".7"/>
-      <circle cx="80" cy="80" r="64" fill="#5b4219"/><circle cx="80" cy="80" r="61" fill="#cfae5c"/>
-      <circle cx="80" cy="80" r="54" fill="#8a6a2d"/><circle cx="80" cy="80" r="50" fill="#a98536"/>
-      <path d="M28 66a54 54 0 0 1 36-28" fill="none" stroke="#fff3c9" stroke-width="2" stroke-linecap="round" opacity=".55"/>
-      <path d="M36 112a54 54 0 0 0 44 20" fill="none" stroke="#5b4219" stroke-width="3" stroke-linecap="round" opacity=".5"/>
-      <circle cx="80" cy="80" r="27" fill="#d9b963"/><circle cx="80" cy="80" r="22" fill="#8d6c2c"/>
-      <circle cx="80" cy="80" r="19" fill="#e6d6ae"/><circle cx="80" cy="80" r="15" fill="#f4e9c8"/>
-      <circle cx="80" cy="80" r="3.200" fill="#3a2d1d"/>
       <g class="flame"><circle cx="80" cy="80" r="17" fill="rgba(255,170,60,.6)"/><circle cx="80" cy="80" r="8.500" fill="#ffc964"/><circle cx="80" cy="80" r="4.200" fill="#fff7d4"/></g>
     </svg>
   </div>
   <div class="candle" data-i="1" style="rotate: 24deg" title="Drag me">
+    <img src="images/candle.png" alt="" draggable="false">
     <svg viewBox="0 0 200 160" aria-hidden="true">
-      <path fill-rule="evenodd" fill="#b08a3c" d="M168 56a24 24 0 1 0 .01 0ZM168 68a12 12 0 1 1-.01 0Z"/>
-      <path fill="#9c7a35" d="M120 70h34v20h-34Z"/><path fill="#d8b868" d="M120 72h34v4h-34Z" opacity=".7"/>
-      <circle cx="80" cy="80" r="64" fill="#5b4219"/><circle cx="80" cy="80" r="61" fill="#cfae5c"/>
-      <circle cx="80" cy="80" r="54" fill="#8a6a2d"/><circle cx="80" cy="80" r="50" fill="#a98536"/>
-      <path d="M28 66a54 54 0 0 1 36-28" fill="none" stroke="#fff3c9" stroke-width="2" stroke-linecap="round" opacity=".55"/>
-      <path d="M36 112a54 54 0 0 0 44 20" fill="none" stroke="#5b4219" stroke-width="3" stroke-linecap="round" opacity=".5"/>
-      <circle cx="80" cy="80" r="27" fill="#d9b963"/><circle cx="80" cy="80" r="22" fill="#8d6c2c"/>
-      <circle cx="80" cy="80" r="19" fill="#e6d6ae"/><circle cx="80" cy="80" r="15" fill="#f4e9c8"/>
-      <circle cx="80" cy="80" r="3.200" fill="#3a2d1d"/>
       <g class="flame"><circle cx="80" cy="80" r="17" fill="rgba(255,170,60,.6)"/><circle cx="80" cy="80" r="8.500" fill="#ffc964"/><circle cx="80" cy="80" r="4.200" fill="#fff7d4"/></g>
     </svg>
   </div>
@@ -524,9 +509,9 @@
   }
 
   /* ---- the candles ---- */
-  const START = [{ x: .1, y: .8 }, { x: .9, y: .46 }];           // where each tray's centre starts, as a fraction of the window
+  const START = [{ x: .07, y: .13 }, { x: .17, y: .13 }];           // where each tray's centre starts, as a fraction of the window
   let saved = null;
-  try { saved = JSON.parse(localStorage.getItem("candles-v1") || "null"); } catch (e) {}
+  try { saved = JSON.parse(localStorage.getItem("candles-v2") || "null"); } catch (e) {}
   const pos = START.map((d, i) => saved && saved[i] && isFinite(saved[i].x) && isFinite(saved[i].y) ? { x: +saved[i].x, y: +saved[i].y } : { ...d });
   const candleLayer = document.getElementById("candles");        // candles sit above the cards so they can never get buried
   room.querySelectorAll(".candle").forEach(c => candleLayer.appendChild(c));
@@ -615,7 +600,7 @@
     });
     const drop = () => {
       if (!o.el.classList.contains("drag")) return; o.el.classList.remove("drag");
-      try { localStorage.setItem("candles-v1", JSON.stringify(pos)); } catch (e) {}
+      try { localStorage.setItem("candles-v2", JSON.stringify(pos)); } catch (e) {}
     };
     o.el.addEventListener("pointerup", drop); o.el.addEventListener("pointercancel", drop);
   });
