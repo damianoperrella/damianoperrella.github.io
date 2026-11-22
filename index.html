@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="pt-color" content="#1b7a52">
+<meta name="pt-color" content="#1c4048">
 <title>Damiano Perrella — Architect</title>
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -15,10 +15,11 @@
      DESIGN TOKENS — everything colour/type lives here.
      ============================================================ */
   :root {
-    /* felt table */
-    --felt-light: #1b7a52;               /* centre of the pool of light */
-    --felt:       #0d4a33;               /* the baize itself */
-    --felt-dark:  #031610;               /* edges of the room */
+    /* the dark room: a cold teal-black, lit by candles */
+    --room:       #03080b;
+    --room-haze:  #123038;               /* the cold light hanging in the air */
+    --gold:       #6c7762;               /* old tarnished thread, unlit */
+    --gold-lit:   #c8d3ae;               /* the same thread where a flame catches it */
 
     --card:  #ffffff;
     --ink:   #141414;                    /* text + hairlines on the cards */
@@ -47,50 +48,72 @@
     overflow-x: hidden;
     color: var(--on-bg);
     font-family: var(--font);
-    background: var(--felt-dark);
+    background: var(--room);
   }
 
-  /* ---------------- the felt table ---------------- */
-  .felt {
-    position: fixed; inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    isolation: isolate;
-    overflow: hidden;
-    /* one pool of harsh overhead light, falling off to a dark room */
+  /* ---------------- the dark room: velvet with an embroidered border, lit by two candles ---------------- */
+  .room {
+    position: fixed; inset: 0; z-index: 0;
+    pointer-events: none; isolation: isolate; overflow: hidden;
+    background: var(--room);
+    --f0: 1; --f1: 1;                                /* candle flicker, set from JS */
+  }
+  .room > * { position: absolute; inset: 0; display: block; }
+  /* the cold light hanging in the air, and the nap of the velvet */
+  .room .haze {
     background:
-      radial-gradient(ellipse 62% 60% at 50% 52%,
-        var(--felt-light) 0%, var(--felt) 38%, #093626 62%, var(--felt-dark) 100%),
-      var(--felt);
+      radial-gradient(ellipse 75% 60% at 50% 18%, rgba(34, 82, 96, .16), transparent 70%),
+      radial-gradient(ellipse 95% 75% at 50% 58%, rgba(10, 30, 38, .5), transparent 82%);
   }
-  .felt::before, .felt::after, .felt i {
-    content: "";
-    position: absolute; inset: 0;
-    display: block;
+  .room .nap {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .02' numOctaves='3' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='2' intercept='-.5'/%3E%3CfeFuncG type='linear' slope='2' intercept='-.5'/%3E%3CfeFuncB type='linear' slope='2' intercept='-.5'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+    background-size: 600px 600px; mix-blend-mode: soft-light; opacity: .55;
   }
-  /* fine grain: the nap of the cloth */
-  .felt::before {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='1.9' intercept='-.45'/%3E%3CfeFuncG type='linear' slope='1.9' intercept='-.45'/%3E%3CfeFuncB type='linear' slope='1.9' intercept='-.45'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-size: 220px 220px;
-    mix-blend-mode: overlay;
-    opacity: .6;
+  /* the embroidered border, dim; and the same border bright, only where a flame reaches it */
+  .room .thread { background-repeat: no-repeat; opacity: .85; }
+  .room .lit {
+    background-repeat: no-repeat; opacity: 1; mix-blend-mode: screen;
+    -webkit-mask-image: var(--mask); mask-image: var(--mask);
   }
-  /* short fibres lying every which way */
-  .felt::after {
-    inset: -30%;
-    transform: rotate(32deg);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75 .05' numOctaves='2' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='2.4' intercept='-.7'/%3E%3CfeFuncG type='linear' slope='2.4' intercept='-.7'/%3E%3CfeFuncB type='linear' slope='2.4' intercept='-.7'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
-    background-size: 360px 360px;
-    mix-blend-mode: soft-light;
-    opacity: .55;
+  .room .grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='2.2' intercept='-.55'/%3E%3CfeFuncG type='linear' slope='2.2' intercept='-.55'/%3E%3CfeFuncB type='linear' slope='2.2' intercept='-.55'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 260px 260px; mix-blend-mode: overlay; opacity: .45;
   }
-  /* uneven wear: broad light and dark patches */
-  .felt i {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900'%3E%3Cfilter id='m' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.011 .016' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='2.2' intercept='-.6'/%3E%3CfeFuncG type='linear' slope='2.2' intercept='-.6'/%3E%3CfeFuncB type='linear' slope='2.2' intercept='-.6'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
-    background-size: 900px 900px;
-    mix-blend-mode: overlay;
-    opacity: .4;
+  .room .vignette { background: radial-gradient(ellipse 85% 80% at 50% 50%, transparent 30%, rgba(0, 0, 0, .82) 100%); }
+  .room canvas { width: 100%; height: 100%; filter: blur(5px); }
+  /* the light each flame throws on the cloth (additive) */
+  .room .glow {
+    inset: auto; width: 62vmax; height: 62vmax; margin: -31vmax 0 0 -31vmax;
+    background: radial-gradient(circle, rgba(236, 238, 150, .55) 0%, rgba(208, 220, 120, .22) 7%, rgba(150, 172, 92, .085) 22%, rgba(90, 120, 80, .03) 40%, transparent 56%);
+    mix-blend-mode: screen; opacity: calc(.7 + var(--f, 1) * .3); transform: scale(calc(.9 + var(--f, 1) * .1));
   }
+  .room .spark {
+    inset: auto; width: 9px; height: 9px; margin: -4.5px; opacity: 0;
+    background: #f2f6dc;
+    clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
+    animation: spark var(--d, 3.5s) ease-in-out var(--w, 0s) infinite;
+  }
+  @keyframes spark { 0%, 62%, 100% { opacity: 0; transform: scale(.3) rotate(0deg); } 80% { opacity: .95; transform: scale(1) rotate(45deg); } }
+  /* the candles, seen from above: a round brass holder with a ring handle, wax, and a flame */
+  .candle {
+    position: absolute; inset: auto; width: clamp(104px, 11.5vw, 168px); aspect-ratio: 200 / 160;
+    pointer-events: auto; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none;
+    filter: drop-shadow(5px 9px 7px rgba(0, 0, 0, .65));
+    transition: filter .2s ease;
+  }
+  .candle.drag { cursor: grabbing; filter: drop-shadow(10px 18px 12px rgba(0, 0, 0, .6)); }
+  .candle svg { display: block; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .candle .flame { transform-box: fill-box; transform-origin: 50% 50%; transform: scale(calc(.86 + var(--f, 1) * .16)); }
+  .candle .flame circle:first-child { filter: blur(2px); }
+  #shade { position: fixed; inset: 0; z-index: 5; pointer-events: none; background: rgba(2, 7, 10, .68); -webkit-mask-image: var(--m); mask-image: var(--m); -webkit-mask-composite: source-in; mask-composite: intersect; }
+  #relight { position: fixed; inset: 0; z-index: 5; pointer-events: none; overflow: hidden; }
+  #relight i {
+    position: absolute; width: 50vmax; height: 50vmax; margin: -25vmax 0 0 -25vmax; display: block;
+    background: radial-gradient(circle, rgba(226, 232, 150, .5) 0%, rgba(190, 205, 120, .18) 22%, transparent 56%);
+    mix-blend-mode: soft-light; opacity: calc(.7 + var(--f, 1) * .3);
+  }
+  .candle .flame { z-index: 2; }
+  @media (prefers-reduced-motion: reduce) { .room .spark { animation: none; opacity: 0; } }
 
   /* ---------------- header (fixed, top right) ---------------- */
   .id {
@@ -101,7 +124,7 @@
     font-size: 15px;
     line-height: 1.4;
     pointer-events: none;                              /* only the two links are clickable */
-    background: linear-gradient(rgba(3, 22, 16, .8), rgba(3, 22, 16, 0));
+    background: linear-gradient(rgba(4, 10, 14, .8), rgba(4, 10, 14, 0));
   }
   .id a {
     display: block;
@@ -121,7 +144,7 @@
     font-size: 15px; line-height: 1.4;
     color: var(--on-bg);
     text-decoration: none;
-    text-shadow: 0 0 10px rgba(3, 22, 16, .8);
+    text-shadow: 0 0 10px rgba(4, 10, 14, .8);
   }
   .all:hover, .all:focus-visible { text-decoration: underline; text-underline-offset: 3px; outline: none; }
 
@@ -133,7 +156,7 @@
     font: inherit; font-size: 15px; line-height: 1.4;
     color: var(--on-bg);
     background: none; border: 0; padding: 4px 8px; cursor: pointer;
-    text-shadow: 0 0 10px rgba(3, 22, 16, .8);
+    text-shadow: 0 0 10px rgba(4, 10, 14, .8);
   }
   .redeal:hover, .redeal:focus-visible { text-decoration: underline; text-underline-offset: 3px; outline: none; }
   .redeal:disabled { cursor: default; text-decoration: none; opacity: .55; }
@@ -279,7 +302,7 @@
   /* ---------------- the fortune machine ---------------- */
   #dim {
     position: fixed; inset: 0; z-index: 40;
-    background: rgba(3, 22, 16, .9);
+    background: rgba(4, 10, 14, .9);
     opacity: 0; pointer-events: none;
     transition: opacity .9s ease;
   }
@@ -378,7 +401,39 @@
 </head>
 <body>
 
-<div class="felt" aria-hidden="true"><i></i></div>
+<div class="room" id="room" aria-hidden="true">
+  <i class="haze"></i><i class="nap"></i><i class="thread"></i><i class="lit"></i><i class="vignette"></i><i class="grain"></i>
+  <div class="candle" data-i="0" style="rotate: -18deg" title="Drag me">
+    <svg viewBox="0 0 200 160" aria-hidden="true">
+      <path fill-rule="evenodd" fill="#8d8446" d="M168 56a24 24 0 1 0 .01 0ZM168 68a12 12 0 1 1-.01 0Z"/>
+      <path fill="#766d37" d="M120 70h34v20h-34Z"/><path fill="#b9ae74" d="M120 72h34v4h-34Z" opacity=".7"/>
+      <circle cx="80" cy="80" r="64" fill="#3d3a1b"/><circle cx="80" cy="80" r="61" fill="#a79a58"/>
+      <circle cx="80" cy="80" r="54" fill="#6a622f"/><circle cx="80" cy="80" r="50" fill="#867b3d"/>
+      <path d="M28 66a54 54 0 0 1 36-28" fill="none" stroke="#eee9bd" stroke-width="2" stroke-linecap="round" opacity=".55"/>
+      <path d="M36 112a54 54 0 0 0 44 20" fill="none" stroke="#2c2a14" stroke-width="3" stroke-linecap="round" opacity=".5"/>
+      <circle cx="80" cy="80" r="27" fill="#b3a661"/><circle cx="80" cy="80" r="22" fill="#6f6733"/>
+      <circle cx="80" cy="80" r="19" fill="#cfcaa6"/><circle cx="80" cy="80" r="15" fill="#e5e1c2"/>
+      <circle cx="80" cy="80" r="3.200" fill="#241f12"/>
+      <g class="flame"><circle cx="80" cy="80" r="14" fill="rgba(214,224,120,.5)"/><circle cx="80" cy="80" r="7" fill="#e6ea8c"/><circle cx="80" cy="80" r="3.500" fill="#fbfce6"/></g>
+    </svg>
+  </div>
+  <div class="candle" data-i="1" style="rotate: 24deg" title="Drag me">
+    <svg viewBox="0 0 200 160" aria-hidden="true">
+      <path fill-rule="evenodd" fill="#8d8446" d="M168 56a24 24 0 1 0 .01 0ZM168 68a12 12 0 1 1-.01 0Z"/>
+      <path fill="#766d37" d="M120 70h34v20h-34Z"/><path fill="#b9ae74" d="M120 72h34v4h-34Z" opacity=".7"/>
+      <circle cx="80" cy="80" r="64" fill="#3d3a1b"/><circle cx="80" cy="80" r="61" fill="#a79a58"/>
+      <circle cx="80" cy="80" r="54" fill="#6a622f"/><circle cx="80" cy="80" r="50" fill="#867b3d"/>
+      <path d="M28 66a54 54 0 0 1 36-28" fill="none" stroke="#eee9bd" stroke-width="2" stroke-linecap="round" opacity=".55"/>
+      <path d="M36 112a54 54 0 0 0 44 20" fill="none" stroke="#2c2a14" stroke-width="3" stroke-linecap="round" opacity=".5"/>
+      <circle cx="80" cy="80" r="27" fill="#b3a661"/><circle cx="80" cy="80" r="22" fill="#6f6733"/>
+      <circle cx="80" cy="80" r="19" fill="#cfcaa6"/><circle cx="80" cy="80" r="15" fill="#e5e1c2"/>
+      <circle cx="80" cy="80" r="3.200" fill="#241f12"/>
+      <g class="flame"><circle cx="80" cy="80" r="14" fill="rgba(214,224,120,.5)"/><circle cx="80" cy="80" r="7" fill="#e6ea8c"/><circle cx="80" cy="80" r="3.500" fill="#fbfce6"/></g>
+    </svg>
+  </div>
+</div>
+<div id="shade" aria-hidden="true"></div>
+<div id="relight" aria-hidden="true"></div>
 
 <header class="id">
   <a href="/about">Damiano Perrella</a>
@@ -411,6 +466,192 @@
   <div class="pivot"><img id="manicule-img" alt=""></div>
 </div>
 
+
+<script>
+/* ============================================================
+   THE ROOM: dark velvet with an embroidered border of gold and
+   silver thread, lit by two candles seen from above. The candles
+   can be dragged; the light, the glints and the glow on the cards
+   follow them, and they stay where they are put.
+   ============================================================ */
+(function () {
+  const room = document.getElementById("room"), relight = document.getElementById("relight"), shade = document.getElementById("shade");
+  if (!room) return;
+  const cs = getComputedStyle(document.documentElement);
+  const gold = cs.getPropertyValue("--gold").trim() || "#c9a24a", lit = cs.getPropertyValue("--gold-lit").trim() || "#ffe3a0";
+
+  /* ---- the embroidered border: drawn to the size of the window, twice (dim, and lit) ---- */
+  function frame(w, h, col, silver) {
+    const a = 12, b = Math.max(26, Math.min(38, w * .024)), n = v => v.toFixed(1);
+    const star = (x, y, r) => `M${n(x)} ${n(y - r)}L${n(x + r * .28)} ${n(y - r * .28)}L${n(x + r)} ${n(y)}L${n(x + r * .28)} ${n(y + r * .28)}L${n(x)} ${n(y + r)}L${n(x - r * .28)} ${n(y + r * .28)}L${n(x - r)} ${n(y)}L${n(x - r * .28)} ${n(y - r * .28)}Z`;
+    const edge = len => {                                           // a braided vine, from 0 to len along x, centred on y = 0
+      const cnt = Math.max(2, Math.round(len / (b * 1.7))), p = len / cnt, amp = b * .3; let o = "";
+      for (let i = 0; i < cnt; i++) {
+        const x = i * p;
+        o += `<path d="M${n(x)} 0C${n(x + p * .25)} ${n(-amp * 1.3)} ${n(x + p * .25)} ${n(-amp * 1.3)} ${n(x + p * .5)} 0S${n(x + p * .75)} ${n(amp * 1.3)} ${n(x + p)} 0"/>`;
+        o += `<path d="M${n(x)} 0C${n(x + p * .25)} ${n(amp * 1.3)} ${n(x + p * .25)} ${n(amp * 1.3)} ${n(x + p * .5)} 0S${n(x + p * .75)} ${n(-amp * 1.3)} ${n(x + p)} 0" stroke-opacity=".6"/>`;
+        o += `<path d="M${n(x + p * .5)} 0m-3 0a3 3 0 1 0 6 0a3 3 0 1 0-6 0" fill="${silver}" stroke="none" opacity=".9"/>`;
+        o += `<path transform="translate(${n(x + p * .25)} ${n(-amp * .6)}) rotate(-40)" d="M0 0C3 -3 8 -3 10 0C8 3 3 3 0 0Z" fill="${col}" fill-opacity=".45" stroke="none"/>`;
+        o += `<path transform="translate(${n(x + p * .75)} ${n(amp * .6)}) rotate(140)" d="M0 0C3 -3 8 -3 10 0C8 3 3 3 0 0Z" fill="${col}" fill-opacity=".45" stroke="none"/>`;
+      }
+      return o;
+    };
+    const rosette = (cx, cy) => {
+      let o = `<circle cx="${n(cx)}" cy="${n(cy)}" r="${n(b * .42)}"/><circle cx="${n(cx)}" cy="${n(cy)}" r="${n(b * .26)}" stroke-opacity=".7"/>`;
+      for (let i = 0; i < 8; i++) o += `<ellipse transform="translate(${n(cx)} ${n(cy)}) rotate(${i * 45}) translate(${n(b * .42)} 0)" rx="${n(b * .09)}" ry="${n(b * .04)}" fill="${col}" fill-opacity=".5" stroke="none"/>`;
+      return o + `<path d="${star(cx, cy, b * .2)}" fill="${silver}" stroke="${silver}" fill-opacity=".85"/>`;
+    };
+    const hl = w - 2 * (a + b), vl = h - 2 * (a + b);
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" fill="none" stroke="${col}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="${a}" y="${a}" width="${w - 2 * a}" height="${h - 2 * a}" stroke-width="1.6"/>
+      <rect x="${a + 4}" y="${a + 4}" width="${w - 2 * a - 8}" height="${h - 2 * a - 8}" stroke-opacity=".5" stroke-width=".8"/>
+      <rect x="${a + b}" y="${a + b}" width="${w - 2 * (a + b)}" height="${h - 2 * (a + b)}" stroke-width="1.2"/>
+      <rect x="${a + b - 4}" y="${a + b - 4}" width="${w - 2 * (a + b) + 8}" height="${h - 2 * (a + b) + 8}" stroke-opacity=".5" stroke-width=".8"/>
+      <g transform="translate(${n(a + b)} ${n(a + b / 2)})">${edge(hl)}</g>
+      <g transform="translate(${n(w - a - b / 2)} ${n(a + b)}) rotate(90)">${edge(vl)}</g>
+      <g transform="translate(${n(w - a - b)} ${n(h - a - b / 2)}) rotate(180)">${edge(hl)}</g>
+      <g transform="translate(${n(a + b / 2)} ${n(h - a - b)}) rotate(270)">${edge(vl)}</g>
+      ${rosette(a + b / 2, a + b / 2)}${rosette(w - a - b / 2, a + b / 2)}${rosette(a + b / 2, h - a - b / 2)}${rosette(w - a - b / 2, h - a - b / 2)}
+    </svg>`;
+    return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+  }
+  function drawFrame() {
+    room.querySelector(".thread").style.backgroundImage = frame(innerWidth, innerHeight, gold, "#b9c6d2");
+    room.querySelector(".lit").style.backgroundImage = frame(innerWidth, innerHeight, lit, "#f4fbff");
+  }
+
+  /* ---- the candles ---- */
+  const START = [{ x: .1, y: .8 }, { x: .9, y: .46 }];           // where each tray's centre starts, as a fraction of the window
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem("candles-v1") || "null"); } catch (e) {}
+  const pos = START.map((d, i) => saved && saved[i] && isFinite(saved[i].x) && isFinite(saved[i].y) ? { x: +saved[i].x, y: +saved[i].y } : { ...d });
+  const flames = [...room.querySelectorAll(".candle")].map((el, i) => {
+    const glow = document.createElement("i"); glow.className = "glow"; room.insertBefore(glow, el);
+    const rl = document.createElement("i"); relight.appendChild(rl);
+    return { el, glow, rl, i, x: 0, y: 0, f: 1, target: 1, next: 0 };
+  });
+  const clampPos = p => { p.x = Math.max(.02, Math.min(.98, p.x)); p.y = Math.max(.03, Math.min(.97, p.y)); };
+
+  function layout() {                                            // put each candle where its fraction says, then light from it
+    flames.forEach(o => {
+      const p = pos[o.i]; clampPos(p);
+      const w = o.el.offsetWidth, h = o.el.offsetHeight;
+      o.el.style.left = (p.x * innerWidth - w * .4) + "px"; o.el.style.top = (p.y * innerHeight - h * .5) + "px";
+      o.x = p.x * innerWidth; o.y = p.y * innerHeight;
+    });
+    light(); if (typeof shadows === "function") shadows();
+  }
+  /* long shadows: every card and candle holder throws a shadow away from each flame */
+  const cv = document.createElement("canvas"), cx = cv.getContext("2d");
+  cv.setAttribute("aria-hidden", "true"); cv.style.cssText = "position:fixed;inset:0;width:100%;height:100%;z-index:6;pointer-events:none;filter:blur(3px)"; document.body.appendChild(cv);
+  const dpr = Math.min(devicePixelRatio || 1, 1.5);
+  function sizeCanvas() { cv.width = Math.round(innerWidth * dpr / 2); cv.height = Math.round(innerHeight * dpr / 2); cx.setTransform(cv.width / innerWidth, 0, 0, cv.height / innerHeight, 0, 0); }
+  function hull(pts) {                                            // convex hull (monotone chain)
+    pts = pts.slice().sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+    const cr = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]), lo = [], up = [];
+    for (const p of pts) { while (lo.length > 1 && cr(lo[lo.length - 2], lo[lo.length - 1], p) <= 0) lo.pop(); lo.push(p); }
+    for (const p of pts.reverse()) { while (up.length > 1 && cr(up[up.length - 2], up[up.length - 1], p) <= 0) up.pop(); up.push(p); }
+    return lo.slice(0, -1).concat(up.slice(0, -1));
+  }
+  function shadows() {
+    cx.clearRect(0, 0, innerWidth, innerHeight);
+    const solids = [];
+    document.querySelectorAll(".card").forEach(c => {
+      const r = c.getBoundingClientRect(); if (r.width < 20) return;
+      const m = r.width * .06;                                    // the card's rotated box is a little loose; pull it in
+      solids.push({ pts: [[r.left + m, r.top + m], [r.right - m, r.top + m], [r.right - m, r.bottom - m], [r.left + m, r.bottom - m]], k: 1.5, card: true });
+    });
+    flames.forEach(o => {
+      const r = o.el.getBoundingClientRect(), rad = r.width * .3, pts = [];
+      for (let i = 0; i < 14; i++) pts.push([o.x + Math.cos(i / 14 * 6.2832) * rad, o.y + Math.sin(i / 14 * 6.2832) * rad]);
+      solids.push({ pts, k: .7, own: o });
+    });
+    flames.forEach(o => {
+      const wob = (o.f - 1) * 26, lx = o.x + wob, ly = o.y - wob * .6;     // the shadows sway as the flame dances
+      solids.forEach(sd => {
+        if (sd.own === o) return;
+        const L = (sd.own ? 150 : 340) * (1 + (o.f - 1) * 1.6), out = sd.pts.map(p => { const dx = p[0] - lx, dy = p[1] - ly, d = Math.hypot(dx, dy) || 1; return [p[0] + dx / d * L, p[1] + dy / d * L]; });
+        const poly = hull(sd.pts.concat(out));
+        cx.save();
+        if (sd.card || sd.own) {                                   // an object never shadows itself
+          cx.beginPath(); cx.rect(-50, -50, innerWidth + 100, innerHeight + 100);
+          if (sd.card) sd.pts.forEach((p, i) => i ? cx.lineTo(p[0], p[1]) : cx.moveTo(p[0], p[1]));
+          cx.closePath(); cx.clip("evenodd");
+        }
+        cx.beginPath(); poly.forEach((p, i) => i ? cx.lineTo(p[0], p[1]) : cx.moveTo(p[0], p[1])); cx.closePath();
+        cx.fillStyle = "rgba(0,0,0,.42)"; cx.fill(); cx.restore();
+      });
+    });
+  }
+  function light() {
+    const rad = Math.max(innerWidth, innerHeight);
+    flames.forEach(o => {
+      o.glow.style.left = o.x + "px"; o.glow.style.top = o.y + "px";
+      o.rl.style.left = o.x + "px"; o.rl.style.top = o.y + "px";
+    });
+    const stops = flames.map(o => `radial-gradient(circle at ${o.x.toFixed(0)}px ${o.y.toFixed(0)}px, rgba(0,0,0,calc(.6 + var(--f${o.i}) * .4)) 0, rgba(0,0,0,.6) calc(${rad * .12}px * var(--f${o.i})), rgba(0,0,0,.3) calc(${rad * .26}px * var(--f${o.i})), transparent calc(${rad * .46}px * var(--f${o.i})))`);
+    room.style.setProperty("--mask", stops.join(","));
+    const hole = flames.map(o => `radial-gradient(circle at ${o.x.toFixed(0)}px ${o.y.toFixed(0)}px, transparent 0, transparent calc(${rad * .06}px * var(--f${o.i})), rgba(0,0,0,.55) calc(${rad * .2}px * var(--f${o.i})), #000 calc(${rad * .42}px * var(--f${o.i})))`).join(",");
+    shade.style.setProperty("--m", hole);
+    placeSparks();
+  }
+
+  /* dragging: the candle goes where the pointer goes and the light moves with it */
+  flames.forEach(o => {
+    let dx = 0, dy = 0;
+    o.el.addEventListener("pointerdown", e => {
+      e.preventDefault(); o.el.setPointerCapture(e.pointerId); o.el.classList.add("drag");
+      const r = o.el.getBoundingClientRect(); dx = e.clientX - r.left - r.width * .4; dy = e.clientY - r.top - r.height * .5;
+      const q = pos[o.i]; dx = e.clientX - q.x * innerWidth; dy = e.clientY - q.y * innerHeight;
+    });
+    o.el.addEventListener("pointermove", e => {
+      if (!o.el.classList.contains("drag")) return;
+      const p = pos[o.i]; p.x = (e.clientX - dx) / innerWidth; p.y = (e.clientY - dy) / innerHeight; layout();
+    });
+    const drop = () => {
+      if (!o.el.classList.contains("drag")) return; o.el.classList.remove("drag");
+      try { localStorage.setItem("candles-v1", JSON.stringify(pos)); } catch (e) {}
+    };
+    o.el.addEventListener("pointerup", drop); o.el.addEventListener("pointercancel", drop);
+  });
+
+  /* a few threads catch the light and glint, now and then */
+  const sparks = [];
+  for (let i = 0; i < 20; i++) {
+    const a = Math.random() * Math.PI * 2, d = Math.pow(Math.random(), .75) * .26;
+    const e = document.createElement("i"); e.className = "spark";
+    e.dataset.ox = Math.cos(a) * d; e.dataset.oy = Math.sin(a) * d * .8; e.dataset.i = i % flames.length;
+    e.style.setProperty("--d", (2.6 + Math.random() * 3.2).toFixed(2) + "s"); e.style.setProperty("--w", (-Math.random() * 6).toFixed(2) + "s");
+    room.appendChild(e); sparks.push(e);
+  }
+  function placeSparks() {
+    const rad = Math.max(innerWidth, innerHeight);
+    sparks.forEach(e => { const o = flames[+e.dataset.i]; e.style.left = (o.x + +e.dataset.ox * rad) + "px"; e.style.top = (o.y + +e.dataset.oy * rad) + "px"; });
+  }
+
+  sizeCanvas(); drawFrame(); layout(); shadows();
+  addEventListener("resize", () => { sizeCanvas(); drawFrame(); layout(); shadows(); });
+  addEventListener("load", layout);
+
+  /* flicker: each flame wanders between a lower and a higher brightness */
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  let last = 0;
+  (function tick(t) {
+    if (t - last > 42) {
+      last = t;
+      flames.forEach(o => {
+        if (t > o.next) { o.target = .7 + Math.random() * .46; o.next = t + 50 + Math.random() * 170; }
+        o.f += (o.target - o.f) * .35;
+        const v = o.f.toFixed(3);
+        room.style.setProperty("--f" + o.i, v);
+        o.el.style.setProperty("--f", v); o.glow.style.setProperty("--f", v); o.rl.style.setProperty("--f", v);
+      });
+      shadows();
+    }
+    requestAnimationFrame(tick);
+  })(0);
+})();
+</script>
 <script src="projects.js"></script>
 <script src="tarot.js"></script>
 <script>
