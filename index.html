@@ -16,10 +16,10 @@
      ============================================================ */
   :root {
     /* the dark room: a cold teal-black, lit by candles */
-    --room:       #143632;
-    --room-haze:  #2a6a62;               /* the cold light hanging in the air */
-    --gold:       #8f9a80;               /* old tarnished thread, unlit */
-    --gold-lit:   #e6cf98;               /* the same thread where a flame catches it */
+    --room:       #3a0e14;
+    --room-haze:  #5a1a22;               /* the cold light hanging in the air */
+    --gold:       #8a7550;               /* old tarnished thread, unlit */
+    --gold-lit:   #f2d89e;               /* the same thread where a flame catches it */
 
     --card:  #ffffff;
     --ink:   #141414;                    /* text + hairlines on the cards */
@@ -60,17 +60,17 @@
   }
   .room > * { position: absolute; inset: 0; display: block; }
   /* the cold light hanging in the air, and the nap of the velvet */
-  .room .haze {
-    background:
-      radial-gradient(ellipse 80% 65% at 50% 30%, rgba(70, 150, 135, .26), transparent 72%),
-      radial-gradient(ellipse 95% 75% at 50% 58%, rgba(30, 90, 80, .3), transparent 82%);
-  }
+  .room .haze { background: radial-gradient(ellipse 90% 80% at 50% 50%, rgba(120, 34, 42, .22), transparent 80%); }
+  /* wool baize: a fine, even nap and a barely-there weave, nothing cloudy */
   .room .nap {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .02' numOctaves='3' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='2' intercept='-.5'/%3E%3CfeFuncG type='linear' slope='2' intercept='-.5'/%3E%3CfeFuncB type='linear' slope='2' intercept='-.5'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
-    background-size: 600px 600px; mix-blend-mode: soft-light; opacity: .7;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(0, 0, 0, .16) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(90deg, rgba(0, 0, 0, .13) 0 1px, transparent 1px 3px),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='2.4' intercept='-.7'/%3E%3CfeFuncG type='linear' slope='2.4' intercept='-.7'/%3E%3CfeFuncB type='linear' slope='2.4' intercept='-.7'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+    background-size: auto, auto, 200px 200px; mix-blend-mode: soft-light; opacity: .9;
   }
   /* the embroidered border, dim; and the same border bright, only where a flame reaches it */
-  .room .thread { background-repeat: no-repeat; opacity: 1; }
+  .room .thread { background-repeat: no-repeat; opacity: 1; filter: brightness(1.7); }
   .room .lit {
     background-repeat: no-repeat; opacity: 1; mix-blend-mode: screen;
     -webkit-mask-image: var(--mask); mask-image: var(--mask);
@@ -79,12 +79,12 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='2.2' intercept='-.55'/%3E%3CfeFuncG type='linear' slope='2.2' intercept='-.55'/%3E%3CfeFuncB type='linear' slope='2.2' intercept='-.55'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     background-size: 260px 260px; mix-blend-mode: overlay; opacity: .45;
   }
-  .room .vignette { background: radial-gradient(ellipse 85% 80% at 50% 50%, transparent 42%, rgba(0, 0, 0, .5) 100%); }
+  .room .vignette { background: radial-gradient(ellipse 85% 80% at 50% 50%, transparent 30%, rgba(0, 0, 0, .72) 100%); }
   .room canvas { width: 100%; height: 100%; filter: blur(5px); }
   /* the light each flame throws on the cloth (additive) */
   .room .glow {
     inset: auto; width: 62vmax; height: 62vmax; margin: -31vmax 0 0 -31vmax;
-    background: radial-gradient(circle, rgba(255, 232, 170, .7) 0%, rgba(255, 210, 128, .32) 9%, rgba(246, 176, 84, .13) 26%, rgba(210, 130, 50, .045) 44%, transparent 62%);
+    background: radial-gradient(circle, rgba(255, 240, 190, .95) 0%, rgba(255, 214, 130, .6) 5%, rgba(250, 172, 78, .3) 14%, rgba(226, 120, 44, .12) 28%, rgba(180, 80, 30, .035) 44%, transparent 58%);
     mix-blend-mode: screen; opacity: calc(.7 + var(--f, 1) * .3); transform: scale(calc(.9 + var(--f, 1) * .1));
   }
   .room .spark {
@@ -107,14 +107,16 @@
   .candle svg { position: absolute; inset: 0; display: block; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
   .candle .flame { transform-box: fill-box; transform-origin: 50% 50%; transform: scale(calc(.86 + var(--f, 1) * .16)); }
   .candle .flame circle:first-child { filter: blur(2px); }
-  #shade { position: fixed; inset: 0; z-index: 5; pointer-events: none; background: rgba(4, 8, 8, .16); -webkit-mask-image: var(--m); mask-image: var(--m); -webkit-mask-composite: source-in; mask-composite: intersect; }
+  #shade { position: fixed; inset: 0; z-index: 5; pointer-events: none; background: rgba(6, 2, 3, .1); -webkit-mask-image: var(--m); mask-image: var(--m); -webkit-mask-composite: source-in; mask-composite: intersect; }
   #candles { position: fixed; inset: 0; z-index: 9; pointer-events: none; }
   #relight { position: fixed; inset: 0; z-index: 5; pointer-events: none; overflow: hidden; }
   #relight i {
     position: absolute; width: 50vmax; height: 50vmax; margin: -25vmax 0 0 -25vmax; display: block;
-    background: radial-gradient(circle, rgba(255, 228, 160, .5) 0%, rgba(255, 196, 108, .2) 26%, transparent 60%);
+    background: radial-gradient(circle, rgba(255, 232, 170, .85) 0%, rgba(255, 196, 108, .38) 24%, rgba(255, 160, 70, .1) 44%, transparent 60%);
     mix-blend-mode: soft-light; opacity: calc(.7 + var(--f, 1) * .3);
   }
+  .room .glow, #relight { display: none; }
+  #flare { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 6; pointer-events: none; mix-blend-mode: screen; }
   .candle .flame { z-index: 2; }
   @media (prefers-reduced-motion: reduce) { .room .spark { animation: none; opacity: 0; } }
 
@@ -221,7 +223,7 @@
     border-radius: 12px;
     background: var(--card);
     /* Hard overhead light: a crisp, dark shadow falling straight down onto the table */
-    box-shadow: 0 12px 4px rgba(0, 0, 0, .55);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, .5);
     transform-style: preserve-3d;
     transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease;
     will-change: transform;
@@ -239,7 +241,7 @@
   .card:focus-visible .tilt {
     /* Lifted toward the light: the shadow on the table stays put, so relative
        to the card it sits further away and softens a little */
-    box-shadow: 0 28px 9px rgba(0, 0, 0, .42);
+    box-shadow: 0 7px 9px rgba(0, 0, 0, .38);
   }
 
   .inner {
@@ -468,47 +470,36 @@
   const gold = cs.getPropertyValue("--gold").trim() || "#c9a24a", lit = cs.getPropertyValue("--gold-lit").trim() || "#ffe3a0";
 
   /* ---- the embroidered border: drawn to the size of the window, twice (dim, and lit) ---- */
-  function frame(w, h, col, silver) {
-    const a = 12, b = Math.max(26, Math.min(38, w * .024)), n = v => v.toFixed(1);
-    const star = (x, y, r) => `M${n(x)} ${n(y - r)}L${n(x + r * .28)} ${n(y - r * .28)}L${n(x + r)} ${n(y)}L${n(x + r * .28)} ${n(y + r * .28)}L${n(x)} ${n(y + r)}L${n(x - r * .28)} ${n(y + r * .28)}L${n(x - r)} ${n(y)}L${n(x - r * .28)} ${n(y - r * .28)}Z`;
-    const edge = len => {                                           // a braided vine, from 0 to len along x, centred on y = 0
-      const cnt = Math.max(2, Math.round(len / (b * 1.7))), p = len / cnt, amp = b * .3; let o = "";
-      for (let i = 0; i < cnt; i++) {
-        const x = i * p;
-        o += `<path d="M${n(x)} 0C${n(x + p * .25)} ${n(-amp * 1.3)} ${n(x + p * .25)} ${n(-amp * 1.3)} ${n(x + p * .5)} 0S${n(x + p * .75)} ${n(amp * 1.3)} ${n(x + p)} 0"/>`;
-        o += `<path d="M${n(x)} 0C${n(x + p * .25)} ${n(amp * 1.3)} ${n(x + p * .25)} ${n(amp * 1.3)} ${n(x + p * .5)} 0S${n(x + p * .75)} ${n(-amp * 1.3)} ${n(x + p)} 0" stroke-opacity=".6"/>`;
-        o += `<path d="M${n(x + p * .5)} 0m-3 0a3 3 0 1 0 6 0a3 3 0 1 0-6 0" fill="${silver}" stroke="none" opacity=".9"/>`;
-        o += `<path transform="translate(${n(x + p * .25)} ${n(-amp * .6)}) rotate(-40)" d="M0 0C3 -3 8 -3 10 0C8 3 3 3 0 0Z" fill="${col}" fill-opacity=".45" stroke="none"/>`;
-        o += `<path transform="translate(${n(x + p * .75)} ${n(amp * .6)}) rotate(140)" d="M0 0C3 -3 8 -3 10 0C8 3 3 3 0 0Z" fill="${col}" fill-opacity=".45" stroke="none"/>`;
+  function frame(w, h, col) {
+    /* a single fine braid of two thread strands, close to the edge */
+    const a = 16, amp = 2.6, lam = 15, n = v => v.toFixed(1);
+    const W = w - 2 * a, H = h - 2 * a, P = 2 * (W + H);
+    const at = s => {                                               // a point and outward normal at distance s round the rectangle
+      s = ((s % P) + P) % P;
+      if (s < W) return [a + s, a, 0, -1];
+      if (s < W + H) return [a + W, a + s - W, 1, 0];
+      if (s < 2 * W + H) return [a + W - (s - W - H), a + H, 0, 1];
+      return [a, a + H - (s - 2 * W - H), -1, 0];
+    };
+    const strand = ph => {
+      let d = "";
+      for (let s = 0; s <= P; s += 3) {
+        const [x, y, nx, ny] = at(s), corner = Math.min(1, Math.min(s % (W + H) < W ? Math.min(s % (W + H), W - s % (W + H)) : Math.min(s % (W + H) - W, H - (s % (W + H) - W)), 40) / 40);
+        const o = amp * Math.sin(s / lam * 6.2832 + ph) * corner;
+        d += (s ? "L" : "M") + n(x + nx * o) + " " + n(y + ny * o);
       }
-      return o;
+      return `<path d="${d}Z"/>`;
     };
-    const rosette = (cx, cy) => {
-      let o = `<circle cx="${n(cx)}" cy="${n(cy)}" r="${n(b * .42)}"/><circle cx="${n(cx)}" cy="${n(cy)}" r="${n(b * .26)}" stroke-opacity=".7"/>`;
-      for (let i = 0; i < 8; i++) o += `<ellipse transform="translate(${n(cx)} ${n(cy)}) rotate(${i * 45}) translate(${n(b * .42)} 0)" rx="${n(b * .09)}" ry="${n(b * .04)}" fill="${col}" fill-opacity=".5" stroke="none"/>`;
-      return o + `<path d="${star(cx, cy, b * .2)}" fill="${silver}" stroke="${silver}" fill-opacity=".85"/>`;
-    };
-    const hl = w - 2 * (a + b), vl = h - 2 * (a + b);
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" fill="none" stroke="${col}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="${a}" y="${a}" width="${w - 2 * a}" height="${h - 2 * a}" stroke-width="1.6"/>
-      <rect x="${a + 4}" y="${a + 4}" width="${w - 2 * a - 8}" height="${h - 2 * a - 8}" stroke-opacity=".5" stroke-width=".8"/>
-      <rect x="${a + b}" y="${a + b}" width="${w - 2 * (a + b)}" height="${h - 2 * (a + b)}" stroke-width="1.2"/>
-      <rect x="${a + b - 4}" y="${a + b - 4}" width="${w - 2 * (a + b) + 8}" height="${h - 2 * (a + b) + 8}" stroke-opacity=".5" stroke-width=".8"/>
-      <g transform="translate(${n(a + b)} ${n(a + b / 2)})">${edge(hl)}</g>
-      <g transform="translate(${n(w - a - b / 2)} ${n(a + b)}) rotate(90)">${edge(vl)}</g>
-      <g transform="translate(${n(w - a - b)} ${n(h - a - b / 2)}) rotate(180)">${edge(hl)}</g>
-      <g transform="translate(${n(a + b / 2)} ${n(h - a - b)}) rotate(270)">${edge(vl)}</g>
-      ${rosette(a + b / 2, a + b / 2)}${rosette(w - a - b / 2, a + b / 2)}${rosette(a + b / 2, h - a - b / 2)}${rosette(w - a - b / 2, h - a - b / 2)}
-    </svg>`;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" fill="none" stroke="${col}" stroke-width="1.1" stroke-linejoin="round">${strand(0)}${strand(3.1416)}</svg>`;
     return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
   }
   function drawFrame() {
-    room.querySelector(".thread").style.backgroundImage = frame(innerWidth, innerHeight, gold, "#b9c6d2");
-    room.querySelector(".lit").style.backgroundImage = frame(innerWidth, innerHeight, lit, "#f4fbff");
+    room.querySelector(".thread").style.backgroundImage = frame(innerWidth, innerHeight, gold);
+    room.querySelector(".lit").style.backgroundImage = frame(innerWidth, innerHeight, lit);
   }
 
   /* ---- the candles ---- */
-  const START = [{ x: -.05, y: .2 }, { x: 1.06, y: .66 }];   // two candles just off the edge of the table, never seen           // where each tray's centre starts, as a fraction of the window
+  const START = [{ x: .0, y: .28 }, { x: .015, y: .6 }];   // two candles just off the edge of the table, never seen           // where each tray's centre starts, as a fraction of the window
   let saved = null;
   const pos = START.map((d, i) => saved && saved[i] && isFinite(saved[i].x) && isFinite(saved[i].y) ? { x: +saved[i].x, y: +saved[i].y } : { ...d });
   const candleLayer = document.getElementById("candles");        // candles sit above the cards so they can never get buried
@@ -605,11 +596,11 @@
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   let last = 0;
   (function tick(t) {
-    if (t - last > 42) {
+    if (t - last > 30) {
       last = t;
       flames.forEach(o => {
-        if (t > o.next) { o.target = .7 + Math.random() * .46; o.next = t + 50 + Math.random() * 170; }
-        o.f += (o.target - o.f) * .35;
+        if (t > o.next) { const gust = Math.random() < .09; o.target = gust ? .4 + Math.random() * .15 : .78 + Math.random() * .5; o.next = t + (gust ? 90 : 35 + Math.random() * 90); o.roll = (o.roll || 0) + 1; }
+        o.f += (o.target - o.f) * .55;
         const v = o.f.toFixed(3);
         room.style.setProperty("--f" + o.i, v);
         o.el.style.setProperty("--f", v); o.glow.style.setProperty("--f", v); o.rl.style.setProperty("--f", v);
@@ -618,6 +609,45 @@
     }
     requestAnimationFrame(tick);
   })(0);
+})();
+</script>
+<canvas id="flare" aria-hidden="true"></canvas>
+<script>
+/* the unseen candles: soft warm pools that breathe and jolt, their edges broken up by uneven dark patches */
+(() => {
+  const cv = document.getElementById("flare"), g = cv.getContext("2d");
+  const sz = () => { cv.width = Math.round(innerWidth / 2); cv.height = Math.round(innerHeight / 2); }; sz(); addEventListener("resize", sz);
+  const st = [0, 1].map(() => ({ roll: -1, rot: 0, blobs: [] }));
+  function frame() {
+    requestAnimationFrame(frame);
+    const C = window.CANDLES; if (!C) return;
+    g.globalCompositeOperation = "source-over"; g.clearRect(0, 0, cv.width, cv.height);
+    g.globalCompositeOperation = "lighter";
+    C.forEach((o, i) => {
+      const l = st[i], b = o.f, R = Math.max(innerWidth, innerHeight) * .9 * (.6 + b * .4), x = o.x / 2, y = o.y / 2, r = R / 2;
+      if (l.roll !== (o.roll || 0)) {                                    // each jolt re-rolls the tilt and the uneven patches
+        l.roll = o.roll || 0; l.rot = (Math.random() - .5) * .5;
+        l.blobs = Array.from({ length: 7 }, () => ({ a: Math.random() * 6.2832, d: .18 + Math.random() * .75, s: .1 + Math.random() * .2, k: .12 + Math.random() * .22 }));
+      }
+      g.save(); g.translate(x, y); g.rotate(l.rot); g.scale(1, .78 + .12 * b);
+      const gr = g.createRadialGradient(0, 0, 0, 0, 0, r);
+      gr.addColorStop(0, `rgba(255,238,184,${Math.min(1, .95 * b)})`);
+      gr.addColorStop(.05, `rgba(255,206,122,${.8 * b})`);
+      gr.addColorStop(.14, `rgba(246,160,70,${.48 * b})`);
+      gr.addColorStop(.3, `rgba(220,115,44,${.2 * b})`);
+      gr.addColorStop(.55, `rgba(160,66,28,${.06 * b})`);
+      gr.addColorStop(1, "rgba(120,40,20,0)");
+      g.fillStyle = gr; g.beginPath(); g.arc(0, 0, r, 0, 6.2832); g.fill(); g.restore();
+    });
+    g.globalCompositeOperation = "destination-out";                       // carve uneven shadow into the pools
+    C.forEach((o, i) => st[i].blobs.forEach(q => {
+      const r = Math.max(innerWidth, innerHeight) * .3, bx = o.x / 2 + Math.cos(q.a) * q.d * r, by = o.y / 2 + Math.sin(q.a) * q.d * r * .8, br = q.s * r;
+      const gr = g.createRadialGradient(bx, by, 0, bx, by, br);
+      gr.addColorStop(0, `rgba(0,0,0,${q.k})`); gr.addColorStop(1, "rgba(0,0,0,0)");
+      g.fillStyle = gr; g.beginPath(); g.arc(bx, by, br, 0, 6.2832); g.fill();
+    }));
+  }
+  requestAnimationFrame(frame);
 })();
 </script>
 <script src="projects.js"></script>
