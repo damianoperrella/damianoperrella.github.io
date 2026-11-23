@@ -599,8 +599,8 @@
     if (t - last > 30) {
       last = t;
       flames.forEach(o => {
-        if (t > o.next) { const gust = Math.random() < .09; o.target = gust ? .4 + Math.random() * .15 : .78 + Math.random() * .5; o.next = t + (gust ? 90 : 35 + Math.random() * 90); o.roll = (o.roll || 0) + 1; }
-        o.f += (o.target - o.f) * .55;
+        if (t > o.next) { const gust = Math.random() < .03; o.target = gust ? .72 + Math.random() * .1 : .9 + Math.random() * .18; o.next = t + (gust ? 140 : 90 + Math.random() * 200); o.roll = (o.roll || 0) + 1; }
+        o.f += (o.target - o.f) * .22;
         const v = o.f.toFixed(3);
         room.style.setProperty("--f" + o.i, v);
         o.el.style.setProperty("--f", v); o.glow.style.setProperty("--f", v); o.rl.style.setProperty("--f", v);
@@ -627,15 +627,15 @@
       const l = st[i], b = o.f, R = Math.max(innerWidth, innerHeight) * .9 * (.6 + b * .4), x = o.x / 2, y = o.y / 2, r = R / 2;
       if (l.roll !== (o.roll || 0)) {                                    // each jolt re-rolls the tilt and the uneven patches
         l.roll = o.roll || 0; l.rot = (Math.random() - .5) * .5;
-        l.blobs = Array.from({ length: 7 }, () => ({ a: Math.random() * 6.2832, d: .18 + Math.random() * .75, s: .1 + Math.random() * .2, k: .12 + Math.random() * .22 }));
+        l.blobs = Array.from({ length: 7 }, () => ({ a: Math.random() * 6.2832, d: .18 + Math.random() * .75, s: .1 + Math.random() * .2, k: .08 + Math.random() * .12 }));
       }
       g.save(); g.translate(x, y); g.rotate(l.rot); g.scale(1, .78 + .12 * b);
       const gr = g.createRadialGradient(0, 0, 0, 0, 0, r);
-      gr.addColorStop(0, `rgba(255,238,184,${Math.min(1, .95 * b)})`);
-      gr.addColorStop(.05, `rgba(255,206,122,${.8 * b})`);
-      gr.addColorStop(.14, `rgba(246,160,70,${.48 * b})`);
-      gr.addColorStop(.3, `rgba(220,115,44,${.2 * b})`);
-      gr.addColorStop(.55, `rgba(160,66,28,${.06 * b})`);
+      gr.addColorStop(0, `rgba(255,238,184,${Math.min(1, .72 * b)})`);
+      gr.addColorStop(.05, `rgba(255,206,122,${.58 * b})`);
+      gr.addColorStop(.14, `rgba(246,160,70,${.36 * b})`);
+      gr.addColorStop(.3, `rgba(220,115,44,${.15 * b})`);
+      gr.addColorStop(.55, `rgba(160,66,28,${.045 * b})`);
       gr.addColorStop(1, "rgba(120,40,20,0)");
       g.fillStyle = gr; g.beginPath(); g.arc(0, 0, r, 0, 6.2832); g.fill(); g.restore();
     });
