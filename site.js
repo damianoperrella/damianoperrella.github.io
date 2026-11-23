@@ -25,6 +25,7 @@
   var WATCHDOG_MS = 5000;     // if navigation never happens, uncover the page again
   var DEFAULT_COLOR = "#141414";
   var KEY = "pt-handoff";
+  var STAY_URL = (function () { try { return new URL("stay/", document.currentScript.src).href; } catch (e) { return null; } })();
 
   var root = document.documentElement;
   var reduce = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -315,6 +316,16 @@
     try { u = new URL(a.href, location.href); } catch (err) { return; }
     if (u.origin !== location.origin) return;
     if (u.pathname === location.pathname && u.search === location.search) return;   // same page or just a #anchor
+    /* a 1% chance, once per visit, that a click leads somewhere it shouldn't */
+    if (STAY_URL && !root.hasAttribute("data-stay")) {
+      try {
+        if (!sessionStorage.getItem("detour-done") && Math.random() < 0.01) {
+          sessionStorage.setItem("detour-done", "1");
+          sessionStorage.setItem("detour-from", location.href);
+          u = new URL(STAY_URL);
+        }
+      } catch (err) {}
+    }
     e.preventDefault();
     var color = PT.color;
     if (!color) {
