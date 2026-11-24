@@ -517,7 +517,7 @@
       const p = pos[o.i]; clampPos(p);
       const w = o.el.offsetWidth, h = o.el.offsetHeight;
       o.el.style.left = (p.x * innerWidth - w * o.fx) + "px"; o.el.style.top = (p.y * innerHeight - h * o.fy) + "px";
-      o.x = p.x * innerWidth; o.y = p.y * innerHeight;
+      o.bx = o.x = p.x * innerWidth; o.by = o.y = p.y * innerHeight;
     });
     light(); if (typeof shadows === "function") shadows();
   }
@@ -592,19 +592,36 @@
   addEventListener("resize", () => { sizeCanvas(); drawFrame(); layout(); shadows(); });
   addEventListener("load", layout);
 
-  /* flicker: each flame wanders between a lower and a higher brightness */
+  /* Real candles in still air are very steady: a faint ~10 Hz shimmer, a slow wander, a slow breath.
+     Now and then something passes: the light sinks, leans away, and takes a few seconds to come back. */
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  let last = 0;
-  (function tick(t) {
-    if (t - last > 30) {
-      last = t;
-      flames.forEach(o => {
-        if (t > o.next) { const gust = Math.random() < .03; o.target = gust ? .72 + Math.random() * .1 : .9 + Math.random() * .18; o.next = t + (gust ? 140 : 90 + Math.random() * 200); o.roll = (o.roll || 0) + 1; }
-        o.f += (o.target - o.f) * .22;
+  const T2 = 6.2832, ev = flames.map((o, i) => ({ at: 7 + Math.random() * 9 + i * .6, dur: 4.6, dir: Math.random() < .5 ? -1 : 1, on: false }));
+  let last = 0, lastLight = 0;
+  (function tick(ms) {
+    if (ms - last > 30) {
+      last = ms;
+      const t = ms / 1000;
+      flames.forEach((o, i) => {
+        const e = ev[i];
+        if (!e.on && t > e.at) { e.on = true; e.t0 = t; e.dir = Math.random() < .5 ? -1 : 1; e.depth = .38 + Math.random() * .2;
+          if (Math.random() < .55) { const j = 1 - i; if (!ev[j].on && ev[j].at - t > 3) ev[j].at = t + .3 + Math.random() * .9; } }   // sometimes both feel it, sometimes only one
+        let dip = 0, lean = 0;
+        if (e.on) {
+          const p = (t - e.t0) / e.dur;
+          if (p >= 1) { e.on = false; e.at = t + 14 + Math.random() * 26; }
+          else { const env = p < .22 ? Math.sin(p / .22 * 1.5708) : Math.pow(Math.cos((p - .22) / .78 * 1.5708), 1.6); dip = env * e.depth; lean = env * e.dir; }
+        }
+        const tremor = .016 * Math.sin(t * T2 * 9.6 + i * 2) + .01 * Math.sin(t * T2 * 13.9 + i * 5),
+              wander = .04 * Math.sin(t * .9 + i * 3) + .03 * Math.sin(t * .37 + i * 1.3),
+              breath = .075 * Math.sin(t * T2 / (6.3 + i * 1.9) + i * 2);
+        o.f = Math.max(.35, Math.min(1.2, 1 + tremor + wander + breath - dip));
+        o.x = o.bx + 26 * Math.sin(t * .23 + i * 2) + 11 * Math.sin(t * .61 + i) + lean * 70;   // the pool drifts, and leans in a gutter
+        o.y = o.by + 13 * Math.sin(t * .19 + i * 5) + Math.abs(lean) * 16;
         const v = o.f.toFixed(3);
         room.style.setProperty("--f" + o.i, v);
         o.el.style.setProperty("--f", v); o.glow.style.setProperty("--f", v); o.rl.style.setProperty("--f", v);
       });
+      if (ms - lastLight > 60) { lastLight = ms; light(); }
       shadows();
     }
     requestAnimationFrame(tick);
@@ -617,18 +634,16 @@
 (() => {
   const cv = document.getElementById("flare"), g = cv.getContext("2d");
   const sz = () => { cv.width = Math.round(innerWidth / 2); cv.height = Math.round(innerHeight / 2); }; sz(); addEventListener("resize", sz);
-  const st = [0, 1].map(() => ({ roll: -1, rot: 0, blobs: [] }));
-  function frame() {
-    requestAnimationFrame(frame);
+  const st = [0, 1].map(i => ({ rot: 0, blobs: Array.from({ length: 7 }, () => ({ a: Math.random() * 6.2832, v: (Math.random() - .5) * .22, d: .18 + Math.random() * .75, s: .1 + Math.random() * .2, k: .08 + Math.random() * .12 })) }));
+  let pt = performance.now();
+  function frame(now) {
+    requestAnimationFrame(frame); const dt = Math.min(.1, (now - pt) / 1000); pt = now;
     const C = window.CANDLES; if (!C) return;
     g.globalCompositeOperation = "source-over"; g.clearRect(0, 0, cv.width, cv.height);
     g.globalCompositeOperation = "lighter";
     C.forEach((o, i) => {
       const l = st[i], b = o.f, R = Math.max(innerWidth, innerHeight) * .9 * (.6 + b * .4), x = o.x / 2, y = o.y / 2, r = R / 2;
-      if (l.roll !== (o.roll || 0)) {                                    // each jolt re-rolls the tilt and the uneven patches
-        l.roll = o.roll || 0; l.rot = (Math.random() - .5) * .5;
-        l.blobs = Array.from({ length: 7 }, () => ({ a: Math.random() * 6.2832, d: .18 + Math.random() * .75, s: .1 + Math.random() * .2, k: .08 + Math.random() * .12 }));
-      }
+      l.rot = .14 * Math.sin(now / 1000 * .31 + i * 2);                  // the pool tilts slowly
       g.save(); g.translate(x, y); g.rotate(l.rot); g.scale(1, .78 + .12 * b);
       const gr = g.createRadialGradient(0, 0, 0, 0, 0, r);
       gr.addColorStop(0, `rgba(255,238,184,${Math.min(1, .72 * b)})`);
@@ -641,6 +656,7 @@
     });
     g.globalCompositeOperation = "destination-out";                       // carve uneven shadow into the pools
     C.forEach((o, i) => st[i].blobs.forEach(q => {
+      q.a += q.v * dt;                                                    // the dark patches creep around the light
       const r = Math.max(innerWidth, innerHeight) * .3, bx = o.x / 2 + Math.cos(q.a) * q.d * r, by = o.y / 2 + Math.sin(q.a) * q.d * r * .8, br = q.s * r;
       const gr = g.createRadialGradient(bx, by, 0, bx, by, br);
       gr.addColorStop(0, `rgba(0,0,0,${q.k})`); gr.addColorStop(1, "rgba(0,0,0,0)");
