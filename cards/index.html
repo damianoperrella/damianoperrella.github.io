@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="pt-color" content="#1b7a52">
+<meta name="pt-color" content="#3a0e14">
 <title>All Cards — Damiano Perrella</title>
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -47,7 +47,7 @@
     overflow-x: hidden;
     color: var(--on-bg);
     font-family: var(--font);
-    background: var(--felt-dark);
+    background: #000;
   }
 
   /* ---------------- the felt table ---------------- */
@@ -92,6 +92,56 @@
     opacity: .4;
   }
 
+  /* ---------------- the cloth and the lamp: the same as the landing page ---------------- */
+  /* ---------------- the dark room: velvet with an embroidered border, lit by two candles ---------------- */
+  .room {
+    position: fixed; inset: 0; z-index: 0;
+    pointer-events: none; isolation: isolate; overflow: hidden;
+    background: var(--room);
+    
+  }
+  .room > * { position: absolute; inset: 0; display: block; }
+  /* the cold light hanging in the air, and the nap of the velvet */
+  .room .haze { background: radial-gradient(ellipse 90% 80% at 50% 50%, rgba(120, 34, 42, .22), transparent 80%); }
+  /* wool baize: a fine, even nap and a barely-there weave, nothing cloudy */
+  .room .nap {
+    background-image:
+      repeating-linear-gradient(0deg, rgba(0, 0, 0, .16) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(90deg, rgba(0, 0, 0, .13) 0 1px, transparent 1px 3px),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='2.4' intercept='-.7'/%3E%3CfeFuncG type='linear' slope='2.4' intercept='-.7'/%3E%3CfeFuncB type='linear' slope='2.4' intercept='-.7'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+    background-size: auto, auto, 200px 200px; mix-blend-mode: soft-light; opacity: .9;
+  }
+  /* the embroidered border, dim; and the same border bright, only where a flame reaches it */
+  .room .thread { background-repeat: no-repeat; opacity: 1; filter: brightness(1.7); }
+  .room .lit {
+    background-repeat: no-repeat; opacity: 1; mix-blend-mode: screen;
+    -webkit-mask-image: var(--mask); mask-image: var(--mask);
+  }
+  .room .grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='2.2' intercept='-.55'/%3E%3CfeFuncG type='linear' slope='2.2' intercept='-.55'/%3E%3CfeFuncB type='linear' slope='2.2' intercept='-.55'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 260px 260px; mix-blend-mode: overlay; opacity: .45;
+  }
+  .room .vignette { background: radial-gradient(ellipse 85% 80% at 50% 50%, transparent 30%, rgba(0, 0, 0, .72) 100%); }
+  /* ---------- the table: a dim, quiet room; an embroidered cloth seen from about 80 degrees ---------- */
+  html, body { background: #000; }
+  .room { background: #2a0d14; transform: perspective(1500px) rotateX(12deg) scale(1.3); transform-origin: 50% 80%; }
+  .room::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: linear-gradient(#0a0305, #1b080d); box-shadow: 0 1px 0 rgba(200, 150, 130, .12); }
+  .room .haze { background: radial-gradient(ellipse 85% 75% at 50% 52%, rgba(120, 70, 92, .20), transparent 78%); }
+  .room .brocade { background-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2296%22 height=%2296%22 viewBox=%220 0 96 96%22 fill=%22none%22 stroke=%22%23c9967a%22 stroke-width=%221%22 stroke-linejoin=%22round%22 stroke-linecap=%22round%22%3E%3Cpath d=%22M48 0 96 48 48 96 0 48Z%22 opacity=%22.5%22/%3E%3Cpath d=%22M48 14 82 48 48 82 14 48Z%22 opacity=%22.35%22/%3E%3Cpath d=%22M48 34 51.5 44.5 62 48 51.5 51.5 48 62 44.5 51.5 34 48 44.5 44.5Z%22 fill=%22%23c9967a%22 fill-opacity=%22.45%22/%3E%3Ccircle cx=%2248%22 cy=%2248%22 r=%222.4%22 fill=%22%23c9967a%22 fill-opacity=%22.6%22 stroke=%22none%22/%3E%3Cpath d=%22M-4 0a6 6 0 0 0 8 8a8 8 0 0 1-8-8ZM92 0a6 6 0 0 0 8 8a8 8 0 0 1-8-8ZM-4 96a6 6 0 0 0 8 8a8 8 0 0 1-8-8ZM92 96a6 6 0 0 0 8 8a8 8 0 0 1-8-8Z%22 fill=%22%23c9967a%22 fill-opacity=%22.4%22 stroke=%22none%22 transform=%22translate%280 -4%29%22/%3E%3Cpath d=%22M48 0V14M48 82V96M0 48H14M82 48H96%22 opacity=%22.3%22/%3E%3C/svg%3E"); background-size: 96px 96px; opacity: .17; mix-blend-mode: screen; }
+  .room .lit { display: none; }
+  #manicule #manicule-lit { display: none; }
+  .room .vignette { background: radial-gradient(ellipse 92% 88% at 50% 52%, transparent 38%, rgba(2, 3, 8, .62) 100%); }
+  #flare, #shade { display: none !important; }
+  /* a soft, even room light: cards take a little of the same dimness at the corners */
+  /* the room is dim; one round lamp hangs overhead and drifts after the cursor, lifting the dark where it falls */
+  #ambient { position: fixed; inset: 0; z-index: 5; pointer-events: none;
+    background: radial-gradient(ellipse 95% 90% at 50% 50%, rgba(8, 4, 10, .44) 40%, rgba(4, 2, 8, .66) 100%);
+    -webkit-mask-image: radial-gradient(circle at var(--lx, 50%) var(--ly, 50%), rgba(0,0,0,.1) 0, rgba(0,0,0,.1) calc(var(--lr, 460px) * .12), #000 var(--lr, 460px));
+            mask-image: radial-gradient(circle at var(--lx, 50%) var(--ly, 50%), rgba(0,0,0,.1) 0, rgba(0,0,0,.1) calc(var(--lr, 460px) * .12), #000 var(--lr, 460px)); }
+  #lamp { position: fixed; inset: 0; z-index: 6; pointer-events: none; mix-blend-mode: screen;
+    background: radial-gradient(circle at var(--lx, 50%) var(--ly, 50%), rgba(255, 206, 150, .40) 0, rgba(255, 192, 128, .26) calc(var(--lr, 460px) * .3), rgba(240, 160, 90, .12) calc(var(--lr, 460px) * .6), rgba(240, 160, 90, .04) calc(var(--lr, 460px) * .85), rgba(240, 160, 90, 0) var(--lr, 460px)); }
+  .tilt { box-shadow: var(--sx, 0px) var(--sy, 3px) var(--sb, 8px) rgba(0, 0, 0, .46), 0 1px 2px rgba(0, 0, 0, .55); }
+
   /* ---------------- header (fixed, top right) ---------------- */
   .id {
     position: fixed; top: 0; left: 0; right: 0;
@@ -101,7 +151,7 @@
     font-size: 15px;
     line-height: 1.4;
     pointer-events: none;                              /* only the two links are clickable */
-    background: linear-gradient(rgba(3, 22, 16, .8), rgba(3, 22, 16, 0));
+    background: linear-gradient(rgba(10, 3, 5, .8), rgba(10, 3, 5, 0));
   }
   .id a {
     display: block;
@@ -147,7 +197,7 @@
     border-radius: 12px;
     background: var(--card);
     /* Hard overhead light: a crisp, dark shadow falling straight down onto the table */
-    box-shadow: 0 12px 4px rgba(0, 0, 0, .55);
+    box-shadow: var(--sx, 0px) var(--sy, 3px) var(--sb, 8px) rgba(0, 0, 0, .46), 0 1px 2px rgba(0, 0, 0, .55);
     transform-style: preserve-3d;
     transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease;
     will-change: transform;
@@ -206,7 +256,10 @@
 </head>
 <body>
 
-<div class="felt" aria-hidden="true"><i></i></div>
+<div class="room" id="room" aria-hidden="true">
+  <i class="haze"></i><i class="nap"></i><i class="brocade"></i><i class="vignette"></i><i class="grain"></i>
+</div>
+<div id="ambient" aria-hidden="true"></div><div id="lamp" aria-hidden="true"></div>
 
 <header class="id">
   <a class="back" href="/">&larr; The Table</a>
@@ -219,6 +272,36 @@
 
 
 <script src="/projects.js"></script>
+<script>
+/* THE LAMP: a round light hanging above the table. It drifts after the cursor with some weight, like the hand;
+   with no cursor (touch, or a mouse at rest) it wanders slowly by itself. Cards cast their shadows away from it. */
+(() => {
+  const root = document.documentElement, reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let W = innerWidth, H = innerHeight;
+  const L = { x: W * .5, y: H * .5, vx: 0, vy: 0 }, aim = { x: W * .5, y: H * .5 };
+  let lastMove = -1e9;
+  const R = () => Math.max(W, H) * 1.15;
+  addEventListener("resize", () => { W = innerWidth; H = innerHeight; });
+  addEventListener("pointermove", e => { if (e.pointerType === "mouse") { aim.x = e.clientX; aim.y = e.clientY; lastMove = performance.now(); } });
+  let prev = performance.now();
+  (function frame(now) {
+    requestAnimationFrame(frame);
+    const dt = Math.min(.05, (now - prev) / 1000); prev = now;
+    if (now - lastMove > 9000) {                                   // nobody is steering: wander across the cards
+      const t = now / 1000;
+      aim.x = W * (.5 + .27 * Math.sin(t * .13) + .08 * Math.sin(t * .37 + 1)); aim.y = H * (.5 + .13 * Math.sin(t * .17 + 2) + .05 * Math.sin(t * .41));
+    }
+    if (reduce) { L.x = aim.x; L.y = aim.y; }
+    else { L.vx += ((aim.x - L.x) * 9 - L.vx * 4.6) * dt; L.vy += ((aim.y - L.y) * 9 - L.vy * 4.6) * dt; L.x += L.vx * dt; L.y += L.vy * dt; }
+    root.style.setProperty("--lx", L.x.toFixed(1) + "px"); root.style.setProperty("--ly", L.y.toFixed(1) + "px"); root.style.setProperty("--lr", R().toFixed(0) + "px");
+    document.querySelectorAll(".table .card").forEach(c => {       // a lamp high above: shadows fall away from it, longer and softer the further the card is
+      const r = c.getBoundingClientRect(); if (r.width < 20) return;
+      const vx = r.left + r.width / 2 - L.x, vy = r.top + r.height / 2 - L.y, d = Math.hypot(vx, vy) || 1, k = Math.min(1, d / (Math.max(W, H) * .6));
+      c.style.setProperty("--sx", (vx / d * (3 + 10 * k)).toFixed(1) + "px"); c.style.setProperty("--sy", (vy / d * (3 + 10 * k) + 2).toFixed(1) + "px"); c.style.setProperty("--sb", (6 + 8 * k).toFixed(1) + "px");
+    });
+  })(prev);
+})();
+</script>
 <script>
   /* ============================================================
      ALL CARDS: every project laid out on the table in a grid.

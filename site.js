@@ -321,7 +321,7 @@
       try {
         if (!sessionStorage.getItem("detour-done") && Math.random() < 0.01) {
           sessionStorage.setItem("detour-done", "1");
-          sessionStorage.setItem("detour-from", location.href);
+          sessionStorage.setItem("detour-from", u.href);
           u = new URL(STAY_URL);
         }
       } catch (err) {}
